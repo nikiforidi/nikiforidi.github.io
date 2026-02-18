@@ -20,9 +20,9 @@ This document describes the backends of creating virtual machines (VM further) t
 
 ### Figure 1: States of Unified Model During Universe Deploy
 
-<div class="figure-container">
+
 ![Model States](../assets/images/architecture/transactional-figure1.png)
-</div>
+
 
 *The states of Unified Model during Universe Deploy*
 
@@ -52,9 +52,9 @@ This is the **final step** before deploying VM. The model consider **complete** 
 
 ### Figure 2: Model State Transitions
 
-<div class="figure-container">
+
 ![State Transitions](../assets/images/architecture/transactional-figure2.png)
-</div>
+
 
 *State transitions with rollback support*
 
