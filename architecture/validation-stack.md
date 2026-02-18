@@ -23,7 +23,7 @@ Thus, we try to use a **single place for all the validations** that may occur du
 ### Figure 1: Pushing the New Validator
 
 <div class="figure-container">
-![Validation Stack Push](../assets/images/architecture/validation-figure1.jpg)
+![Validation Stack Push](../../assets/images/architecture/validation-figure1.jpg)
 </div>
 
 *Figure 1. Pushing the new Validator to the Validation Stack.*
@@ -35,7 +35,7 @@ After pushing some amount of Validators into the Validation Stack, we can run th
 ### Figure 2: Running the Validation Stack
 
 <div class="figure-container">
-![Validation Stack Run](../assets/images/architecture/validation-figure2.jpg)
+![Validation Stack Run](../../assets/images/architecture/validation-figure2.jpg)
 </div>
 
 *Figure 2. Running the Validation Stack.*
@@ -70,7 +70,7 @@ Remember, each Validator reports a **positive or negative result**. The strict m
 ### Figure 3: Strict Mode Workflow
 
 <div class="figure-container">
-![Strict Mode](../assets/images/architecture/validation-figure3.jpg)
+![Strict Mode](../../assets/images/architecture/validation-figure3.jpg)
 </div>
 
 *Figure 3. The Strict mode workflow.*
@@ -84,7 +84,7 @@ In the tolerant mode, the Validation Stack will run the Validators until the las
 ### Figure 4: Fault-Tolerant Mode Workflow
 
 <div class="figure-container">
-![Fault-Tolerant Mode](../assets/images/architecture/validation-figure4.jpg)
+![Fault-Tolerant Mode](../../assets/images/architecture/validation-figure4.jpg)
 </div>
 
 *Figure 4. The tolerant mode workflow.*

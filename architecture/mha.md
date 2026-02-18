@@ -25,7 +25,7 @@ The MHA compares those facts with a database record and decides about changes of
 ### Figure 1: Universe Hashing Model for a Virtual Machine
 
 <div class="figure-container">
-![Universe Hashing Model](../assets/images/architecture/mha-figure1.png)
+![Universe Hashing Model](../../assets/images/architecture/mha-figure1.png)
 </div>
 
 *Figure 1: Universe hashing model for a virtual machine*
@@ -45,7 +45,7 @@ The second direction of MHA is **facts** about specific CIR coming on request of
 ### Figure 2: Universe Applies MHA to Both CIR and DB Record
 
 <div class="figure-container">
-![MHA Bidirectional](../assets/images/architecture/mha-figure2.jpg)
+![MHA Bidirectional](../../assets/images/architecture/mha-figure2.jpg)
 </div>
 
 *Figure 2. Universe applies MHA to both CIR and DB record.*
