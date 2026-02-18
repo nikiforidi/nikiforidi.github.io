@@ -36,7 +36,9 @@ One of the first criteria implemented in Universe is an **intersection criterion
 
 ### Figure 1: Intersection Criterion Demonstration
 
+<div class="figure-container">
 ![Intersection Criterion](../assets/images/architecture/jemp-figure1.jpg)
+</div>
 
 *The figure 1 below demonstrates an intersection criterion.*
 
@@ -62,7 +64,9 @@ Events are reported from the jobs back to the pool through the event bus. If the
 
 ### Figure 2: Heartbeat Events During Job Execution
 
+<div class="figure-container">
 ![Heartbeat Events](../assets/images/architecture/jemp-figure2.jpg)
+</div>
 
 *The figure 2 below shows how the heartbeat events occurred during the job execution.*
 
@@ -74,7 +78,9 @@ Lost jobs are collected by the **Job Collector (JC)** mechanism. JC is a backgro
 
 ### Figure 3: Resolving Lost Jobs by JC
 
+<div class="figure-container">
 ![Job Collector](../assets/images/architecture/jemp-figure3.jpg)
+</div>
 
 *The figure 3 below shows resolving a lost job by JC while the other job is continuing to run, reporting its heartbeats.*
 

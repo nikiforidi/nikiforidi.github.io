@@ -1,0 +1,55 @@
+/* Responsive Images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Image containers for figures */
+.figure-container {
+    max-width: 100%;
+    overflow: hidden;
+    margin: 2em 0;
+}
+
+.figure-container img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Figure captions */
+em {
+    display: block;
+    text-align: center;
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 0.5em;
+    font-style: italic;
+}
+
+/* Prevent image overflow in markdown content */
+.markdown-body img {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    img {
+        max-width: 100%;
+    }
+    
+    .figure-container {
+        padding: 0 10px;
+    }
+}
+
+/* Large image handling */
+img[src*=".jpg"],
+img[src*=".png"] {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
