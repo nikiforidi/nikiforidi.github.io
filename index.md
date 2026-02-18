@@ -1,7 +1,7 @@
 ---
 layout: home
 title: Welcome
-# tagline: Staff Software Engineer / Software Architect
+tagline: Staff Software Engineer / Software Architect
 ---
 
 This is not a resume. This is a **deep dive** into my professional journey.
