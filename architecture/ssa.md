@@ -80,6 +80,7 @@ func SequenceSorting(m map[int]int) (order []int) {
 
 ---
 
+<<<<<<< HEAD
 ## Usage
 
 ```go
@@ -165,3 +166,9 @@ Sort took 116.915073ms
 ## Source
 
 **Experience:** [MIND Software](../experience/mind-software/) | **Period:** Февраль 2023 — Февраль 2025
+=======
+## Links
+
+- [Full Specification](https://www.notion.so/Sequence-Sorting-Algorithm-SSA-44f828765101456d9ed1a3b6898088a1?pvs=4)
+- [Related: MHA](mha.md)
+>>>>>>> 0ba548165a7efc68efc999d4cf370060a997a8aa
