@@ -3,11 +3,7 @@ layout: page
 title: Transactional Models
 ---
 
-
-**Author:** Anatoly Nikiforov, 2023  
-**Status:** ✅ Production  
-**Period:** 2023-2025  
-**Company:** MIND Software
+**Author:** Anatoly Nikiforov, 2023
 
 ---
 
@@ -17,13 +13,7 @@ This document describes the backends of creating virtual machines (VM further) t
 
 ## The States of Unified Model
 
-### Figure 1: States of Unified Model During Universe Deploy
-
-
-![Model States](../assets/images/architecture/transactional-figure1.png)
-
-
-*The states of Unified Model during Universe Deploy*
+> **Diagram:** The states of Unified Model during Universe Deploy
 
 There are **three states** of the model during deploy known as **prototype**, **base** and **complete**. Those states are indicating the readiness of the model for deployment.
 
@@ -31,7 +21,7 @@ There are **three states** of the model during deploy known as **prototype**, **
 
 ## The Prototype Model State
 
-The **prototype** or **proto-model** is the first step to take before deploying the VM. It is built from two data sources known as the **Source Unit** and the **Placement**. This is a logical place in the code and architecture where the model is born. In this state the model is tied tightly to the data of a Source Unit as well as to the Placement values. The model then goes to the user for further customisation to get the next state known as the **Base**.
+The **prototype** or **proto-model** is the first step to take before deploying the VM. It is built from two data sources known as the **Source Unit**[^1] and the **Placement**. This is a logical place in the code and architecture where the model is born. In this state the model is tied tightly to the data of a Source Unit as well as to the Placement values. The model then goes to the user for further customisation to get the next state known as the **Base**.
 
 ---
 
@@ -43,25 +33,14 @@ When the proto-model is customised by the user it goes into state of the **Base 
 
 ## The Complete Model State
 
-This is the **final step** before deploying VM. The model consider **complete** if it has been **validated** by the Universe and enriched with some default values known as **custom arguments**. Those values are some default platfrom-specific API parameters needed to deploy VM. After validation and finalisation of the model it is ready to deploy on the target platform.
+This is the **final step** before deploying VM. The model consider **complete** if it has been **validated**[^2] by the Universe and enriched with some default values known as **custom arguments**. Those values are some default platfrom-specific API parameters needed to deploy VM. After validation and finalisation of the model it is ready to deploy on the target platform.
 
 ---
 
-## State Transitions
+## References
 
-### Figure 2: Model State Transitions
-
-
-![State Transitions](../assets/images/architecture/transactional-figure2.png)
-
-
-*State transitions with rollback support*
-
-| State | Description | Mutable | Validated |
-|-------|-------------|---------|-----------|
-| **Prototype** | Source Unit + Placement | ✅ Yes | ❌ No |
-| **Base Model** | User customized | ✅ Yes | ⚠️ Partial |
-| **Complete Model** | Validated + enriched | ❌ No | ✅ Yes |
+[^1]: The discussion of Units is beyond the scope of this document.
+[^2]: See [Universe Validation Stack](https://www.notion.so/Universe-Validation-Stack-479bb17669ea446d8ea67e74f3be475f?pvs=21)
 
 ---
 
@@ -71,9 +50,3 @@ This is the **final step** before deploying VM. The model consider **complete** 
 - [JEMP](jemp.md)
 - [SSA](ssa.md)
 - [Validation Stack](validation-stack.md)
-
----
-
-## Source
-
-**Experience:** [MIND Software](../experience/mind-software/) | **Period:** Февраль 2023 — Февраль 2025
