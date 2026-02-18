@@ -1,10 +1,8 @@
 ---
 layout: home
-title: Anatoly Nikiforov
+title: Welcome
 tagline: Staff Software Engineer / Software Architect
 ---
-
-# Welcome
 
 This is not a resume. This is a **deep dive** into my professional journey.
 

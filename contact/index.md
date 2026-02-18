@@ -3,8 +3,6 @@ layout: page
 title: Contact
 ---
 
-# Contact Information
-
 | Platform | Link |
 |----------|------|
 | **Email** | nikiforova693@gmail.com |

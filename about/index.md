@@ -3,10 +3,6 @@ layout: page
 title: About Me
 ---
 
-# Anatoly Nikiforov
-
-## Professional Identity
-
 **Staff Software Engineer / Software Architect** with 5+ years of professional experience spanning the full technology stack:
 
 - **Low-level:** Linux kernel modules, Netfilter hooks, TUN/TAP interfaces, POSIX sockets

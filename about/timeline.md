@@ -3,10 +3,6 @@ layout: page
 title: Career Timeline
 ---
 
-# Career Timeline (2017-2026)
-
-## Visual Timeline
-
 ```text
 2017 ──── 2018 ──── 2019 ──── 2020 ──── 2021 ──── 2022 ──── 2023 ──── 2024 ──── 2025 ──── 2026
   │         │         │         │         │         │         │         │         │         │

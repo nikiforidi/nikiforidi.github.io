@@ -3,8 +3,6 @@ layout: page
 title: Experience
 ---
 
-# Professional Experience
-
 **7 companies** | **5+ years** | **3 countries** (Russia, UAE, Czech Republic)
 
 ---

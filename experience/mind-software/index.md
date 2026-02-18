@@ -3,8 +3,6 @@ layout: page
 title: MIND Software
 ---
 
-# MIND Software
-
 **Lead Backend Developer / Chief Developer**  
 **February 2023 — February 2025 (2 years 1 month)** | Moscow, Russia
 

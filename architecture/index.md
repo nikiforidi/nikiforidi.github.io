@@ -3,8 +3,6 @@ layout: page
 title: Architectural Specifications
 ---
 
-# Architectural Specifications
-
 **5 documented specifications** from MIND Software (2023-2025)
 
 ---

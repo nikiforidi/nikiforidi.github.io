@@ -3,8 +3,6 @@ layout: page
 title: Publications
 ---
 
-# Publications
-
 **9 articles** | **237K+ views** | **13,229+ karma**
 
 ---

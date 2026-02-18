@@ -3,7 +3,6 @@ layout: page
 title: Model Hashing Algorithm (MHA)
 ---
 
-
 **Author:** Anatoly Nikiforov, 2023  
 **Status:** ✅ Production  
 **Period:** 2023-2025  

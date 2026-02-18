@@ -3,8 +3,6 @@ layout: page
 title: Engineering Philosophy
 ---
 
-# Engineering Philosophy
-
 ## 1. Systems Thinking
 
 I work comfortably across all layers of the stack:
