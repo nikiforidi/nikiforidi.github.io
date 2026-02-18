@@ -3,7 +3,6 @@ layout: page
 title: Sequence Sorting Algorithm (SSA)
 ---
 
-# Sequence Sorting Algorithm (SSA)
 
 **Author:** Anatoly Nikiforov, 2023  
 **Status:** ✅ Production  

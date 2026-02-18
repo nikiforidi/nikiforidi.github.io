@@ -3,7 +3,6 @@ layout: page
 title: Universe Validation Stack
 ---
 
-# Universe Validation Stack
 
 **Author:** Anatoly Nikiforov, 2023  
 **Status:** ✅ Production  

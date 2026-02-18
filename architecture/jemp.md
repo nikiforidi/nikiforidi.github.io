@@ -3,7 +3,6 @@ layout: page
 title: Job Event Messaging Protocol (JEMP)
 ---
 
-# Job Event Messaging Protocol (JEMP)
 
 **Author:** Anatoly Nikiforov, 2023  
 **Status:** ✅ Production  
