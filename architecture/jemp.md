@@ -12,119 +12,90 @@ title: Job Event Messaging Protocol (JEMP)
 
 ---
 
-## Overview
-
-The basic unit of concurrency in Universe is known as a **Job**. A Job is an MQ message containing:
-- Job's GUID
-- Unified Models of CIRs it is meant to work on
-- Logs
-- Additional metadata
-
-Jobs are executed concurrently. To handle Jobs and track their state, the **Job Pool** is introduced.
+The basic unit of concurrency around the Universe is known as **Job**. The Job — is an MQ message containing Job's GUID, the Unified Models of CIRs it meant to work on, logs and so on. Jobs are executed concurrently. To handle Jobs and track down their state, the **Job Pool** introduced.
 
 ---
 
 ## The Job Pool
 
-The Job Pool is a structure that collects all jobs in two different states:
-- **Running Jobs**
-- **Waiting Jobs**
+The Job Pool is a structure that collects all the jobs in two different states. There are **running** and **waiting** jobs in the Job Pool.
 
-The main responsibility of the Job Pool is to decide whether to:
-1. Instantly execute a particular job coming from MQ
-2. Enqueue it, keeping it in local memory (an alternative is to send it back to MQ, but this requires additional MQ calls over time)
-
-An enqueued job waits for its execution in the Job Pool.
+The main responsibility of Job Pool is to decide whether to instantly execute a particular job coming from MQ or enqueue it keeping it in the local memory (another option is to send it back to MQ, but this requires additional MQ calls over time). An enqueued job then waits for its execution in the Job Pool.
 
 ---
 
 ## Job Execution Criteria (JEC)
 
-Every time a new job arrives from MQ into the main process, it is handled in one of two ways, depending on conditions known as **Job Execution Criteria (JEC)**. The result of handling a job is either:
-- Executing it immediately
-- Delaying it by placing it in the pool, waiting for conditions to be met for execution
+Every time a new job arrives from an MQ into the main process, it being handled two different ways, depending on some conditions known as **job execution criteria (JEC)**. The result of handling a job is either executing it immediately or delaying it by putting into the pool as a job, waiting for conditions are met for execution.
 
 ---
 
-## Intersection Criterion
+## The Intersection Criterion
 
-One of the first criteria implemented in Universe is the **Intersection Criterion**. It solves the problem of simultaneous updates to the same CIRs when it is difficult to reason about the behaviour of the end-cloud infrastructure.
+One of the first criteria implemented in Universe is an **intersection criterion**. It is implemented to solve a problem of simultaneous updates of the same CIRs when it's hard to reason about the behaviour of an end-cloud infrastructure. In such cases, Universe does not rely on end-cloud infrastructure, instead it uses a job pooling mechanism to resolve it locally. The condition of solving it this: if there is a job already updating some CIR and there is another incoming job from MQ containing the same CIR, then an incoming one is blocked. The blocking of job means that there is an intersection criterion occurred between these jobs, and an incoming one should be placed in the pool, instead of executing it. The blocked jobs are then waiting their execution in the pool until the running jobs matched their intersection criterion are executed.
 
-In such cases, Universe does not rely on the end-cloud infrastructure; instead, it uses a job pooling mechanism to resolve conflicts locally.
+### Figure 1: Intersection Criterion Demonstration
 
-**The Condition:** If there is a job already updating some CIR and another incoming job from MQ contains the same CIR, then the incoming job is blocked.
+![Intersection Criterion](../assets/images/architecture/jemp-figure1.jpg)
 
-**Blocking a job** means that an intersection criterion has occurred between these jobs, and the incoming job should be placed in the pool instead of being executed. Blocked jobs wait in the pool for execution until the running jobs matching their intersection criterion are completed.
+*The figure 1 below demonstrates an intersection criterion.*
 
-The JEC itself is a boolean function, making it easy to extend this logic with additional criteria.
+The JEC itself is a boolean function, so it's easy to extend that logic with additional criteria.
 
 ---
 
-## Job Event Messaging Protocol (JEMP)
+## The Job Event Messaging Protocol
 
-Along with JEC, the **Job Event Messaging Protocol (JEMP)** is part of the job pooling mechanism. JEMP allows the pool to track the state of jobs it runs concurrently.
+Along with JEC, **Job Event Messaging Protocol** is a part of the job pooling mechanism. JEMP allows the pool to track the state of jobs it runs concurrently. The main communication channel for JEMP is knows as **Event Bus**. The communication over Event Bus occurs between the pool and the job executed. The main reason for JEMP is to provide the pool with a knowledge of job execution results.
 
-The main communication channel for JEMP is known as the **Event Bus**. Communication over the Event Bus occurs between the pool and the executing job. The main purpose of JEMP is to provide the pool with knowledge of job execution results.
+### Event-Driven
 
-### Event-Driven Architecture
-
-JEMP currently implements three types of messages known as **Events**:
+JEMP currently implements three type of messages known as **Events**:
 
 | Event Type | Description |
 |------------|-------------|
-| **Heartbeat Event** | Reported by the running job, indicating correct behaviour |
-| **Finished Event** | The last event reported from the running job, indicating successful execution |
+| **Heartbeat Event** | Reported by the running job, indicating the correct behaviour |
+| **Finished Event** | The last event reported from the running job, indicating the successful execution |
 | **Internal Event** | A reserved event type reported by JC and other system services |
 
-Events are reported from jobs back to the pool through the Event Bus. If no event is reported by a running job for an extended period, that job is considered **lost**.
+Events are reported from the jobs back to the pool through the event bus. If there is no any event reported by some running job for a long time, then such job considered **lost**.
+
+### Figure 2: Heartbeat Events During Job Execution
+
+![Heartbeat Events](../assets/images/architecture/jemp-figure2.jpg)
+
+*The figure 2 below shows how the heartbeat events occurred during the job execution.*
 
 ---
 
 ## The Job Collector (JC)
 
-Lost jobs are collected by the **Job Collector (JC)** mechanism. JC is a background service that monitors jobs being executed and decides whether to delete (unregister) them from the pool.
+Lost jobs are collected by the **Job Collector (JC)** mechanism. JC is a background service that runs over jobs being executed and decides whether to delete (unregister) them from the pool. The algorithm of JC is a straightforward one: it looks at the time the last heartbeat of a job reported. If this time is later than a configurable timeout, then the job considered lost and being unregistered from the pool as none of the interest.
 
-**Algorithm:** JC examines the timestamp of the last heartbeat reported by a job. If this time exceeds a configurable timeout, the job is considered lost and is unregistered from the pool as no longer of interest.
+### Figure 3: Resolving Lost Jobs by JC
+
+![Job Collector](../assets/images/architecture/jemp-figure3.jpg)
+
+*The figure 3 below shows resolving a lost job by JC while the other job is continuing to run, reporting its heartbeats.*
 
 ---
 
 ## The Checkpointer
 
-Another mechanism of the Job Pool is the **Checkpointer**. It is responsible for creating checkpoints at configurable time intervals (checkpoint intervals).
-
-**Checkpoints** are persisted snapshots of the Job Pool's actual state, including running and queued jobs. Creating checkpoints periodically is required for the Job Pool to remember the last state of queued jobs after an "accident" (e.g., system crash).
-
-Before accepting new messages from MQ, the Job Pool looks for the last checkpoint to resume working on previously queued jobs, if any are available. This prevents loss of jobs the user attempted to run previously.
-
----
-
-## Performance Metrics
-
-| Metric | Value |
-|--------|-------|
-| **Jobs/Second** | 500+ |
-| **Conflict Detection** | < 10ms |
-| **Recovery Time** | < 30 seconds |
-| **Heartbeat Overhead** | < 1% |
+Another mechanism of the Job Pool is a **Checkpointer**. It is responsible for creating checkpoints for configurable amount of time (checkpoint intervals). Checkpoints are persisted snapshots of the Job Pool "actual" state with running and queued jobs. Creating checkpoints with a periodic amount of time is required by the Job Pool to remember the last state of the queued Jobs after an "accident". Before starting to accept new messages from the MQ, the Job Pool is looking for the last checkpoint to start working on the previous queued jobs, if any available. This helps not to lose the Jobs the user attempted to run previously.
 
 ---
 
 ## Conclusion
 
-The Job Pool is an event-driven system designed to control the execution flow of concurrently running jobs. At the core of its mechanism is an Event Messaging Protocol, allowing the Job Pool to communicate and reason about the jobs it executes.
-
-System events are reserved for internal services, such as the Job Collector. The main purposes of the Job Pool are to:
-- Track the execution flow of jobs
-- Collect statistics
-- Resolve potential conflicts between jobs
-- Allow flexible workload management
+The Job Pool is an event-driven system to control an execution flow of jobs running concurrently. At the core of its mechanism, there is an Event Messaging Protocol, allowing the Job Pool to communicate and reason about the jobs it executes. There are system events reserved for the internal services, such as the Job Collector. The main reason behind the Job Pool is to be able to track down an execution flow of jobs, collect the statistics, resolve the potential conflicts between the jobs and allow the flexible workload.
 
 ---
 
 ## Related Specifications
 
-- [MHA — Model Hashing Algorithm](mha.md)
-- [SSA — Sequence Sorting Algorithm](ssa.md)
+- [MHA](mha.md)
+- [SSA](ssa.md)
 - [Validation Stack](validation-stack.md)
 - [Transactional Models](transactional-models.md)
 

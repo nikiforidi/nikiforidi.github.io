@@ -12,94 +12,82 @@ title: Universe Validation Stack
 
 ---
 
-## Overview
+The main objects of validation are so-called **Unified Models**. They are usually located in the Job as a part of execution scenario. In Universe, we try to validate those models because their data is used to interact with target infrastructures. The validation itself is not a necessary, as we may always rely on the target site infrastructures. Anyway, we prefer to have an **additional validation layer** to handle possible user input errors in Universe before they go to the actual infrastructure. This is possible because Universe has knowledge of legit requests it sends to the sites it supports.
 
-The main objects of validation are so-called **Unified Models**. They are usually located in the Job as part of the execution scenario.
-
-In Universe, we validate these models because their data is used to interact with target infrastructures. The validation itself is not strictly necessary, as we could always rely on the target site infrastructures. However, we prefer to have an **additional validation layer** to handle possible user input errors in Universe before they reach the actual infrastructure. This is possible because Universe has knowledge of legitimate requests it sends to the sites it supports.
-
-Thus, we use a **single place for all validations** that may occur during job execution. This place is known as the **Validation Stack**.
+Thus, we try to use a **single place for all the validations** that may occur during the job execution. This place is known as the **Validation Stack**.
 
 ---
 
 ## The Validation Stack
 
-The Validation Stack, as the name suggests, is a **classic stack data structure**. It is used to store Validators in a standard stack manner.
+### Figure 1: Pushing the New Validator
 
-**Validator:** A programmer-defined, pluggable entity that validates a single Unified Model and reports the result. Each validator can:
-- Validate a single field of a Unified Model
-- Implement more complex validation logic
+![Validation Stack Push](../assets/images/architecture/validation-figure1.jpg)
 
-After pushing Validators into the Validation Stack, we can run this **Validation Chain in FILO order** (First-In-Last-Out). The Validation Stack then executes the Validators and collects the validation results for further analysis. At the end of execution, the Validation Stack is empty.
+*Figure 1. Pushing the new Validator to the Validation Stack.*
+
+The Validation Stack, as the name suggests, is a **classic stack data structure**. It is used to store Validators in a classic stack manner. A validator is a programmer-defined, pluggable entity, that validates a single Unified Model and reports the result. Each validator could validate a single field of a Unified Model, or implement more complex validation logic.
+
+After pushing some amount of Validators into the Validation Stack, we can run this **Validation Chain as FILO**. The Validation Stack then will run the Validators and collect the validation results for further analysis. At the end of execution, the Validation Stack is empty.
+
+### Figure 2: Running the Validation Stack
+
+![Validation Stack Run](../assets/images/architecture/validation-figure2.jpg)
+
+*Figure 2. Running the Validation Stack.*
 
 ---
 
 ## Reusable Validators
 
-Validators may be **reusable** if we want to run the same validations multiple times. In that case, the Validation Stack will keep them even after running the Validation Chain.
+Validators might be **reusable** if we want to run the same validations multiple times. In that case, Validation Stack will keep them even after running the Validation Chain.
 
-Moreover, it will keep only those Validators from the Validation Chain that were marked as **reusable**. This means we can have a sequence of reusable and non-reusable Validators in the Validation Stack.
-
-After running this type of Validation Chain, the Validation Stack will keep **N - N(reusable)** Validators to be run again. In other words, the Validation Chain becomes shorter by the number of non-reusable chain links.
+Moreover, it will keep only those Validators from the Validation Chain, that were marked to be **reusable**. That means, we could have a sequence of reusable and non-reusable Validators in the Validation Stack. After running this type of Validation Chain, the Validation Stack will keep **N-N(reus.)** amount of Validators to be run again. In other words, the Validation Chain becomes shorter on the amount of non-reusable chain links.
 
 ---
 
-## Scopes of Usage
+## The Scopes of Usage
 
-There are two known scopes for applying the Validation Stack:
+There are two known scopes of applying the Validation Stack:
 
 | Scope | Name | Purpose |
 |-------|------|---------|
 | **Global** | Site Worker | Validate across the Job (e.g., look for duplicates) |
 | **Models** | Site Driver | Check specific fields of Unified Models |
 
-The behaviour of the Validation Stack is scope-dependent. For example:
-- In the **global scope**, we use a Validator that looks for duplicates of Unified Models across the Job
-- In the **models scope**, we check specific fields of Unified Models
-
-This two-layered architecture sets the relevant modes of the Validation Stack.
+The behaviour of the Validation Stack is a scope-dependent. For example, in the "global" scope, we want to use a Validator that looks for duplicates of Unified Models across the Job. At the same time, in the models scope, we are interested in checking some specific fields of Unified Models. This two-layered architecture sets the relevant modes of the Validation Stack.
 
 ---
 
-## Execution Modes
+## The Strict Mode
 
-### Strict Mode
+Remember, each Validator reports a **positive or negative result**. The strict mode of the Validation Stack stands for whether to proceed running Validators after the negative result occurred, or to stop there.
 
-Each Validator reports a **positive or negative result**. The strict mode of the Validation Stack determines whether to:
-- Proceed running Validators after a negative result occurs
-- Stop immediately
+### Figure 3: Strict Mode Workflow
 
-**Workflow:** Stop on first negative result → Use for critical validations
+![Strict Mode](../assets/images/architecture/validation-figure3.jpg)
 
----
-
-### Fault-Tolerant Mode
-
-In tolerant mode, the Validation Stack will:
-- Run Validators until the last one
-- Ignore negative results during execution
-- Keep them along with positive ones for further analysis
-
-**Workflow:** Collect all results → Use for comprehensive reporting
+*Figure 3. The Strict mode workflow.*
 
 ---
 
-## Application
+## The Fault-Tolerant Mode
 
-| Validation Point | Mode | Description |
-|-----------------|------|-------------|
-| **Model Creation** | Strict | Validate before model creation |
-| **Configuration Update** | Strict | Validate before applying changes |
-| **Deployment** | Fault-Tolerant | Collect all issues before deployment |
-| **Health Check** | Fault-Tolerant | Report all health issues |
+In the tolerant mode, the Validation Stack will run the Validators until the last one ignoring the negative results, but keeping them along with positive ones for further analysis.
+
+### Figure 4: Fault-Tolerant Mode Workflow
+
+![Fault-Tolerant Mode](../assets/images/architecture/validation-figure4.jpg)
+
+*Figure 4. The tolerant mode workflow.*
 
 ---
 
 ## Related Specifications
 
-- [MHA — Model Hashing Algorithm](mha.md)
-- [JEMP — Job Event Messaging Protocol](jemp.md)
-- [SSA — Sequence Sorting Algorithm](ssa.md)
+- [MHA](mha.md)
+- [JEMP](jemp.md)
+- [SSA](ssa.md)
 - [Transactional Models](transactional-models.md)
 
 ---

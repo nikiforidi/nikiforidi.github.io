@@ -12,95 +12,61 @@ title: Transactional Models
 
 ---
 
-## Overview
-
-This document describes the backend process of creating virtual machines (VMs) through Universe. In the second implementation, Universe starts deploying VMs from building the **Unified Model** (referred to as "model" hereafter).
-
-The build of a model is a **multi-stage** and **multi-source-based (transactional)** process.
+This document describes the backends of creating virtual machines (VM further) through the Universe. In the second implementation Universe starts deploying VMs from building the **Unified Model** (model further). The build of a model is a **multistage** and a **multi-source-based (transactional)** process.
 
 ---
 
-## States of Unified Model
+## The States of Unified Model
 
-There are **three states** of the model during deployment:
-1. **Prototype**
-2. **Base**
-3. **Complete**
+### Figure 1: States of Unified Model During Universe Deploy
 
-These states indicate the readiness of the model for deployment.
+![Model States](../assets/images/architecture/transactional-figure1.png)
 
----
+*The states of Unified Model during Universe Deploy*
 
-## Prototype Model State
-
-The **Prototype** (or Proto-Model) is the first step before deploying a VM. It is built from two data sources:
-- **Source Unit**[^1]
-- **Placement**
-
-This is the logical place in the code and architecture where the model is born. In this state, the model is tightly coupled to the data of a Source Unit as well as to the Placement values. The model then goes to the user for further customisation to reach the next state, known as **Base**.
+There are **three states** of the model during deploy known as **prototype**, **base** and **complete**. Those states are indicating the readiness of the model for deployment.
 
 ---
 
-## Base Model State
+## The Prototype Model State
 
-When the Proto-Model is customised by the user, it transitions to the **Base Model** state. The Prototype values can be overridden by user input, bringing the model one step closer to deployment.
-
-After customisation is complete, the model is transferred to Universe to receive final modifications.
+The **prototype** or **proto-model** is the first step to take before deploying the VM. It is built from two data sources known as the **Source Unit** and the **Placement**. This is a logical place in the code and architecture where the model is born. In this state the model is tied tightly to the data of a Source Unit as well as to the Placement values. The model then goes to the user for further customisation to get the next state known as the **Base**.
 
 ---
 
-## Complete Model State
+## The Base Model State
 
-This is the **final step** before deploying a VM. The model is considered **Complete** if:
-- It has been **validated**[^2] by Universe
-- It is enriched with default values known as **Custom Arguments**
+When the proto-model is customised by the user it goes into state of the **Base model**. The prototype values could be overridden by the user input and after that the model is one step closer to the deploy. After customisation is done the model transferred to the Universe to get the final alterations there.
 
-These values are default platform-specific API parameters needed to deploy a VM. After validation and finalisation, the model is ready for deployment on the target platform.
+---
+
+## The Complete Model State
+
+This is the **final step** before deploying VM. The model consider **complete** if it has been **validated** by the Universe and enriched with some default values known as **custom arguments**. Those values are some default platfrom-specific API parameters needed to deploy VM. After validation and finalisation of the model it is ready to deploy on the target platform.
 
 ---
 
 ## State Transitions
 
-```text
-Prototype ──► Base Model ──► Complete Model
-   │              │              │
-   │              │              │
-   └── Rollback ──┘              │
-                                  │
-   └────────── Rollback ──────────┘
-```
+### Figure 2: Model State Transitions
+
+![State Transitions](../assets/images/architecture/transactional-figure2.png)
+
+*State transitions with rollback support*
 
 | State | Description | Mutable | Validated |
 |-------|-------------|---------|-----------|
 | **Prototype** | Source Unit + Placement | ✅ Yes | ❌ No |
-| **Base Model** | User customised | ✅ Yes | ⚠️ Partial |
+| **Base Model** | User customized | ✅ Yes | ⚠️ Partial |
 | **Complete Model** | Validated + enriched | ❌ No | ✅ Yes |
-
----
-
-## Application
-
-| Use Case | Description |
-|----------|-------------|
-| **VM Deployment** | Standard deployment workflow |
-| **Configuration Update** | Update with rollback support |
-| **Template Creation** | Save Prototype for reuse |
-| **Migration** | Transform between hypervisors |
-
----
-
-## References
-
-[^1]: The discussion of Units is beyond the scope of this document.
-[^2]: See [Universe Validation Stack](validation-stack.md)
 
 ---
 
 ## Related Specifications
 
-- [MHA — Model Hashing Algorithm](mha.md)
-- [JEMP — Job Event Messaging Protocol](jemp.md)
-- [SSA — Sequence Sorting Algorithm](ssa.md)
+- [MHA](mha.md)
+- [JEMP](jemp.md)
+- [SSA](ssa.md)
 - [Validation Stack](validation-stack.md)
 
 ---
