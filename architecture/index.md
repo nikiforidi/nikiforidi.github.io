@@ -11,10 +11,36 @@ title: Architectural Specifications
 
 ## Overview
 
-| Specification | Purpose | Link |
-|---------------|---------|------|
-| [MHA](mha.md) | Configuration drift detection | [Notion](https://alert-hardcover-322.notion.site/Model-Hashing-Algorithm-MHA-e725fd99f9d74481965cb542c1727d0e?pvs=4) |
-| [JEMP](jemp.md) | Async task orchestration | [Notion](https://alert-hardcover-322.notion.site/Universe-concurrency-model-4ea53fe313bb47eeaf8711db26828c39?pvs=4) |
-| [SSA](ssa.md) | Deterministic sorting in Go | [Notion](https://www.notion.so/Sequence-Sorting-Algorithm-SSA-44f828765101456d9ed1a3b6898088a1?pvs=4) |
-| [Validation Stack](validation-stack.md) | Centralized validation | [Notion](https://alert-hardcover-322.notion.site/Universe-Models-Validation-479bb17669ea446d8ea67e74f3be475f?pvs=4) |
-| [Transactional Models](transactional-models.md) | Model lifecycle | [Notion](https://alert-hardcover-322.notion.site/Unified-model-transactions-in-the-Universe-Deploy-1561ff431c37452bb1e2645b27586b75?pvs=4) |
+| Specification | Purpose | Status |
+|---------------|---------|--------|
+| [MHA](mha.md) | Configuration drift detection | ✅ Production |
+| [JEMP](jemp.md) | Async task orchestration | ✅ Production |
+| [SSA](ssa.md) | Deterministic sorting in Go | ✅ Production |
+| [Validation Stack](validation-stack.md) | Centralized validation | ✅ Production |
+| [Transactional Models](transactional-models.md) | Model lifecycle | ✅ Production |
+
+---
+
+## Context
+
+All specifications were developed during my tenure as **Lead Backend Developer / Chief Developer** at MIND Software (Февраль 2023 — Февраль 2025).
+
+**Platform:** MIND Universe — Cloud infrastructure management with multi-hypervisor support (VMware, OpenStack, oVirt, SpaceVM).
+
+---
+
+## Why This Matters
+
+These specifications demonstrate:
+- **System design skills** — Complex distributed systems
+- **Documentation discipline** — Written specs before implementation
+- **Problem-solving approach** — Custom algorithms for specific challenges
+- **Technical communication** — Clear diagrams and explanations
+
+---
+
+## Related Sections
+
+- [Experience: MIND Software](../experience/mind-software/)
+- [Publications](../publications/)
+- [Projects](../projects/)
