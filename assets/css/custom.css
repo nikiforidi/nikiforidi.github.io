@@ -154,33 +154,33 @@ table tr:nth-child(even) {
     background-color: var(--bg-primary);
 }
 
-/* ==================== SEPARATORS ==================== */
-/* ==================== SEPARATORS - BLOCK CHARACTER FADE (CRT Style) ==================== */
+/* ==================== SEPARATORS - RETRO BLOCK STYLE ==================== */
 hr {
     border: none;
-    text-align: center;
+    height: 20px;
     margin: 60px auto;
     width: 60%;
     max-width: 400px;
-    line-height: 0;
+    text-align: center;
+    line-height: 1;
 }
 
 hr::before {
-    content: "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒......";
+    content: "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒......";
     color: var(--accent-color);
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     opacity: 0.6;
-    font-size: 14px;
-    display: inline-block;
-    width: 100%;
-    overflow: hidden;
+    font-size: 12px;
+    display: block;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Dark mode adjustment for better visibility */
 [data-theme="dark"] hr::before {
     opacity: 0.8;
-    text-shadow: 0 0 2px var(--accent-color);
+    text-shadow: 0 0 3px var(--accent-color);
 }
 
 /* Mobile responsive */
@@ -191,8 +191,8 @@ hr::before {
     }
     
     hr::before {
-        letter-spacing: 1px;
-        font-size: 12px;
+        letter-spacing: 2px;
+        font-size: 10px;
     }
 }
 
