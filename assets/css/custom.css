@@ -326,3 +326,46 @@ blockquote {
 .theme-enter:active {
     transform: translateY(2px);
 }
+/* ==================== FIX DUPLICATE HEADERS ==================== */
+
+/* Hide page title on home page (Minima adds this automatically) */
+.home .page-heading {
+    display: none;
+}
+
+/* Hide post title on home page */
+.home .post-title {
+    display: none;
+}
+
+/* Hide site title duplication if needed */
+.site-title span {
+    display: inline;
+}
+
+/* Ensure only one H1 per page */
+.home h1:first-of-type {
+    display: none;
+}
+
+/* ==================== FIX DUPLICATE HEADERS ==================== */
+
+/* Hide page title on home page (Minima adds this automatically) */
+.home .page-heading {
+    display: none;
+}
+
+/* Hide post title on home page */
+.home .post-title {
+    display: none;
+}
+
+/* Hide site title duplication if needed */
+.site-title span {
+    display: inline;
+}
+
+/* Ensure only one H1 per page */
+.home h1:first-of-type {
+    display: none;
+}
