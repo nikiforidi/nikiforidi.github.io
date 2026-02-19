@@ -53,7 +53,7 @@ CRUD-like operations for cloud infrastructure resources (CIR):
 
 ## Technologies
 
-- **Languages:** Go, Python
+- **Languages:** Go
 - **Message Queue:** RabbitMQ
 - **Database:** PostgreSQL
 - **APIs:** REST, SOAP
