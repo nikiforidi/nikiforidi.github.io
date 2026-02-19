@@ -7,6 +7,8 @@ permalink: /
 
 ## Welcome, Traveler <span class="cursor-blink"></span>
 
+> "War... War never changes."
+
 ```bash
 $ whoami
 > Anatoly Nikiforov
