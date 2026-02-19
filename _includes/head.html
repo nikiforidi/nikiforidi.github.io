@@ -9,7 +9,7 @@
     <!-- Minima Theme Stylesheet (REQUIRED) -->
     <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
 
-    <!-- Your Custom CSS -->
+    <!-- Your Custom CSS (Dark Mode + Separators) -->
     <link rel="stylesheet" href="{{ "/assets/css/custom.css" | relative_url }}">
 
     {%- feed_meta -%}
@@ -17,4 +17,7 @@
     {%- if jekyll.environment == 'production' and site.google_analytics -%}
         {%- include google-analytics.html -%}
     {%- endif -%}
+
+    <!-- Theme Toggle Script -->
+    <script src="{{ "/assets/js/theme-toggle.js" | relative_url }}" defer></script>
 </head>

@@ -5,5 +5,3 @@ _site/
 .DS_Store
 .idea/
 .vscode/
-_includes/
-assets/
