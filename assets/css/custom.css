@@ -495,3 +495,81 @@ a[href*="habr.com"]::before {
 .highlight .vg { color: #e06c75; } /* Name.Variable.Global */
 .highlight .vi { color: #e06c75; } /* Name.Variable.Instance */
 .highlight .il { color: #d19a66; } /* Literal.Number.Integer.Long */
+/* ==================== TYPOGRAPHY COLORS ==================== */
+
+/* Primary Text (Body, Paragraphs) */
+body,
+p,
+li,
+span,
+div {
+    color: #e8e6e3 !important;
+}
+
+/* Secondary Text (Metadata, Dates, Less Important) */
+.secondary-text,
+.text-secondary,
+.time,
+.date,
+.meta,
+small,
+.muted {
+    color: #a0a0a0 !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: #f5f5f5 !important;
+}
+
+/* Links */
+a {
+    color: #4da6ff !important;
+}
+
+a:hover {
+    color: #7db9ff !important;
+}
+
+/* Code */
+code,
+pre,
+kbd {
+    color: #80cbc4 !important;
+}
+
+/* Blockquotes */
+blockquote {
+    color: #b0b0b0 !important;
+    border-left-color: #ffb74d !important;
+}
+
+/* Accent/Highlight */
+.highlight,
+.accent,
+.important {
+    color: #ffb74d !important;
+}
+
+/* Tables */
+table th {
+    color: #f5f5f5 !important;
+}
+
+table td {
+    color: #e8e6e3 !important;
+}
+
+/* Navigation */
+nav a {
+    color: #e8e6e3 !important;
+}
+
+nav a:hover {
+    color: #4da6ff !important;
+}
+
+/* Footer */
+footer {
+    color: #a0a0a0 !important;
+}
