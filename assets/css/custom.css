@@ -1,25 +1,56 @@
 /* =====================================================
-   RETRO TERMINAL THEME - DARK ONLY
-   Inspired by: Amber Phosphor Monitors, VT100 Terminals
+   COZY RETRO TERMINAL THEME
+   Military Green Palette | Dark Mode Only
    ===================================================== */
 
-/* ==================== DARK MODE VARIABLES (Only) ==================== */
+/* ==================== COLOR PALETTE ==================== */
 :root {
-    --bg-primary: #1a1816;
-    --bg-secondary: #252220;
-    --text-primary: #ffb000;
-    --text-secondary: #cc8d00;
-    --border-color: #3d3834;
-    --link-color: #ffb000;
-    --link-hover: #ffc83d;
-    --code-bg: #252220;
-    --accent-color: #ffb000;
-    --cursor-color: #ffb000;
-    --scanline-color: rgba(255, 176, 0, 0.03);
+    /* Primary Colors */
+    --dark-khaki: #524828;
+    --carbon-black: #182121;
+    --carbon-black-2: #182121;
+    --olive-leaf: #456632;
+    --carbon-black-3: #202621;
+    
+    /* Background Colors */
+    --bg-primary: var(--carbon-black);
+    --bg-secondary: var(--carbon-black-3);
+    --bg-tertiary: var(--carbon-black-2);
+    
+    /* Text Colors */
+    --text-primary: #e8e6e3;
+    --text-secondary: #c9c4be;
+    --text-accent: var(--dark-khaki);
+    
+    /* Accent Colors */
+    --accent-primary: var(--olive-leaf);
+    --accent-secondary: var(--dark-khaki);
+    
+    /* Border Colors */
+    --border-color: var(--carbon-black-3);
+    --border-light: #2a3333;
+    
+    /* UI Colors */
+    --code-bg: var(--carbon-black-3);
+    --toggle-bg: var(--carbon-black-3);
+    --toggle-border: var(--olive-leaf);
+    --toggle-text: var(--text-primary);
+    --toggle-hover: var(--carbon-black-2);
+    --toggle-shadow: rgba(0, 0, 0, 0.5);
+    
+    /* Separator Colors */
+    --separator-color: var(--dark-khaki);
+    
+    /* Font Variables */
     --font-body: 'JetBrains Mono', monospace;
     --font-heading: 'VT323', monospace;
+    
+    /* Shadow Variables */
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-    --text-glow: 0 0 2px rgba(255, 176, 0, 0.5);
+    --text-glow: 0 0 2px rgba(82, 72, 40, 0.5);
+    
+    /* Scanline Colors */
+    --scanline-color: rgba(82, 72, 40, 0.03);
 }
 
 /* ==================== BASE STYLES ==================== */
@@ -29,6 +60,7 @@ body {
     font-family: var(--font-body);
     line-height: 1.6;
     position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* CRT Scanline Effect (Subtle) */
@@ -40,7 +72,11 @@ body::before {
     left: 0;
     bottom: 0;
     right: 0;
-    background: linear-gradient(to bottom, var(--scanline-color) 50%, rgba(0, 0, 0, 0) 50%);
+    background: linear-gradient(
+        to bottom,
+        var(--scanline-color) 50%,
+        rgba(0, 0, 0, 0) 50%
+    );
     background-size: 100% 4px;
     z-index: 9999;
     pointer-events: none;
@@ -57,9 +93,21 @@ h1, h2, h3, h4, h5, h6 {
     text-shadow: var(--text-glow);
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
-h3 { font-size: 1.5rem; }
+h1 {
+    font-size: 2.5rem;
+    border-bottom: 2px solid var(--accent-primary);
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
 
 p, li {
     color: var(--text-primary);
@@ -67,23 +115,23 @@ p, li {
 }
 
 a {
-    color: var(--link-color);
+    color: var(--text-accent);
     text-decoration: none;
-    border-bottom: 1px dotted var(--link-color);
+    border-bottom: 1px dotted var(--text-accent);
     transition: all 0.2s ease;
 }
 
 a:hover {
-    color: var(--link-hover);
-    background-color: var(--link-color);
+    color: var(--accent-primary);
+    background-color: var(--accent-primary);
     color: var(--bg-primary);
-    border-bottom: 1px solid var(--link-hover);
+    border-bottom: 1px solid var(--accent-primary);
 }
 
 /* ==================== CODE BLOCKS ==================== */
 code {
     background-color: var(--code-bg);
-    color: var(--accent-color);
+    color: var(--text-accent);
     font-family: var(--font-body);
     padding: 0.2em 0.4em;
     border-radius: 2px;
@@ -122,19 +170,34 @@ table th {
     color: var(--text-primary);
     padding: 12px 16px;
     border: 1px solid var(--border-color);
-    font-family: var(--font-body);
 }
 
 table th {
     background-color: var(--code-bg);
-    color: var(--accent-color);
+    color: var(--text-accent);
     font-family: var(--font-heading);
     text-transform: uppercase;
     letter-spacing: 1px;
+    border-bottom: 2px solid var(--accent-primary);
 }
 
 table tr:nth-child(even) {
-    background-color: var(--bg-primary);
+    background-color: var(--bg-tertiary);
+}
+
+/* ==================== BLOCKQUOTES ==================== */
+blockquote {
+    border-left-color: var(--accent-primary);
+    background-color: var(--code-bg);
+    color: var(--text-secondary);
+    padding: 16px;
+    border-left-width: 4px;
+    border-left-style: solid;
+    margin: 20px 0;
+}
+
+blockquote p {
+    color: var(--text-primary);
 }
 
 /* ==================== SEPARATORS - BLOCK CHARACTER FADE ==================== */
@@ -149,8 +212,8 @@ hr {
 }
 
 hr::before {
-    content: "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒......";
-    color: var(--accent-color);
+    content: "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒......";
+    color: var(--separator-color);
     letter-spacing: 3px;
     opacity: 0.8;
     font-size: 12px;
@@ -158,7 +221,6 @@ hr::before {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-shadow: 0 0 3px var(--accent-color);
 }
 
 /* Mobile responsive */
@@ -174,27 +236,15 @@ hr::before {
     }
 }
 
-/* ==================== BLOCKQUOTES ==================== */
-blockquote {
-    border-left-color: var(--accent-color);
-    background-color: var(--code-bg);
-    color: var(--text-secondary);
-    padding: 16px;
-    border-left-width: 4px;
-    border-left-style: solid;
-    margin: 20px 0;
-    font-style: italic;
-}
-
 /* ==================== HEADER & NAV ==================== */
 .site-header {
     background-color: var(--bg-secondary);
-    border-bottom: 2px solid var(--accent-color);
+    border-bottom: 2px solid var(--accent-primary);
     padding: 20px 0;
 }
 
 .site-title {
-    color: var(--accent-color);
+    color: var(--text-accent);
     font-family: var(--font-heading);
     font-size: 2rem;
     text-transform: uppercase;
@@ -210,9 +260,9 @@ blockquote {
 }
 
 .site-nav a:hover {
-    color: var(--accent-color);
+    color: var(--accent-primary);
     background-color: transparent;
-    border-bottom: 2px solid var(--accent-color);
+    border-bottom: 2px solid var(--accent-primary);
 }
 
 /* ==================== FOOTER ==================== */
@@ -221,12 +271,17 @@ blockquote {
     padding: 20px 0;
     border-top: 1px solid var(--border-color);
     margin-top: 60px;
+    background-color: var(--bg-tertiary);
 }
 
 .site-footer p {
     margin: 0;
     color: var(--text-secondary);
     font-size: 0.9rem;
+}
+
+.site-footer a {
+    color: var(--text-accent);
 }
 
 /* ==================== BLINKING CURSOR ==================== */
@@ -239,28 +294,204 @@ blockquote {
     content: '█';
     animation: blink 1s step-end infinite;
     margin-left: 5px;
-    color: var(--accent-color);
+    color: var(--accent-primary);
 }
 
-/* ==================== HIDE DUPLICATE HEADINGS ==================== */
-.home .page-heading {
-    display: none !important;
-}
-
-.home .post-title {
-    display: none !important;
-}
-
-.home article > h1:first-child {
-    display: none !important;
-}
-
-/* ==================== MOBILE ==================== */
+/* ==================== MOBILE RESPONSIVE ==================== */
 @media (max-width: 768px) {
     body::before {
         background-size: 100% 2px;
     }
     
-    h1 { font-size: 2rem; }
-    h2 { font-size: 1.5rem; }
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
 }
+
+/* ==================== SCROLLBAR ==================== */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-primary);
+}
+
+/* ==================== SELECTION ==================== */
+::selection {
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+}
+
+::-moz-selection {
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+}
+
+/* ==================== BUTTONS ==================== */
+button,
+.btn {
+    background-color: var(--code-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--accent-primary);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-family: var(--font-body);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover,
+.btn:hover {
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+    border-color: var(--accent-primary);
+}
+
+/* ==================== FORMS ==================== */
+input,
+textarea,
+select {
+    background-color: var(--code-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: var(--font-body);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 5px var(--accent-primary);
+}
+
+/* ==================== HIGHLIGHTS ==================== */
+mark {
+    background-color: var(--dark-khaki);
+    color: var(--text-primary);
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+
+/* ==================== IMAGES ==================== */
+img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+/* ==================== LISTS ==================== */
+ul,
+ol {
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+ul li::marker {
+    color: var(--accent-primary);
+}
+
+/* ==================== LINKS WITH ICONS ==================== */
+a[href*="github.com"]::before,
+a[href*="telegram.me"]::before,
+a[href*="habr.com"]::before {
+    content: "→ ";
+    color: var(--accent-primary);
+}
+
+/* ==================== TERMINAL PROMPT STYLE ==================== */
+.terminal-prompt::before {
+    content: "$ ";
+    color: var(--accent-primary);
+    font-weight: bold;
+}
+
+/* ==================== CODE SYNTAX HIGHLIGHTING ==================== */
+.highlight {
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.highlight .c { color: #5c6370; font-style: italic; } /* Comment */
+.highlight .err { color: #e06c75; background-color: #2c0808; } /* Error */
+.highlight .k { color: var(--olive-leaf); } /* Keyword */
+.highlight .l { color: #d19a66; } /* Literal */
+.highlight .n { color: var(--text-primary); } /* Name */
+.highlight .o { color: #56b6c2; } /* Operator */
+.highlight .p { color: var(--text-primary); } /* Punctuation */
+.highlight .cm { color: #5c6370; font-style: italic; } /* Comment.Multiline */
+.highlight .cp { color: #5c6370; } /* Comment.Preproc */
+.highlight .c1 { color: #5c6370; font-style: italic; } /* Comment.Single */
+.highlight .cs { color: #5c6370; font-style: italic; } /* Comment.Special */
+.highlight .gd { color: #e06c75; } /* Generic.Deleted */
+.highlight .ge { font-style: italic; } /* Generic.Emph */
+.highlight .gi { color: #98c379; } /* Generic.Inserted */
+.highlight .gs { font-weight: bold; } /* Generic.Strong */
+.highlight .gu { color: #56b6c2; } /* Generic.Subheading */
+.highlight .kc { color: var(--olive-leaf); } /* Keyword.Constant */
+.highlight .kd { color: var(--olive-leaf); } /* Keyword.Declaration */
+.highlight .kn { color: var(--olive-leaf); } /* Keyword.Namespace */
+.highlight .kp { color: var(--olive-leaf); } /* Keyword.Pseudo */
+.highlight .kr { color: var(--olive-leaf); } /* Keyword.Reserved */
+.highlight .kt { color: var(--olive-leaf); } /* Keyword.Type */
+.highlight .ld { color: #98c379; } /* Literal.Date */
+.highlight .m { color: #d19a66; } /* Literal.Number */
+.highlight .s { color: #98c379; } /* Literal.String */
+.highlight .na { color: #d19a66; } /* Name.Attribute */
+.highlight .nb { color: #e5c07b; } /* Name.Builtin */
+.highlight .nc { color: #e5c07b; } /* Name.Class */
+.highlight .no { color: #e06c75; } /* Name.Constant */
+.highlight .nd { color: #56b6c2; } /* Name.Decorator */
+.highlight .ni { color: #e06c75; } /* Name.Entity */
+.highlight .ne { color: #e06c75; } /* Name.Exception */
+.highlight .nf { color: #61afef; } /* Name.Function */
+.highlight .nl { color: #e5c07b; } /* Name.Label */
+.highlight .nn { color: #e5c07b; } /* Name.Namespace */
+.highlight .nx { color: var(--text-primary); } /* Name.Other */
+.highlight .py { color: #e5c07b; } /* Name.Property */
+.highlight .nt { color: var(--olive-leaf); } /* Name.Tag */
+.highlight .nv { color: #e06c75; } /* Name.Variable */
+.highlight .ow { color: #56b6c2; } /* Operator.Word */
+.highlight .w { color: #abb2bf; } /* Text.Whitespace */
+.highlight .mf { color: #d19a66; } /* Literal.Number.Float */
+.highlight .mh { color: #d19a66; } /* Literal.Number.Hex */
+.highlight .mi { color: #d19a66; } /* Literal.Number.Integer */
+.highlight .mo { color: #d19a66; } /* Literal.Number.Oct */
+.highlight .sb { color: #98c379; } /* Literal.String.Backtick */
+.highlight .sc { color: #98c379; } /* Literal.String.Char */
+.highlight .sd { color: #98c379; } /* Literal.String.Doc */
+.highlight .s2 { color: #98c379; } /* Literal.String.Double */
+.highlight .se { color: #d19a66; } /* Literal.String.Escape */
+.highlight .sh { color: #98c379; } /* Literal.String.Heredoc */
+.highlight .si { color: #d19a66; } /* Literal.String.Interpol */
+.highlight .sx { color: #98c379; } /* Literal.String.Other */
+.highlight .sr { color: #56b6c2; } /* Literal.String.Regex */
+.highlight .s1 { color: #98c379; } /* Literal.String.Single */
+.highlight .ss { color: #56b6c2; } /* Literal.String.Symbol */
+.highlight .bp { color: #e5c07b; } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #e06c75; } /* Name.Variable.Class */
+.highlight .vg { color: #e06c75; } /* Name.Variable.Global */
+.highlight .vi { color: #e06c75; } /* Name.Variable.Instance */
+.highlight .il { color: #d19a66; } /* Literal.Number.Integer.Long */
