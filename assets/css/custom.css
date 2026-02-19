@@ -11,6 +11,8 @@
     --table-border: #dfe2e5;
     --table-bg: #ffffff;
     --table-bg-alt: #f6f8fa;
+    --table-header-bg: #f6f8fa;
+    --table-header-text: #24292e;
     --blockquote-border: #dfe2e5;
     --blockquote-bg: #f6f8fa;
 }
@@ -27,6 +29,8 @@
     --table-border: #30363d;
     --table-bg: #0d1117;
     --table-bg-alt: #161b22;
+    --table-header-bg: #161b22;
+    --table-header-text: #c9d1d9;
     --blockquote-border: #30363d;
     --blockquote-bg: #161b22;
 }
@@ -63,6 +67,7 @@ a:hover {
     color: var(--link-hover);
 }
 
+/* Code Blocks */
 code {
     background-color: var(--code-bg);
     color: var(--text-primary);
@@ -73,31 +78,59 @@ pre {
     border: 1px solid var(--border-color);
 }
 
+pre code {
+    background-color: transparent;
+    color: var(--text-primary);
+}
+
 /* Table Styling - Complete Coverage */
 table {
     border-color: var(--table-border);
     background-color: var(--table-bg);
 }
 
-td, th {
+table td,
+table th {
     border-color: var(--table-border);
     background-color: var(--table-bg);
+    color: var(--text-primary);
+}
+
+/* Table Headers - Specific Fix */
+table thead th,
+table th {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-text);
+    border-bottom: 2px solid var(--table-border);
 }
 
 /* Alternating row colors */
-tr:nth-child(even) {
+table tr:nth-child(even) {
     background-color: var(--table-bg-alt);
 }
 
-tr:nth-child(odd) {
+table tr:nth-child(odd) {
     background-color: var(--table-bg);
 }
 
-/* Markdown table specific */
+table tr:nth-child(even) td,
+table tr:nth-child(even) th {
+    background-color: var(--table-bg-alt);
+    color: var(--text-primary);
+}
+
+table tr:nth-child(odd) td,
+table tr:nth-child(odd) th {
+    background-color: var(--table-bg);
+    color: var(--text-primary);
+}
+
+/* Markdown table specific - GitHub Styles */
 .markdown-body table td,
 .markdown-body table th {
     border-color: var(--table-border);
     background-color: var(--table-bg);
+    color: var(--text-primary);
 }
 
 .markdown-body table tr {
@@ -109,10 +142,56 @@ tr:nth-child(odd) {
     background-color: var(--table-bg-alt);
 }
 
+.markdown-body table thead tr {
+    background-color: var(--table-header-bg);
+}
+
+.markdown-body table thead th {
+    background-color: var(--table-header-bg);
+    color: var(--table-header-text);
+}
+
+/* Fix Grey Text Visibility in Dark Mode */
+p, li, h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+}
+
+/* Secondary text - make it brighter in dark mode */
+.text-secondary,
+.secondary-text,
+.muted,
+small {
+    color: var(--text-secondary);
+}
+
+/* Ensure all headings are visible */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+}
+
+/* Blockquote */
 blockquote {
     border-left-color: var(--blockquote-border);
     background-color: var(--blockquote-bg);
-    color: var(--text-secondary);
+    color: var(--text-primary);
+}
+
+blockquote p {
+    color: var(--text-primary);
+}
+
+/* Fix any remaining grey text */
+* {
+    -webkit-text-fill-color: var(--text-primary);
+}
+
+/* Except for links and secondary text */
+a,
+.text-secondary,
+.secondary-text,
+.muted,
+small {
+    -webkit-text-fill-color: initial;
 }
 
 /* Theme Toggle Button - Top Right Corner */
