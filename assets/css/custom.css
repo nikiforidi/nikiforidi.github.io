@@ -1,0 +1,271 @@
+/* =====================================================
+   COZY RETRO TERMINAL THEME
+   Inspired by: VT100, Amber Monitors, Old Paper Docs
+   ===================================================== */
+
+/* ==================== LIGHT MODE (Old Paper) ==================== */
+:root {
+    --bg-primary: #f4f1ea;
+    --bg-secondary: #e8e4dc;
+    --text-primary: #2b2b2b;
+    --text-secondary: #5a5a5a;
+    --border-color: #d4cfc7;
+    --link-color: #c05621;
+    --link-hover: #dd6b20;
+    --code-bg: #e8e4dc;
+    --accent-color: #c05621;
+    --cursor-color: #c05621;
+    --scanline-color: rgba(0, 0, 0, 0.03);
+    --font-body: 'JetBrains Mono', monospace;
+    --font-heading: 'VT323', monospace;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ==================== DARK MODE (Amber Phosphor) ==================== */
+[data-theme="dark"] {
+    --bg-primary: #1a1816;
+    --bg-secondary: #252220;
+    --text-primary: #ffb000;
+    --text-secondary: #cc8d00;
+    --border-color: #3d3834;
+    --link-color: #ffb000;
+    --link-hover: #ffc83d;
+    --code-bg: #252220;
+    --accent-color: #ffb000;
+    --cursor-color: #ffb000;
+    --scanline-color: rgba(255, 176, 0, 0.03);
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    --text-glow: 0 0 2px rgba(255, 176, 0, 0.5);
+}
+
+/* ==================== BASE STYLES ==================== */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    position: relative;
+}
+
+/* CRT Scanline Effect (Subtle) */
+body::before {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(to bottom, var(--scanline-color) 50%, rgba(0, 0, 0, 0) 50%);
+    background-size: 100% 4px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* ==================== TYPOGRAPHY ==================== */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: var(--text-glow);
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+h3 { font-size: 1.5rem; }
+
+p, li {
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--link-color);
+    transition: all 0.2s ease;
+}
+
+a:hover {
+    color: var(--link-hover);
+    background-color: var(--link-color);
+    color: var(--bg-primary);
+    border-bottom: 1px solid var(--link-hover);
+}
+
+/* ==================== CODE BLOCKS ==================== */
+code {
+    background-color: var(--code-bg);
+    color: var(--accent-color);
+    font-family: var(--font-body);
+    padding: 0.2em 0.4em;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+}
+
+pre {
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 16px;
+    overflow-x: auto;
+    box-shadow: var(--shadow);
+}
+
+pre code {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+/* ==================== TABLES ==================== */
+table {
+    border-color: var(--border-color);
+    background-color: var(--bg-secondary);
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+    box-shadow: var(--shadow);
+}
+
+table td,
+table th {
+    border-color: var(--border-color);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    font-family: var(--font-body);
+}
+
+table th {
+    background-color: var(--code-bg);
+    color: var(--accent-color);
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+table tr:nth-child(even) {
+    background-color: var(--bg-primary);
+}
+
+/* ==================== SEPARATORS ==================== */
+hr {
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--accent-color), rgba(0, 0, 0, 0));
+    margin: 60px auto;
+    width: 40%;
+    max-width: 200px;
+    opacity: 0.6;
+}
+
+/* ==================== BLOCKQUOTES ==================== */
+blockquote {
+    border-left-color: var(--accent-color);
+    background-color: var(--code-bg);
+    color: var(--text-secondary);
+    padding: 16px;
+    border-left-width: 4px;
+    border-left-style: solid;
+    margin: 20px 0;
+    font-style: italic;
+}
+
+/* ==================== THEME TOGGLE (Retro Button) ==================== */
+.theme-toggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 56px;
+    height: 56px;
+    border-radius: 4px;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--accent-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: var(--accent-color);
+    box-shadow: var(--shadow);
+    transition: all 0.2s ease;
+    z-index: 1000;
+    font-family: var(--font-heading);
+}
+
+.theme-toggle:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--accent-color);
+    background-color: var(--accent-color);
+    color: var(--bg-primary);
+}
+
+.theme-toggle:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* ==================== HEADER & NAV ==================== */
+.site-header {
+    background-color: var(--bg-secondary);
+    border-bottom: 2px solid var(--accent-color);
+    padding: 20px 0;
+}
+
+.site-title {
+    color: var(--accent-color);
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.site-nav a {
+    color: var(--text-secondary);
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
+}
+
+.site-nav a:hover {
+    color: var(--accent-color);
+    background-color: transparent;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+/* ==================== BLINKING CURSOR (Optional Fun) ==================== */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.cursor-blink::after {
+    content: '█';
+    animation: blink 1s step-end infinite;
+    margin-left: 5px;
+    color: var(--accent-color);
+}
+
+/* ==================== MOBILE ==================== */
+@media (max-width: 768px) {
+    .theme-toggle {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+    }
+    
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    
+    body::before {
+        background-size: 100% 2px;
+    }
+}

@@ -5,87 +5,108 @@ tagline: Architecture, Algorithms, System Design
 permalink: /
 ---
 
-## Grab a Cup of Tea ☕
+## Welcome, Traveler <span class="cursor-blink"></span>
 
-This portfolio is designed for **cozy reading** about engineering craft.
+```bash
+$ whoami
+> Anatoly Nikiforov
+$ status
+> Ready for remote work
+$ location
+> Moscow, Russia
+```
 
-Here you'll find the **how** and **why** behind the systems I've built.
-
----
-
-## What You'll Find Here
-
-| Section | Content | For Whom |
-|---------|---------|----------|
-| [Specifications](/specs/) | 5 architectural specs (MHA, SSA, JEMP) | System Architects |
-| [Deep Dives](/deep-dives/) | Technical breakdowns of key projects | Senior Engineers |
-| [About](/about/) | Engineering philosophy, career timeline | All Readers |
+This portfolio is designed for **cozy reading** about engineering craft. Grab a cup of tea ☕, pull up a chair, and explore the **how** and **why** behind the systems I've built.
 
 ---
 
-## Featured Specifications
+## System Modules
 
-### Model Hashing Algorithm (MHA)
+| Module | Content | Access |
+|--------|---------|--------|
+| `[specs/]` | 5 architectural specs (MHA, SSA, JEMP) | `[ENTER]` |
+| `[deep-dives/]` | Technical breakdowns of key projects | `[ENTER]` |
+| `[about/]` | Engineering philosophy, career timeline | `[ENTER]` |
+
+---
+
+## Featured Processes
+
+### ▶ Model Hashing Algorithm (MHA)
 Bidirectional hashing for cloud infrastructure resource comparison.
 - **Problem:** Detect CIR changes across different cloud providers
 - **Solution:** Nested hashing with unified model abstraction
 - **Metrics:** <100ms hash calculation, 100% change detection
-- **Read:** [specs/mha.md](/specs/mha.md)
+- **Execute:** [`/specs/mha/`](/specs/mha/)
 
-### Sequence Sorting Algorithm (SSA)
+### ▶ Sequence Sorting Algorithm (SSA)
 Custom Go algorithm for ordered map iteration with zero-last semantics.
 - **Problem:** Go maps are unordered, but we need `[1, 2, 4, 7, 0]`
 - **Solution:** O(n*2) lookup with mismatch counter
 - **Benchmark:** 1,000,000 keys in 116.9 ms
-- **Read:** [specs/ssa.md](/specs/ssa.md)
+- **Execute:** [`/specs/ssa/`](/specs/ssa/)
 
-### Job Event Messaging Protocol (JEMP)
+### ▶ Job Event Messaging Protocol (JEMP)
 Event-driven concurrency model for distributed job execution.
 - **Problem:** Track concurrent jobs without MQ overhead
 - **Solution:** Heartbeat events + Job Collector + Checkpointer
-- **Read:** [specs/jemp.md](/specs/jemp.md)
+- **Execute:** [`/specs/jemp/`](/specs/jemp/)
 
 ---
 
-## Featured Deep Dives
-
-### anyd Daemon Framework
-Unix daemon IPC framework published on PyPI.
-- **PyPI:** [anyd 0.4.1](https://pypi.org/project/anyd/)
-- **GitHub:** [anatolio-deb/anyd](https://github.com/anatolio-deb/anyd)
-- **Tech:** POSIX sockets, IPC, authentication, validation
-- **Read:** [deep-dives/anyd-daemon-framework.md](/deep-dives/anyd-daemon-framework.md)
-
-### VPN Tunneling Architecture
-Linux VPN client with TUN/TAP, Netfilter, and DNS redirection.
-- **Repositories:** [vpnm](https://github.com/nikiforidi/vpnm) (154 commits), [vpnmd](https://github.com/nikiforidi/vpnmd) (62 commits)
-- **Tech:** TUN/TAP, Netfilter, cloudflared DoH, tun2socks
-- **Read:** [deep-dives/vpn-tunneling-architecture.md](/deep-dives/vpn-tunneling-architecture.md)
-
-### ForestVPN CLI
-Cross-platform VPN client (Linux, macOS, Windows, OpenWRT).
-- **Repository:** [forestvpn/cli](https://github.com/forestvpn/cli)
-- **Stats:** 792 commits, 116 releases, 8 stars
-- **Tech:** Go 82.8%, Shell 17.2%, Homebrew, Chocolatey
-- **Read:** [deep-dives/forestvpn-cli.md](/deep-dives/forestvpn-cli.md)
-
----
-
-## At a Glance
+## System Status
 
 | Metric | Value |
 |--------|-------|
-| **Professional Experience** | 5+ years (2019–2026) |
-| **Community Activity** | 9 years (Habr since 2017) |
-| **Companies** | 7 (1C, MIND, MIPT, ForestVPN, Carrierproxy, VPN Manager, JetBrains) |
-| **Publications** | 9 Habr articles (237K+ views, 13K+ karma) |
-| **GitHub** | 1,756 contributions, 26 repositories |
-| **PyPI Packages** | 1 published ([anyd 0.4.1](https://pypi.org/project/anyd/), Aug 2021) |
-| **Architecture Specs** | 5 documented specifications |
-| **Lectures** | 11 (MIPT Go Course) |
+| **Uptime** | 5+ years (2019–2026) |
+| **Commits** | 1,756+ contributions |
+| **Packages** | 1 published (anyd 0.4.1) |
+| **Docs** | 5 architectural specifications |
+| **Last Build** | February 2026 |
 
 ---
 
 > **Note:** All links are verified. All claims are backed by public evidence.
 > 
-> **Last Updated:** February 2026
+> **End of Line.**
+```
+
+---
+
+### Step 4: Update `assets/js/theme-toggle.js` (Add Typing Effect)
+
+Add a small typing effect when the page loads for extra retro feel.
+
+```javascript
+// Add this to the end of your existing theme-toggle.js
+(function() {
+    // Simple typing effect for h1 elements
+    const headings = document.querySelectorAll('h1');
+    headings.forEach(heading => {
+        const text = heading.textContent;
+        heading.textContent = '';
+        let i = 0;
+        const typeWriter = () => {
+            if (i < text.length) {
+                heading.textContent += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            }
+        };
+        // Start typing after a short delay
+        setTimeout(typeWriter, 500);
+    });
+})();
+```
+
+---
+
+## 3. Why This Works for Interviewers
+
+| Psychological Trigger | Implementation | Effect |
+|----------------------|----------------|--------|
+| **Nostalgia** | Monospace fonts, amber colors | Reminds them of late-night coding sessions |
+| **Comfort** | Warm colors (not harsh green/black) | Feels inviting, not stressful |
+| **Competence** | Clean specs, working links | Shows you care about details |
+| **Personality** | Terminal prompts, ASCII art | Shows you have a sense of humor |
+| **Memorability** | Unique visual style | Stands out among 100+ standard portfolios |
