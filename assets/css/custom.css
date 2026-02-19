@@ -1,243 +1,145 @@
 /* =====================================================
-   DARK READER THEME - Extracted from Dark Reader JS
-   Background: #181a1b | Text: #e8e6e3
+   RETRO TERMINAL THEME - DARK ONLY
+   Inspired by: Amber Phosphor Monitors, VT100 Terminals
    ===================================================== */
 
-/* ==================== LIGHT MODE (Default) ==================== */
+/* ==================== DARK MODE VARIABLES (Only) ==================== */
 :root {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f6f6f6;
-    --text-primary: #24292e;
-    --text-secondary: #586069;
-    --border-color: #eaecef;
-    --link-color: #0366d6;
-    --link-hover: #0056b3;
-    --code-bg: #f6f8fa;
-    --table-border: #dfe2e5;
-    --table-bg: #ffffff;
-    --table-bg-alt: #f6f8fa;
-    --table-header-bg: #f6f8fa;
-    --table-header-text: #24292e;
-    --blockquote-border: #dfe2e5;
-    --blockquote-bg: #f6f8fa;
-    --blockquote-text: #586069;
-    --header-bg: #ffffff;
-    --toggle-bg: #f6f6f6;
-    --toggle-border: #eaecef;
-    --toggle-text: #24292e;
-    --toggle-hover: #eaecef;
-    --toggle-shadow: rgba(0, 0, 0, 0.15);
-    --separator-color: rgba(0, 0, 0, 0.75);
-}
-
-/* ==================== DARK MODE (Dark Reader Theme) ==================== */
-[data-theme="dark"] {
-    /* Dark Reader Extracted Values */
-    --bg-primary: #181a1b;
-    --bg-secondary: #1f2122;
-    --text-primary: #e8e6e3;
-    --text-secondary: #c9c7c4;
+    --bg-primary: #1a1816;
+    --bg-secondary: #252220;
+    --text-primary: #ffb000;
+    --text-secondary: #cc8d00;
     --border-color: #3d3834;
-    --link-color: #e8e6e3;
-    --link-hover: #ffffff;
-    --code-bg: #1f2122;
-    --table-border: #3d3834;
-    --table-bg: #181a1b;
-    --table-bg-alt: #1f2122;
-    --table-header-bg: #1f2122;
-    --table-header-text: #e8e6e3;
-    --blockquote-border: #3d3834;
-    --blockquote-bg: #1f2122;
-    --blockquote-text: #c9c7c4;
-    --header-bg: #1f2122;
-    --toggle-bg: #1f2122;
-    --toggle-border: #e8e6e3;
-    --toggle-text: #e8e6e3;
-    --toggle-hover: #3d3834;
-    --toggle-shadow: rgba(0, 0, 0, 0.5);
-    --separator-color: rgba(232, 230, 227, 0.5);
+    --link-color: #ffb000;
+    --link-hover: #ffc83d;
+    --code-bg: #252220;
+    --accent-color: #ffb000;
+    --cursor-color: #ffb000;
+    --scanline-color: rgba(255, 176, 0, 0.03);
+    --font-body: 'JetBrains Mono', monospace;
+    --font-heading: 'VT323', monospace;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    --text-glow: 0 0 2px rgba(255, 176, 0, 0.5);
 }
 
 /* ==================== BASE STYLES ==================== */
 body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: var(--font-body);
+    line-height: 1.6;
+    position: relative;
 }
 
-.site-header {
-    background-color: var(--header-bg);
-    border-bottom: 1px solid var(--border-color);
+/* CRT Scanline Effect (Subtle) */
+body::before {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(to bottom, var(--scanline-color) 50%, rgba(0, 0, 0, 0) 50%);
+    background-size: 100% 4px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.5;
 }
 
-.site-title {
+/* ==================== TYPOGRAPHY ==================== */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
     color: var(--text-primary);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: var(--text-glow);
 }
 
-.site-nav a {
-    color: var(--text-secondary);
-}
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+h3 { font-size: 1.5rem; }
 
-.site-nav a:hover {
-    color: var(--link-color);
+p, li {
+    color: var(--text-primary);
+    font-size: 1rem;
 }
 
 a {
     color: var(--link-color);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--link-color);
+    transition: all 0.2s ease;
 }
 
 a:hover {
     color: var(--link-hover);
-}
-
-/* ==================== TYPOGRAPHY - HIGH VISIBILITY ==================== */
-p, li, h1, h2, h3, h4, h5, h6 {
-    color: var(--text-primary);
-}
-
-h1, h2, h3, h4, h5, h6 {
-    color: var(--text-primary);
-    font-weight: 600;
-}
-
-.text-secondary,
-.secondary-text,
-.muted,
-small {
-    color: var(--text-secondary);
+    background-color: var(--link-color);
+    color: var(--bg-primary);
+    border-bottom: 1px solid var(--link-hover);
 }
 
 /* ==================== CODE BLOCKS ==================== */
 code {
     background-color: var(--code-bg);
-    color: var(--text-primary);
+    color: var(--accent-color);
+    font-family: var(--font-body);
     padding: 0.2em 0.4em;
-    border-radius: 3px;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
 }
 
 pre {
     background-color: var(--code-bg);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 16px;
     overflow-x: auto;
+    box-shadow: var(--shadow);
 }
 
 pre code {
     background-color: transparent;
-    color: var(--text-primary);
+    border: none;
     padding: 0;
 }
 
-/* ==================== TABLES - FULL COMPATIBILITY ==================== */
+/* ==================== TABLES ==================== */
 table {
-    border-color: var(--table-border);
-    background-color: var(--table-bg);
+    border-color: var(--border-color);
+    background-color: var(--bg-secondary);
     border-collapse: collapse;
     width: 100%;
     margin: 20px 0;
+    box-shadow: var(--shadow);
 }
 
 table td,
 table th {
-    border-color: var(--table-border);
-    background-color: var(--table-bg);
+    border-color: var(--border-color);
+    background-color: var(--bg-secondary);
     color: var(--text-primary);
     padding: 12px 16px;
-    border: 1px solid var(--table-border);
+    border: 1px solid var(--border-color);
+    font-family: var(--font-body);
 }
 
-/* Table Headers */
-table thead th,
 table th {
-    background-color: var(--table-header-bg);
-    color: var(--table-header-text);
-    font-weight: 600;
-    border-bottom: 2px solid var(--table-border);
+    background-color: var(--code-bg);
+    color: var(--accent-color);
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* Alternating Rows */
 table tr:nth-child(even) {
-    background-color: var(--table-bg-alt);
-}
-
-table tr:nth-child(even) td,
-table tr:nth-child(even) th {
-    background-color: var(--table-bg-alt);
-    color: var(--text-primary);
-}
-
-table tr:nth-child(odd) {
-    background-color: var(--table-bg);
-}
-
-table tr:nth-child(odd) td,
-table tr:nth-child(odd) th {
-    background-color: var(--table-bg);
-    color: var(--text-primary);
-}
-
-/* Markdown Body Tables */
-.markdown-body table td,
-.markdown-body table th {
-    border-color: var(--table-border);
-    background-color: var(--table-bg);
-    color: var(--text-primary);
-}
-
-.markdown-body table tr {
-    background-color: var(--table-bg);
-    border-top-color: var(--table-border);
-}
-
-.markdown-body table tr:nth-child(2n) {
-    background-color: var(--table-bg-alt);
-}
-
-.markdown-body table thead tr {
-    background-color: var(--table-header-bg);
-}
-
-.markdown-body table thead th {
-    background-color: var(--table-header-bg);
-    color: var(--table-header-text);
-}
-
-/* Force table theme override */
-table,
-table td,
-table th,
-table tr,
-table tbody,
-table thead,
-table tfoot {
-    background-color: var(--table-bg);
-    border-color: var(--table-border);
-    color: var(--text-primary);
-}
-
-table tr:nth-child(2n) {
-    background-color: var(--table-bg-alt);
-}
-
-/* ==================== BLOCKQUOTES ==================== */
-blockquote {
-    border-left-color: var(--blockquote-border);
-    background-color: var(--blockquote-bg);
-    color: var(--blockquote-text);
-    padding: 16px;
-    border-left-width: 4px;
-    border-left-style: solid;
-    margin: 20px 0;
-}
-
-blockquote p {
-    color: var(--text-primary);
+    background-color: var(--bg-primary);
 }
 
 /* ==================== SEPARATORS - BLOCK CHARACTER FADE ==================== */
 hr {
-    border: 0;
+    border: none;
     height: 20px;
     margin: 60px auto;
     width: 60%;
@@ -247,8 +149,8 @@ hr {
 }
 
 hr::before {
-    content: "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒......";
-    color: var(--separator-color);
+    content: "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒......";
+    color: var(--accent-color);
     letter-spacing: 3px;
     opacity: 0.8;
     font-size: 12px;
@@ -256,6 +158,7 @@ hr::before {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-shadow: 0 0 3px var(--accent-color);
 }
 
 /* Mobile responsive */
@@ -271,65 +174,93 @@ hr::before {
     }
 }
 
-/* ==================== THEME TOGGLE BUTTON - TOP RIGHT (NON-FLOATING) ==================== */
-.theme-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background-color: var(--toggle-bg);
-    border: 2px solid var(--toggle-border);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    color: var(--toggle-text);
-    box-shadow: 0 4px 12px var(--toggle-shadow);
-    transition: all 0.3s ease;
-    z-index: 1000;
-    -webkit-text-fill-color: var(--toggle-text);
+/* ==================== BLOCKQUOTES ==================== */
+blockquote {
+    border-left-color: var(--accent-color);
+    background-color: var(--code-bg);
+    color: var(--text-secondary);
+    padding: 16px;
+    border-left-width: 4px;
+    border-left-style: solid;
+    margin: 20px 0;
+    font-style: italic;
 }
 
-.theme-toggle:hover {
-    transform: scale(1.15);
-    box-shadow: 0 6px 20px var(--toggle-shadow);
-    border-color: var(--link-color);
+/* ==================== HEADER & NAV ==================== */
+.site-header {
+    background-color: var(--bg-secondary);
+    border-bottom: 2px solid var(--accent-color);
+    padding: 20px 0;
 }
 
-.theme-toggle:focus {
-    outline: 3px solid var(--link-color);
-    outline-offset: 3px;
+.site-title {
+    color: var(--accent-color);
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
 }
 
-/* Mobile Responsive */
+.site-nav a {
+    color: var(--text-secondary);
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
+}
+
+.site-nav a:hover {
+    color: var(--accent-color);
+    background-color: transparent;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+/* ==================== FOOTER ==================== */
+.site-footer {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid var(--border-color);
+    margin-top: 60px;
+}
+
+.site-footer p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* ==================== BLINKING CURSOR ==================== */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.cursor-blink::after {
+    content: '█';
+    animation: blink 1s step-end infinite;
+    margin-left: 5px;
+    color: var(--accent-color);
+}
+
+/* ==================== HIDE DUPLICATE HEADINGS ==================== */
+.home .page-heading {
+    display: none !important;
+}
+
+.home .post-title {
+    display: none !important;
+}
+
+.home article > h1:first-child {
+    display: none !important;
+}
+
+/* ==================== MOBILE ==================== */
 @media (max-width: 768px) {
-    .theme-toggle {
-        top: 15px;
-        right: 15px;
-        width: 50px;
-        height: 50px;
-        font-size: 22px;
+    body::before {
+        background-size: 100% 2px;
     }
-}
-
-/* ==================== SCROLLBAR (Dark Mode) ==================== */
-[data-theme="dark"] ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-track {
-    background: var(--bg-secondary);
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: 5px;
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-    background: var(--link-color);
+    
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
 }
