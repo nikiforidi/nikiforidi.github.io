@@ -244,3 +244,71 @@ blockquote {
         animation: none;
     }
 }
+/* =====================================================
+   HIDE DUPLICATE HEADERS & FOOTERS
+   Retro Terminal Theme Compatible
+   ===================================================== */
+
+/* ==================== HEADER FIXES ==================== */
+
+/* Hide Minima's auto-generated page title on home page */
+.home .page-heading,
+.home h1.page-title,
+.home article > h1:first-child,
+.home .post-title {
+    display: none !important;
+}
+
+/* Hide duplicate "Welcome, Traveler" from navigation/menu */
+.site-nav .welcome-traveler-duplicate,
+nav .page-title,
+header .page-title {
+    display: none !important;
+}
+
+/* Keep only ONE instance of the main heading */
+.home .main-content h2:first-of-type,
+.home #welcome-heading {
+    display: block !important;
+}
+
+/* ==================== FOOTER FIXES ==================== */
+
+/* Hide duplicate site title in footer */
+.site-footer .site-title,
+.site-footer h2,
+.site-footer h3,
+footer .site-title {
+    display: none !important;
+}
+
+/* Hide duplicate author name */
+.site-footer .author-name-duplicate,
+.site-footer p:first-of-type,
+footer p.author {
+    display: none !important;
+}
+
+/* Keep only the description line */
+.site-footer .site-description,
+.site-footer p:last-child {
+    display: block !important;
+    color: var(--text-secondary) !important;
+}
+
+/* ==================== MINIMA OVERRIDES ==================== */
+
+/* Prevent Minima from injecting extra titles */
+.wrapper > header,
+.page-content > header {
+    display: none !important;
+}
+
+/* Clean up any remaining duplicates */
+.duplicate-header,
+.duplicate-footer,
+[aria-label="Site title"] + h1,
+h1 + h1,
+h2 + h2 {
+    display: none !important;
+}
