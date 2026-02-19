@@ -1,15 +1,11 @@
-title: "Anatoly Nikiforov — Software Engineer"
-description: "Professional Portfolio: 5+ years experience, Distributed Systems, Cloud Infrastructure"
-url: "https://nikiforidi.github.io"
-baseurl: ""
-theme: "minima"
-markdown: "kramdown"
-highlighter: "rouge"
+title: Anatoly Nikiforov - Technical Portfolio
+description: Architecture, Algorithms, System Design
+theme: minima
 plugins:
-  - "jekyll-github-metadata"
-  - "jekyll-seo-tag"
-exclude:
-  - "README.md"
-  - "LICENSE"
-  - ".gitignore"
-  - "init-portfolio.sh"
+  - jekyll-feed
+
+header_pages:
+  - index.md
+  - about/
+  - specs/
+  - deep-dives/
