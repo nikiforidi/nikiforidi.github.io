@@ -9,6 +9,7 @@ permalink: /deep-dives/mind-universe/
 Cloud infrastructure management platform developed at MIND Software (2023-2025).
 
 **Period:** February 2023 — February 2025
+
 **Role:** Lead Backend Developer / Chief Developer
 
 ---
