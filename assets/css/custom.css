@@ -269,3 +269,29 @@ blockquote {
         background-size: 100% 2px;
     }
 }
+/* Make ENTER look like a terminal keycap */
+.theme-enter {
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--accent-color);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 2px 0 var(--border-color);
+    transition: all 0.1s ease;
+}
+
+.theme-enter:hover {
+    transform: translateY(2px);
+    box-shadow: 0 0 0 var(--border-color);
+    background-color: var(--accent-color);
+    color: var(--bg-primary);
+}
+
+.theme-enter:active {
+    transform: translateY(2px);
+}

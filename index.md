@@ -24,9 +24,9 @@ This portfolio is designed for **cozy reading** about engineering craft. Grab a 
 
 | Module | Content | Access |
 |--------|---------|--------|
-| [`[specs/]`](/specs/) | 5 architectural specs (MHA, SSA, JEMP) | `[ENTER]` |
-| [`[deep-dives/]`](/deep-dives/) | Technical breakdowns of key projects | `[ENTER]` |
-| [`[about/]`](/about/) | Engineering philosophy, career timeline | `[ENTER]` |
+| [`[specs/]`](/specs/) | 5 architectural specs (MHA, SSA, JEMP) | [`[ENTER]`](/specs/){: .theme-enter} |
+| [`[deep-dives/]`](/deep-dives/) | Technical breakdowns of key projects | [`[ENTER]`](/deep-dives/){: .theme-enter} |
+| [`[about/]`](/about/) | Engineering philosophy, career timeline | [`[ENTER]`](/about/){: .theme-enter} |
 
 ---
 
