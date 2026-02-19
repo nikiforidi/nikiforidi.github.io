@@ -5,6 +5,12 @@ permalink: /specs/jemp/
 author: Anatoly Nikiforov, 2023
 ---
 
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Universe-concurrency-model-4ea53fe313bb47eeaf8711db26828c39)
+
+---
+
 ## Overview
 
 **Purpose:** Track concurrent job execution state without MQ overhead.
@@ -91,12 +97,6 @@ author: Anatoly Nikiforov, 2023
 - [SSA](ssa.md) — Sequence ordering
 - [Validation Stack](validation-stack.md) — Model validation
 - [Transactional Models](transactional-models.md) — Deployment states
-
----
-
-## Full Specification
-
-📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Universe-concurrency-model-4ea53fe313bb47eeaf8711db26828c39)
 
 ---
 

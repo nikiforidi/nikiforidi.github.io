@@ -5,6 +5,12 @@ permalink: /specs/validation-stack/
 author: Anatoly Nikiforov, 2023
 ---
 
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Universe-Models-Validation-479bb17669ea446d8ea67e74f3be475f)
+
+---
+
 ## Overview
 
 **Purpose:** Centralized validation layer for Unified Models before infrastructure interaction.
@@ -91,12 +97,6 @@ Validator 1 ✓ → Validator 2 ✗ → Validator 3 ✓ → Collect All
 - [SSA](ssa.md) — Sequence ordering
 - [JEMP](jemp.md) — Job messaging
 - [Transactional Models](transactional-models.md) — Deployment states
-
----
-
-## Full Specification
-
-📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Universe-Models-Validation-479bb17669ea446d8ea67e74f3be475f)
 
 ---
 

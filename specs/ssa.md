@@ -5,6 +5,12 @@ permalink: /specs/ssa/
 author: Anatoly Nikiforov, 2023
 ---
 
+## Full Specification
+
+📎 [**View on Notion →**](https://www.notion.so/Sequence-Sorting-Algorithm-SSA-44f828765101456d9ed1a3b6898088a1)
+
+---
+
 ## Overview
 
 **Purpose:** Sort Go map integer keys in ascending order with zero key last: `[1, 2, 4, 7, 0]`
@@ -125,12 +131,6 @@ Output: [2, 4, 6, 8, 0]
 - [JEMP](jemp.md) — Job messaging
 - [Validation Stack](validation-stack.md) — Model validation
 - [Transactional Models](transactional-models.md) — Deployment states
-
----
-
-## Full Specification
-
-📎 [**View on Notion →**](https://www.notion.so/Sequence-Sorting-Algorithm-SSA-44f828765101456d9ed1a3b6898088a1)
 
 ---
 

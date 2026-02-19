@@ -5,6 +5,12 @@ permalink: /specs/transactional-models/
 author: Anatoly Nikiforov, 2023
 ---
 
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Unified-model-transactions-in-the-Universe-Deploy-1561ff431c37452bb1e2645b27586b75)
+
+---
+
 ## Overview
 
 **Purpose:** Describe the multi-stage process of building Unified Models for VM deployment.
@@ -52,6 +58,12 @@ author: Anatoly Nikiforov, 2023
 
 ---
 
+## Rollback Mechanism ⚠️
+
+> **Note:** A rollback mechanism was implemented through DRUID API calls to remove redundant CIRs during deployment. This feature exists in the codebase but cannot be publicly documented due to NDA restrictions.
+
+---
+
 ## Trade-offs
 
 | Trade-off | Impact |
@@ -68,12 +80,6 @@ author: Anatoly Nikiforov, 2023
 - [SSA](ssa.md) — Sequence ordering
 - [JEMP](jemp.md) — Job messaging
 - [Validation Stack](validation-stack.md) — Model validation
-
----
-
-## Full Specification
-
-📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Unified-model-transactions-in-the-Universe-Deploy-1561ff431c37452bb1e2645b27586b75)
 
 ---
 

@@ -5,6 +5,12 @@ permalink: /specs/mha/
 author: Anatoly Nikiforov, 2023
 ---
 
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Model-Hashing-Algorithm-MHA-e725fd99f9d74481965cb542c1727d0e)
+
+---
+
 ## Overview
 
 **Purpose:** Detect changes between cloud infrastructure resource (CIR) database records and actual state on cloud provider sites.
@@ -88,12 +94,6 @@ author: Anatoly Nikiforov, 2023
 - [JEMP](jemp.md) — Job concurrency model
 - [Validation Stack](validation-stack.md) — Input validation
 - [Transactional Models](transactional-models.md) — VM deployment states
-
----
-
-## Full Specification
-
-📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Model-Hashing-Algorithm-MHA-e725fd99f9d74481965cb542c1727d0e)
 
 ---
 

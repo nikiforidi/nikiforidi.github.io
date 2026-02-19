@@ -1,7 +1,8 @@
+bash
 #!/bin/bash
 ################################################################################
 # Portfolio Generator
-# Version: 10.0 (Full Content Generation with Split About Pages)
+# Version: 10.3 (DRUID Links, Teacup Emoji, Rollback Note, MIND Reference Removed)
 ################################################################################
 set -e
 GREEN='\033[0;32m'
@@ -96,11 +97,11 @@ tagline: Architecture, Algorithms, System Design
 permalink: /
 ---
 
-## This Is Not A Resume
+## Grab a Cup of Tea ☕
 
-My [resume](https://github.com/nikiforidi/nikiforidi) answers **what** I built and **where**.
+This portfolio is designed for **cozy reading** about engineering craft.
 
-This portfolio answers **how** and **why**.
+While my [resume](https://github.com/nikiforidi/nikiforidi) covers the career timeline, this space explores the **how** and **why** behind the systems.
 
 ---
 
@@ -575,9 +576,8 @@ Technical specifications developed during tenure at MIND Software (2023-2025). E
 
 ---
 
-## Related Projects
+## Related Concepts
 
-- [MIND Universe](/deep-dives/mind-universe.md) — Main project context
 - [DRUID API](/deep-dives/mind-universe.md#druid-api) — Deploy, Refresh, Update, Import, Destroy
 
 ---
@@ -599,6 +599,12 @@ layout: page
 title: Model Hashing Algorithm (MHA)
 permalink: /specs/mha/
 author: Anatoly Nikiforov, 2023
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Model-Hashing-Algorithm-MHA-e725fd99f9d74481965cb542c1727d0e)
+
 ---
 
 ## Overview
@@ -687,12 +693,6 @@ author: Anatoly Nikiforov, 2023
 
 ---
 
-## Full Specification
-
-📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Model-Hashing-Algorithm-MHA-e725fd99f9d74481965cb542c1727d0e)
-
----
-
 [← Back to Specifications](/specs/)
 MHAEOF
 echo -e "  ${GREEN}+${NC} specs/mha.md created"
@@ -710,6 +710,12 @@ layout: page
 title: Sequence Sorting Algorithm (SSA)
 permalink: /specs/ssa/
 author: Anatoly Nikiforov, 2023
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://www.notion.so/Sequence-Sorting-Algorithm-SSA-44f828765101456d9ed1a3b6898088a1)
+
 ---
 
 ## Overview
@@ -835,12 +841,6 @@ Output: [2, 4, 6, 8, 0]
 
 ---
 
-## Full Specification
-
-📎 [**View on Notion →**](https://www.notion.so/Sequence-Sorting-Algorithm-SSA-44f828765101456d9ed1a3b6898088a1)
-
----
-
 [← Back to Specifications](/specs/)
 SSAEOF
 echo -e "  ${GREEN}+${NC} specs/ssa.md created"
@@ -858,6 +858,12 @@ layout: page
 title: Job Event Messaging Protocol (JEMP)
 permalink: /specs/jemp/
 author: Anatoly Nikiforov, 2023
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Universe-concurrency-model-4ea53fe313bb47eeaf8711db26828c39)
+
 ---
 
 ## Overview
@@ -949,12 +955,6 @@ author: Anatoly Nikiforov, 2023
 
 ---
 
-## Full Specification
-
-📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Universe-concurrency-model-4ea53fe313bb47eeaf8711db26828c39)
-
----
-
 [← Back to Specifications](/specs/)
 JEMPEOF
 echo -e "  ${GREEN}+${NC} specs/jemp.md created"
@@ -972,6 +972,12 @@ layout: page
 title: Universe Validation Stack
 permalink: /specs/validation-stack/
 author: Anatoly Nikiforov, 2023
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Universe-Models-Validation-479bb17669ea446d8ea67e74f3be475f)
+
 ---
 
 ## Overview
@@ -1063,12 +1069,6 @@ Validator 1 ✓ → Validator 2 ✗ → Validator 3 ✓ → Collect All
 
 ---
 
-## Full Specification
-
-📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Universe-Models-Validation-479bb17669ea446d8ea67e74f3be475f)
-
----
-
 [← Back to Specifications](/specs/)
 VALIDEOF
 echo -e "  ${GREEN}+${NC} specs/validation-stack.md created"
@@ -1086,6 +1086,12 @@ layout: page
 title: Transactional Models
 permalink: /specs/transactional-models/
 author: Anatoly Nikiforov, 2023
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Unified-model-transactions-in-the-Universe-Deploy-1561ff431c37452bb1e2645b27586b75)
+
 ---
 
 ## Overview
@@ -1135,6 +1141,12 @@ author: Anatoly Nikiforov, 2023
 
 ---
 
+## Rollback Mechanism ⚠️
+
+> **Note:** A rollback mechanism was implemented through DRUID API calls to remove redundant CIRs during deployment. This feature exists in the codebase but cannot be publicly documented due to NDA restrictions.
+
+---
+
 ## Trade-offs
 
 | Trade-off | Impact |
@@ -1151,12 +1163,6 @@ author: Anatoly Nikiforov, 2023
 - [SSA](ssa.md) — Sequence ordering
 - [JEMP](jemp.md) — Job messaging
 - [Validation Stack](validation-stack.md) — Model validation
-
----
-
-## Full Specification
-
-📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Unified-model-transactions-in-the-Universe-Deploy-1561ff431c37452bb1e2645b27586b75)
 
 ---
 
@@ -1348,8 +1354,8 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 
 | Repository | Commits | Releases | Stars | Status |
 |------------|---------|----------|-------|--------|
-| [vpnm](https://github.com/nikiforidi/vpnm) | 154 | 12 | 1 | ⚠️ Archived (Jan 23, 2023) |
-| [vpnmd](https://github.com/nikiforidi/vpnmd) | 62 | 3 | 0 | ⚠️ Archived (Jan 23, 2023) |
+| [vpnm](https://github.com/nikiforidi/vpnm) | 154 | 12 | 1 | ✅ Stable Reference |
+| [vpnmd](https://github.com/nikiforidi/vpnmd) | 62 | 3 | 0 | ✅ Stable Reference |
 
 ---
 
@@ -1359,7 +1365,7 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 |-----------|--------|
 | Python vs Go | Faster development, slower execution |
 | Single binary (pyinstaller) | Easy distribution, larger size |
-| Archived (Jan 2023) | Business discontinued, code remains reference |
+| Project Status | Stable reference implementation |
 
 ---
 
@@ -1640,7 +1646,7 @@ echo ""
 echo -e "${YELLOW}Next steps:${NC}"
 echo "  1. cd $PORTFOLIO_DIR"
 echo "  2. git add ."
-echo "  3. git commit -m 'Generate technical portfolio'"
+echo "  3. git commit -m 'Generate technical portfolio v10.3'"
 echo "  4. git push origin main"
 echo "  5. Wait 5-10 minutes for GitHub Pages"
 echo ""

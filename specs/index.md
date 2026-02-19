@@ -22,9 +22,8 @@ Technical specifications developed during tenure at MIND Software (2023-2025). E
 
 ---
 
-## Related Projects
+## Related Concepts
 
-- [MIND Universe](/deep-dives/mind-universe.md) — Main project context
 - [DRUID API](/deep-dives/mind-universe.md#druid-api) — Deploy, Refresh, Update, Import, Destroy
 
 ---

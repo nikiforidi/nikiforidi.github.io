@@ -47,8 +47,8 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 
 | Repository | Commits | Releases | Stars | Status |
 |------------|---------|----------|-------|--------|
-| [vpnm](https://github.com/nikiforidi/vpnm) | 154 | 12 | 1 | ⚠️ Archived (Jan 23, 2023) |
-| [vpnmd](https://github.com/nikiforidi/vpnmd) | 62 | 3 | 0 | ⚠️ Archived (Jan 23, 2023) |
+| [vpnm](https://github.com/nikiforidi/vpnm) | 154 | 12 | 1 | ✅ Stable Reference |
+| [vpnmd](https://github.com/nikiforidi/vpnmd) | 62 | 3 | 0 | ✅ Stable Reference |
 
 ---
 
@@ -58,7 +58,7 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 |-----------|--------|
 | Python vs Go | Faster development, slower execution |
 | Single binary (pyinstaller) | Easy distribution, larger size |
-| Archived (Jan 2023) | Business discontinued, code remains reference |
+| Project Status | Stable reference implementation |
 
 ---
 

@@ -5,11 +5,11 @@ tagline: Architecture, Algorithms, System Design
 permalink: /
 ---
 
-## This Is Not A Resume
+## Grab a Cup of Tea ☕
 
-My [resume](https://github.com/nikiforidi/nikiforidi) answers **what** I built and **where**.
+This portfolio is designed for **cozy reading** about engineering craft.
 
-This portfolio answers **how** and **why**.
+While my [resume](https://github.com/nikiforidi/nikiforidi) covers the career timeline, this space explores the **how** and **why** behind the systems.
 
 ---
 
