@@ -9,6 +9,8 @@
     --link-hover: #0056b3;
     --code-bg: #f6f8fa;
     --table-border: #dfe2e5;
+    --table-bg: #ffffff;
+    --table-bg-alt: #f6f8fa;
     --blockquote-border: #dfe2e5;
     --blockquote-bg: #f6f8fa;
 }
@@ -23,6 +25,8 @@
     --link-hover: #79c0ff;
     --code-bg: #161b22;
     --table-border: #30363d;
+    --table-bg: #0d1117;
+    --table-bg-alt: #161b22;
     --blockquote-border: #30363d;
     --blockquote-bg: #161b22;
 }
@@ -69,12 +73,40 @@ pre {
     border: 1px solid var(--border-color);
 }
 
+/* Table Styling - Complete Coverage */
 table {
     border-color: var(--table-border);
+    background-color: var(--table-bg);
 }
 
 td, th {
     border-color: var(--table-border);
+    background-color: var(--table-bg);
+}
+
+/* Alternating row colors */
+tr:nth-child(even) {
+    background-color: var(--table-bg-alt);
+}
+
+tr:nth-child(odd) {
+    background-color: var(--table-bg);
+}
+
+/* Markdown table specific */
+.markdown-body table td,
+.markdown-body table th {
+    border-color: var(--table-border);
+    background-color: var(--table-bg);
+}
+
+.markdown-body table tr {
+    background-color: var(--table-bg);
+    border-top-color: var(--table-border);
+}
+
+.markdown-body table tr:nth-child(2n) {
+    background-color: var(--table-bg-alt);
 }
 
 blockquote {
@@ -83,10 +115,10 @@ blockquote {
     color: var(--text-secondary);
 }
 
-/* Theme Toggle Button */
+/* Theme Toggle Button - Top Right Corner */
 .theme-toggle {
     position: fixed;
-    bottom: 20px;
+    top: 20px;
     right: 20px;
     width: 50px;
     height: 50px;
@@ -115,7 +147,7 @@ blockquote {
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .theme-toggle {
-        bottom: 15px;
+        top: 15px;
         right: 15px;
         width: 45px;
         height: 45px;
