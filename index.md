@@ -24,9 +24,9 @@ This portfolio is designed for **cozy reading** about engineering craft. Grab a 
 
 | Module | Content | Access |
 |--------|---------|--------|
-| `[specs/]` | 5 architectural specs (MHA, SSA, JEMP) | `[ENTER]` |
-| `[deep-dives/]` | Technical breakdowns of key projects | `[ENTER]` |
-| `[about/]` | Engineering philosophy, career timeline | `[ENTER]` |
+| [`[specs/]`](/specs/) | 5 architectural specs (MHA, SSA, JEMP) | `[ENTER]` |
+| [`[deep-dives/]`](/deep-dives/) | Technical breakdowns of key projects | `[ENTER]` |
+| [`[about/]`](/about/) | Engineering philosophy, career timeline | `[ENTER]` |
 
 ---
 
@@ -51,6 +51,30 @@ Event-driven concurrency model for distributed job execution.
 - **Problem:** Track concurrent jobs without MQ overhead
 - **Solution:** Heartbeat events + Job Collector + Checkpointer
 - **Execute:** [`/specs/jemp/`](/specs/jemp/)
+
+---
+
+## Featured Deep Dives
+
+### ▶ anyd Daemon Framework
+Unix daemon IPC framework published on PyPI.
+- **PyPI:** [`anyd 0.4.1`](https://pypi.org/project/anyd/)
+- **GitHub:** [`anatolio-deb/anyd`](https://github.com/anatolio-deb/anyd)
+- **Tech:** POSIX sockets, IPC, authentication, validation
+- **Execute:** [`/deep-dives/anyd-daemon-framework/`](/deep-dives/anyd-daemon-framework/)
+
+### ▶ VPN Tunneling Architecture
+Linux VPN client with TUN/TAP, Netfilter, and DNS redirection.
+- **Repositories:** [`vpnm`](https://github.com/anatolio-deb/vpnm) (154 commits), [`vpnmd`](https://github.com/anatolio-deb/vpnmd) (62 commits)
+- **Tech:** TUN/TAP, Netfilter, cloudflared DoH, tun2socks
+- **Execute:** [`/deep-dives/vpn-tunneling-architecture/`](/deep-dives/vpn-tunneling-architecture/)
+
+### ▶ ForestVPN CLI
+Cross-platform VPN client (Linux, macOS, Windows, OpenWRT).
+- **Repository:** [`forestvpn/cli`](https://github.com/forestvpn/cli)
+- **Stats:** 792 commits, 116 releases, 8 stars
+- **Tech:** Go 82.8%, Shell 17.2%, Homebrew, Chocolatey
+- **Execute:** [`/deep-dives/forestvpn-cli/`](/deep-dives/forestvpn-cli/)
 
 ---
 
