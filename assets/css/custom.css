@@ -369,3 +369,33 @@ blockquote {
 .home h1:first-of-type {
     display: none;
 }
+/* ==================== FIX DUPLICATE FOOTER ==================== */
+
+/* Hide Minima's auto-generated footer site title */
+.site-footer .site-title {
+    display: none !important;
+}
+
+/* Hide Minima's auto-generated footer description */
+.site-footer .site-description {
+    display: none !important;
+}
+
+/* Hide duplicate contact links in footer */
+.site-footer .contact-links {
+    display: none !important;
+}
+
+/* Keep only one clean footer line */
+.site-footer {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid var(--border-color);
+    margin-top: 60px;
+}
+
+.site-footer p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
