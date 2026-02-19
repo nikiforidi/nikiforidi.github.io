@@ -30,7 +30,7 @@ permalink: /about/contact/
 
 - [Professional Communities](communities.md) — Where I'm active
 - [Career Timeline](timeline.md) — My work history
-- [Resume](https://github.com/nikiforidi/nikiforidi) — Full CV
+- [Deep Dives](/deep-dives/) — Technical project details
 
 ---
 

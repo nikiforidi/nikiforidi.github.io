@@ -1,8 +1,7 @@
-bash
 #!/bin/bash
 ################################################################################
 # Portfolio Generator
-# Version: 10.3 (DRUID Links, Teacup Emoji, Rollback Note, MIND Reference Removed)
+# Version: 10.5 (DRUID API References MIND Universe)
 ################################################################################
 set -e
 GREEN='\033[0;32m'
@@ -101,7 +100,7 @@ permalink: /
 
 This portfolio is designed for **cozy reading** about engineering craft.
 
-While my [resume](https://github.com/nikiforidi/nikiforidi) covers the career timeline, this space explores the **how** and **why** behind the systems.
+Here you'll find the **how** and **why** behind the systems I've built.
 
 ---
 
@@ -536,7 +535,7 @@ permalink: /about/contact/
 
 - [Professional Communities](communities.md) — Where I'm active
 - [Career Timeline](timeline.md) — My work history
-- [Resume](https://github.com/nikiforidi/nikiforidi) — Full CV
+- [Deep Dives](/deep-dives/) — Technical project details
 
 ---
 
@@ -578,7 +577,7 @@ Technical specifications developed during tenure at MIND Software (2023-2025). E
 
 ## Related Concepts
 
-- [DRUID API](/deep-dives/mind-universe.md#druid-api) — Deploy, Refresh, Update, Import, Destroy
+- [DRUID API](/deep-dives/mind-universe.md) — Deploy, Refresh, Update, Import, Destroy (see MIND Universe)
 
 ---
 
@@ -1620,7 +1619,6 @@ CRUD-like operations for cloud infrastructure resources (CIR):
 ## See Also
 
 - [Full Specifications](/specs/)
-- [Resume](https://github.com/nikiforidi/nikiforidi)
 
 ---
 
@@ -1646,7 +1644,7 @@ echo ""
 echo -e "${YELLOW}Next steps:${NC}"
 echo "  1. cd $PORTFOLIO_DIR"
 echo "  2. git add ."
-echo "  3. git commit -m 'Generate technical portfolio v10.3'"
+echo "  3. git commit -m 'Generate technical portfolio v10.5'"
 echo "  4. git push origin main"
 echo "  5. Wait 5-10 minutes for GitHub Pages"
 echo ""

@@ -24,7 +24,7 @@ Technical specifications developed during tenure at MIND Software (2023-2025). E
 
 ## Related Concepts
 
-- [DRUID API](/deep-dives/mind-universe.md#druid-api) — Deploy, Refresh, Update, Import, Destroy
+- [DRUID API](/deep-dives/mind-universe.md) — Deploy, Refresh, Update, Import, Destroy (see MIND Universe)
 
 ---
 

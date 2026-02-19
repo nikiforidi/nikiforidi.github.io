@@ -9,7 +9,7 @@ permalink: /
 
 This portfolio is designed for **cozy reading** about engineering craft.
 
-While my [resume](https://github.com/nikiforidi/nikiforidi) covers the career timeline, this space explores the **how** and **why** behind the systems.
+Here you'll find the **how** and **why** behind the systems I've built.
 
 ---
 

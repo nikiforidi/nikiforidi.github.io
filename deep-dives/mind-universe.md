@@ -63,7 +63,6 @@ CRUD-like operations for cloud infrastructure resources (CIR):
 ## See Also
 
 - [Full Specifications](/specs/)
-- [Resume](https://github.com/nikiforidi/nikiforidi)
 
 ---
 
