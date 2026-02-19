@@ -67,7 +67,7 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 - [vpnm source code](https://github.com/nikiforidi/vpnm)
 - [vpnmd source code](https://github.com/nikiforidi/vpnmd)
 - [anyd PyPI page](https://pypi.org/project/anyd/)
-- [anyd Deep Dive](/deep-dives/anyd-daemon-framework.md)
+- [anyd Deep Dive](/deep-dives/anyd-daemon-framework)
 
 ---
 
