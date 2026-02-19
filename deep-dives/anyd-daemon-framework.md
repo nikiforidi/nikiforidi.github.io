@@ -282,18 +282,3 @@ The beauty of **anyd** lies in its **agnosticism**:
 ---
 
 [← Back to Deep Dives](/deep-dives/)
-```
-
----
-
-## 📝 Key Updates
-
-| Section | Change | Reason |
-|---------|--------|--------|
-| **Overview** | Emphasized "any daemon" universality | Highlight framework's general purpose |
-| **Core Philosophy** | New section on privilege separation | Explain *why* this architecture matters |
-| **Example 1 (VPN)** | Kept but labeled as "Real-World" | Show actual implementation |
-| **Example 2 (Vault)** | **New** conceptual example | Demonstrate non-VPN security use case |
-| **Example 3 (SysAdmin)** | **New** conceptual example | Show system administration use case |
-| **Why anyd?** | New section on universal possibilities | Emphasize unlimited potential |
-| **Security Model** | Added "Isolation" row | Highlight process boundary benefit |
