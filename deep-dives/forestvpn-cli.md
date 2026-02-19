@@ -70,7 +70,6 @@ Cross-platform VPN CLI client for Linux, OpenWRT, macOS, and Windows.
 ## See Also
 
 - [Full source code](https://github.com/forestvpn/cli)
-- [VPN Tunneling Architecture](/deep-dives/vpn-tunneling-architecture)
 
 ---
 
