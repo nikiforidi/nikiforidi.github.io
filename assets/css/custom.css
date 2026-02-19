@@ -95,9 +95,9 @@ a:hover {
     border-bottom: 1px solid var(--fallout-green);
 }
 
-/* ==================== CODE BLOCKS ==================== */
+/* ==================== CODE BLOCKS - DARKER ==================== */
 code {
-    background-color: var(--fallout-bg-light);
+    background-color: var(--fallout-bg);
     color: var(--fallout-green);
     border: 1px solid var(--fallout-dim);
     padding: 0.2em 0.4em;
@@ -106,11 +106,11 @@ code {
 }
 
 pre {
-    background-color: var(--fallout-bg-light);
+    background-color: var(--fallout-bg);
     border: 2px solid var(--fallout-green);
     padding: 16px;
     overflow-x: auto;
-    box-shadow: inset 0 0 10px var(--fallout-dim);
+    box-shadow: inset 0 0 20px var(--fallout-dim);
 }
 
 pre code {
