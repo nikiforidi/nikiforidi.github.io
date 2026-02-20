@@ -22,6 +22,7 @@
         } else {
             document.documentElement.removeAttribute('data-theme');
         }
+        console.log('[THEME] Set to:', theme);
     }
 
     function createToggleButton() {
@@ -55,6 +56,7 @@
         console.log('[TYPING] Is home page:', isHome);
 
         if (!isHome) {
+            console.log('[TYPING] Not home page, skipping');
             return;
         }
 
@@ -79,9 +81,12 @@
         // Clear header content
         header.textContent = '';
 
+        // CHANGED: Cursor blinks DURING typing (via CSS animation)
+        // No need to add class after typing
+
         // Type characters
         let i = 0;
-        const speed = 80; // ms per character
+        const speed = 100; // ms per character (slower for visibility)
 
         function type() {
             if (i < originalText.length) {
@@ -89,9 +94,8 @@
                 i++;
                 setTimeout(type, speed);
             } else {
-                // CHANGED: Add class to start cursor blink after typing completes
-                header.classList.add('typing-complete');
                 console.log('[TYPING] Complete');
+                // Cursor continues blinking via CSS (no class needed)
             }
         }
 

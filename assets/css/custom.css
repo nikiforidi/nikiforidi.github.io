@@ -33,7 +33,6 @@
 }
 
 /* ==================== DARK MODE (Amber Phosphor) ==================== */
-/* CHANGED: Added !important for Minima override */
 [data-theme="dark"] {
     --bg-primary: #1a1816 !important;
     --bg-secondary: #252220 !important;
@@ -47,7 +46,7 @@
     --cursor-color: #ffb000 !important;
     --scanline-color: rgba(255, 176, 0, 0.03) !important;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.5) !important;
-    --text-glow: 0 0 2px rgba(255, 176, 0, 0.5) !important;
+    --text-glow: 0 0 3px rgba(255, 176, 0, 0.6) !important;
     --toggle-bg: #252220 !important;
     --toggle-border: #ffb000 !important;
     --toggle-text: #ffb000 !important;
@@ -100,10 +99,13 @@ h1 {
     font-size: 2.5rem !important;
 }
 
+/* CHANGED: Better header styling with proper spacing */
 h2 {
     font-size: 2rem !important;
     border-bottom: 2px solid var(--border-color) !important;
     padding-bottom: 10px !important;
+    margin-top: 40px !important;
+    margin-bottom: 20px !important;
 }
 
 h3 {
@@ -390,32 +392,35 @@ blockquote p {
 }
 
 /* ==================== BLINKING CURSOR ANIMATION ==================== */
-/* CHANGED: Thicker, retro-styled cursor */
+/* CHANGED: Fixed blinking cursor - thick and visible */
 @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+    0%, 100% { 
+        opacity: 1;
+        visibility: visible;
+    }
+    50% { 
+        opacity: 0;
+        visibility: hidden;
+    }
 }
 
-/* ONLY target the FIRST h2 on home page */
+/* CHANGED: Thick retro cursor on home page first h2 */
 .home h2:first-of-type {
     display: inline-block !important;
-    /* CHANGED: Thicker cursor (4px instead of 2px) */
-    border-right: 4px solid var(--accent-color) !important;
-    /* CHANGED: Added padding for cursor spacing */
-    padding-right: 4px !important;
-    /* CHANGED: Added text shadow for retro glow */
-    text-shadow: 0 0 5px var(--accent-color);
-}
-
-/* Cursor blink animation - only after typing completes */
-.home h2:first-of-type.typing-complete {
+    /* CHANGED: THICK cursor - 6px for maximum visibility */
+    border-right: 6px solid var(--accent-color) !important;
+    padding-right: 6px !important;
+    /* CHANGED: Always have cursor visible during typing */
     animation: blink 1s step-end infinite !important;
+    /* CHANGED: Added retro glow effect */
+    text-shadow: 0 0 8px var(--accent-color);
 }
 
 /* Remove cursor from other h2 elements */
 .home h2:not(:first-of-type) {
     border-right: none !important;
     animation: none !important;
+    padding-right: 0 !important;
 }
 
 /* ==================== SCROLLBAR (Dark Mode) ==================== */
@@ -474,9 +479,9 @@ blockquote p {
         font-size: 0.75rem !important;
     }
 
-    /* CHANGED: Thicker cursor on mobile too */
+    /* CHANGED: Keep thick cursor on mobile */
     .home h2:first-of-type {
-        border-right: 4px solid var(--accent-color) !important;
-        padding-right: 4px !important;
+        border-right: 6px solid var(--accent-color) !important;
+        padding-right: 6px !important;
     }
 }
