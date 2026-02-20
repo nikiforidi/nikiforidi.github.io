@@ -1,8 +1,9 @@
 /* =====================================================
    COZY RETRO TERMINAL THEME
+   Inspired by: VT100, Amber Monitors, Old Paper Docs
    ===================================================== */
 
-/* ==================== LIGHT MODE ==================== */
+/* ==================== LIGHT MODE (Old Paper) ==================== */
 :root {
     --bg-primary: #f4f1ea;
     --bg-secondary: #e8e4dc;
@@ -30,34 +31,34 @@
     --separator-color: #c05621;
 }
 
-/* ==================== DARK MODE ==================== */
+/* ==================== DARK MODE (Amber Phosphor) ==================== */
 [data-theme="dark"] {
-    --bg-primary: #1a1816;
-    --bg-secondary: #252220;
-    --text-primary: #ffb000;
-    --text-secondary: #cc8d00;
-    --border-color: #3d3834;
-    --link-color: #ffb000;
-    --link-hover: #ffc83d;
-    --code-bg: #252220;
-    --accent-color: #ffb000;
-    --cursor-color: #ffb000;
-    --scanline-color: rgba(255, 176, 0, 0.03);
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-    --text-glow: 0 0 2px rgba(255, 176, 0, 0.5);
-    --toggle-bg: #252220;
-    --toggle-border: #ffb000;
-    --toggle-text: #ffb000;
-    --toggle-hover: #ffb000;
-    --table-bg: #1a1816;
-    --table-bg-alt: #252220;
-    --table-header-bg: #252220;
-    --table-header-text: #ffb000;
-    --table-border: #3d3834;
-    --separator-color: #ffb000;
+    --bg-primary: #1a1816 !important;
+    --bg-secondary: #252220 !important;
+    --text-primary: #ffb000 !important;
+    --text-secondary: #cc8d00 !important;
+    --border-color: #3d3834 !important;
+    --link-color: #ffb000 !important;
+    --link-hover: #ffc83d !important;
+    --code-bg: #252220 !important;
+    --accent-color: #ffb000 !important;
+    --cursor-color: #ffb000 !important;
+    --scanline-color: rgba(255, 176, 0, 0.03) !important;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.5) !important;
+    --text-glow: 0 0 2px rgba(255, 176, 0, 0.5) !important;
+    --toggle-bg: #252220 !important;
+    --toggle-border: #ffb000 !important;
+    --toggle-text: #ffb000 !important;
+    --toggle-hover: #ffb000 !important;
+    --table-bg: #1a1816 !important;
+    --table-bg-alt: #252220 !important;
+    --table-header-bg: #252220 !important;
+    --table-header-text: #ffb000 !important;
+    --table-border: #3d3834 !important;
+    --separator-color: #ffb000 !important;
 }
 
-/* ==================== BASE ==================== */
+/* ==================== BASE STYLES ==================== */
 body {
     background-color: var(--bg-primary) !important;
     color: var(--text-primary) !important;
@@ -67,6 +68,7 @@ body {
     position: relative !important;
 }
 
+/* CRT Scanline Effect (Subtle) */
 body::before {
     content: " " !important;
     display: block !important;
@@ -89,7 +91,21 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 400 !important;
     text-transform: uppercase !important;
     letter-spacing: 2px !important;
-    text-shadow: var(--text-glow) !important;
+    text-shadow: var(--text-glow);
+}
+
+h1 {
+    font-size: 2.5rem !important;
+}
+
+h2 {
+    font-size: 2rem !important;
+    border-bottom: 2px solid var(--border-color) !important;
+    padding-bottom: 10px !important;
+}
+
+h3 {
+    font-size: 1.5rem !important;
 }
 
 p, li {
@@ -105,127 +121,152 @@ a {
     transition: all 0.2s ease !important;
 }
 
-/* ==================== CODE ==================== */
+a:hover {
+    color: var(--link-hover) !important;
+    background-color: var(--link-color) !important;
+    color: var(--bg-primary) !important;
+    border-bottom: 1px solid var(--link-hover) !important;
+}
+
+/* ==================== CODE BLOCKS ==================== */
 code {
-    background-color: var(--code-bg);
-    color: var(--accent-color);
-    font-family: var(--font-body);
-    padding: 0.2em 0.4em;
-    border-radius: 2px;
-    border: 1px solid var(--border-color);
+    background-color: var(--code-bg) !important;
+    color: var(--accent-color) !important;
+    font-family: var(--font-body) !important;
+    padding: 0.2em 0.4em !important;
+    border-radius: 2px !important;
+    border: 1px solid var(--border-color) !important;
 }
 
 pre {
-    background-color: var(--code-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 16px;
-    overflow-x: auto;
-    box-shadow: var(--shadow);
+    background-color: var(--code-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    padding: 16px !important;
+    overflow-x: auto !important;
+    box-shadow: var(--shadow) !important;
 }
 
 pre code {
-    background-color: transparent;
-    border: none;
-    padding: 0;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
 }
 
 /* ==================== TABLES ==================== */
 table {
-    border-color: var(--table-border);
-    background-color: var(--table-bg);
-    border-collapse: collapse;
-    width: 100%;
-    margin: 20px 0;
-    box-shadow: var(--shadow);
+    border-color: var(--table-border) !important;
+    background-color: var(--table-bg) !important;
+    border-collapse: collapse !important;
+    width: 100% !important;
+    margin: 20px 0 !important;
+    box-shadow: var(--shadow) !important;
 }
 
-table td, table th {
-    border-color: var(--table-border);
-    background-color: var(--table-bg);
-    color: var(--text-primary);
-    padding: 12px 16px;
-    border: 1px solid var(--table-border);
-    font-family: var(--font-body);
+table td,
+table th {
+    border-color: var(--table-border) !important;
+    background-color: var(--table-bg) !important;
+    color: var(--text-primary) !important;
+    padding: 12px 16px !important;
+    border: 1px solid var(--table-border) !important;
+    font-family: var(--font-body) !important;
 }
 
 table th {
-    background-color: var(--table-header-bg);
-    color: var(--table-header-text);
-    font-family: var(--font-heading);
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    background-color: var(--table-header-bg) !important;
+    color: var(--table-header-text) !important;
+    font-family: var(--font-heading) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
 }
 
 table tr:nth-child(even) {
-    background-color: var(--table-bg-alt);
+    background-color: var(--table-bg-alt) !important;
 }
 
-table tr:nth-child(even) td, table tr:nth-child(even) th {
-    background-color: var(--table-bg-alt);
-    color: var(--text-primary);
+table tr:nth-child(even) td,
+table tr:nth-child(even) th {
+    background-color: var(--table-bg-alt) !important;
+    color: var(--text-primary) !important;
 }
 
-table tr:nth-child(odd) td, table tr:nth-child(odd) th {
-    background-color: var(--table-bg);
-    color: var(--text-primary);
+table tr:nth-child(odd) td,
+table tr:nth-child(odd) th {
+    background-color: var(--table-bg) !important;
+    color: var(--text-primary) !important;
 }
 
-/* ==================== SEPARATORS ==================== */
+/* Markdown Body Tables */
+.markdown-body table td,
+.markdown-body table th {
+    border-color: var(--table-border) !important;
+    background-color: var(--table-bg) !important;
+    color: var(--text-primary) !important;
+}
+
+.markdown-body table tr:nth-child(2n) {
+    background-color: var(--table-bg-alt) !important;
+}
+
+/* Force table theme override */
+table,
+table td,
+table th,
+table tr,
+table tbody,
+table thead,
+table tfoot {
+    background-color: var(--table-bg) !important;
+    border-color: var(--table-border) !important;
+    color: var(--text-primary) !important;
+}
+
+/* ==================== SEPARATORS - RETRO BLOCK STYLE ==================== */
 hr {
-    border: none;
-    height: 20px;
-    margin: 60px auto;
-    width: 60%;
-    max-width: 400px;
-    text-align: center;
-    line-height: 1;
+    border: none !important;
+    height: 20px !important;
+    margin: 60px auto !important;
+    width: 60% !important;
+    max-width: 400px !important;
+    text-align: center !important;
+    line-height: 1 !important;
 }
 
 hr::before {
-    content: "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒......";
-    color: var(--separator-color);
-    letter-spacing: 3px;
-    opacity: 0.6;
-    font-size: 12px;
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    content: "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒......" !important;
+    color: var(--separator-color) !important;
+    letter-spacing: 3px !important;
+    opacity: 0.6 !important;
+    font-size: 12px !important;
+    display: block !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }
 
-[data-theme="dark"] {
-    --bg-primary: #1a1816 !important;
-    --bg-secondary: #252220 !important;
-    --text-primary: #ffb000 !important;
-    --text-secondary: #cc8d00 !important;
-    --border-color: #3d3834 !important;
-    --link-color: #ffb000 !important;
-    --link-hover: #ffc83d !important;
-    --code-bg: #252220 !important;
-    --accent-color: #ffb000 !important;
-    --cursor-color: #ffb000 !important;
-    --scanline-color: rgba(255, 176, 0, 0.03) !important;
-    --text-glow: 0 0 2px rgba(255, 176, 0, 0.5) !important;
+[data-theme="dark"] hr::before {
+    opacity: 0.8 !important;
+    text-shadow: 0 0 3px var(--separator-color) !important;
 }
 
 /* ==================== BLOCKQUOTES ==================== */
 blockquote {
-    border-left-color: var(--accent-color);
-    background-color: var(--code-bg);
-    color: var(--text-secondary);
-    padding: 16px;
-    border-left-width: 4px;
-    border-left-style: solid;
-    margin: 20px 0;
-    font-style: italic;
+    border-left-color: var(--accent-color) !important;
+    background-color: var(--code-bg) !important;
+    color: var(--text-secondary) !important;
+    padding: 16px !important;
+    border-left-width: 4px !important;
+    border-left-style: solid !important;
+    margin: 20px 0 !important;
+    font-style: italic !important;
 }
 
 blockquote p {
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
 }
 
-/* ==================== THEME TOGGLE ==================== */
+/* ==================== THEME TOGGLE - BOTTOM RIGHT FLOATING ==================== */
 .theme-toggle {
     position: fixed !important;
     bottom: 30px !important;
@@ -254,59 +295,64 @@ blockquote p {
     color: var(--bg-primary) !important;
 }
 
-/* ==================== ENTER BUTTON ==================== */
+.theme-toggle:focus {
+    outline: 2px solid var(--toggle-border) !important;
+    outline-offset: 2px !important;
+}
+
+/* ==================== ENTER BUTTON (Table Links) ==================== */
 .theme-enter {
-    display: inline-block;
-    padding: 4px 10px;
-    background-color: var(--code-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    color: var(--accent-color);
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-    font-weight: bold;
-    text-decoration: none;
-    box-shadow: 0 2px 0 var(--border-color);
-    transition: all 0.1s ease;
+    display: inline-block !important;
+    padding: 4px 10px !important;
+    background-color: var(--code-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    color: var(--accent-color) !important;
+    font-family: var(--font-body) !important;
+    font-size: 0.85rem !important;
+    font-weight: bold !important;
+    text-decoration: none !important;
+    box-shadow: 0 2px 0 var(--border-color) !important;
+    transition: all 0.1s ease !important;
 }
 
 .theme-enter:hover {
-    transform: translateY(2px);
-    box-shadow: 0 0 0 var(--border-color);
-    background-color: var(--accent-color);
-    color: var(--bg-primary);
+    transform: translateY(2px) !important;
+    box-shadow: 0 0 0 var(--border-color) !important;
+    background-color: var(--accent-color) !important;
+    color: var(--bg-primary) !important;
 }
 
 /* ==================== HEADER & NAV ==================== */
 .site-header {
-    background-color: var(--bg-secondary);
-    border-bottom: 2px solid var(--accent-color);
-    padding: 20px 0;
+    background-color: var(--bg-secondary) !important;
+    border-bottom: 2px solid var(--accent-color) !important;
+    padding: 20px 0 !important;
 }
 
 .site-title {
-    color: var(--accent-color);
-    font-family: var(--font-heading);
-    font-size: 2rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
+    color: var(--accent-color) !important;
+    font-family: var(--font-heading) !important;
+    font-size: 2rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 3px !important;
 }
 
 .site-nav a {
-    color: var(--text-secondary);
-    font-family: var(--font-heading);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 1.2rem;
+    color: var(--text-secondary) !important;
+    font-family: var(--font-heading) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    font-size: 1.2rem !important;
 }
 
 .site-nav a:hover {
-    color: var(--accent-color);
-    background-color: transparent;
-    border-bottom: 2px solid var(--accent-color);
+    color: var(--accent-color) !important;
+    background-color: transparent !important;
+    border-bottom: 2px solid var(--accent-color) !important;
 }
 
-/* ==================== FOOTER ==================== */
+/* ==================== FOOTER - NO DUPLICATES ==================== */
 .site-footer .site-title {
     display: none !important;
 }
@@ -316,20 +362,19 @@ blockquote p {
 }
 
 .site-footer {
-    text-align: center;
-    padding: 20px 0;
-    border-top: 1px solid var(--border-color);
-    margin-top: 60px;
+    text-align: center !important;
+    padding: 20px 0 !important;
+    border-top: 1px solid var(--border-color) !important;
+    margin-top: 60px !important;
 }
 
 .site-footer p {
-    margin: 0;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
+    margin: 0 !important;
+    color: var(--text-secondary) !important;
+    font-size: 0.9rem !important;
 }
 
-/* ==================== HOME PAGE - NO DUPLICATES ==================== */
-/* Home page - hide Minima's auto-generated headings */
+/* ==================== HOME PAGE - NO DUPLICATE HEADERS ==================== */
 .home .page-heading {
     display: none !important;
 }
@@ -342,81 +387,83 @@ blockquote p {
     display: none !important;
 }
 
-/* Footer - hide duplicates */
-.site-footer .site-title {
-    display: none !important;
-}
-
-.site-footer .site-description {
-    display: none !important;
-}
-
-/* ==================== BLINKING CURSOR ==================== */
+/* ==================== BLINKING CURSOR ANIMATION ==================== */
 @keyframes blink {
-    0%, 100% { opacity: 1 !important; }
-    50% { opacity: 0 !important; }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
 }
 
-.cursor-blink {
-    color: var(--cursor-color) !important;
-}
-
-.cursor-blink::after {
-    content: '█' !important;
-    animation: blink 1s step-end infinite !important;
-    margin-left: 2px !important;
-    color: var(--accent-color) !important;
+/* ONLY target the FIRST h2 on home page */
+.home h2:first-of-type {
     display: inline-block !important;
+    border-right: 2px solid var(--accent-color) !important;
+    animation: blink 1s step-end infinite !important;
+    padding-right: 2px !important;
 }
 
-/* ==================== SCROLLBAR ==================== */
+/* Remove cursor from other h2 elements */
+.home h2:not(:first-of-type) {
+    border-right: none !important;
+    animation: none !important;
+}
+
+/* ==================== SCROLLBAR (Dark Mode) ==================== */
 [data-theme="dark"] ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 10px !important;
+    height: 10px !important;
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-track {
-    background: var(--bg-secondary);
+    background: var(--bg-secondary) !important;
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: 5px;
+    background: var(--border-color) !important;
+    border-radius: 5px !important;
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-    background: var(--link-color);
+    background: var(--link-color) !important;
 }
 
-/* ==================== MOBILE ==================== */
+/* ==================== MOBILE RESPONSIVE ==================== */
 @media (max-width: 768px) {
     .theme-toggle {
-        bottom: 20px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
-        font-size: 22px;
+        bottom: 20px !important;
+        right: 20px !important;
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 22px !important;
     }
 
     hr {
-        margin: 40px auto;
-        width: 80%;
+        margin: 40px auto !important;
+        width: 80% !important;
     }
 
     hr::before {
-        letter-spacing: 2px;
-        font-size: 10px;
+        letter-spacing: 2px !important;
+        font-size: 10px !important;
     }
 
-    h1 { font-size: 2rem; }
-    h2 { font-size: 1.5rem; }
+    h1 {
+        font-size: 2rem !important;
+    }
+
+    h2 {
+        font-size: 1.5rem !important;
+    }
 
     body::before {
-        background-size: 100% 2px;
+        background-size: 100% 2px !important;
     }
 
     .theme-enter {
-        padding: 3px 8px;
-        font-size: 0.75rem;
+        padding: 3px 8px !important;
+        font-size: 0.75rem !important;
+    }
+
+    .home h2:first-of-type {
+        font-size: 1.5rem !important;
     }
 }

@@ -1,129 +1,115 @@
 // =====================================================
-// THEME TOGGLE + TYPING EFFECT + BLINKING CURSOR
+// RETRO TERMINAL: Theme Toggle + Typing Effect
+// Portfolio: nikiforidi.github.io
 // =====================================================
 
 (function() {
+    'use strict';
+
     const THEME_KEY = 'portfolio-theme';
-    const DARK_THEME = 'dark';
-    const LIGHT_THEME = 'light';
+    const DARK = 'dark';
+    const LIGHT = 'light';
 
-    // Get saved theme
-    function getSavedTheme() {
-        return localStorage.getItem(THEME_KEY) || LIGHT_THEME;
+    // --- THEME FUNCTIONS ---
+    function getTheme() {
+        return localStorage.getItem(THEME_KEY) || LIGHT;
     }
 
-    // Save theme
-    function saveTheme(theme) {
+    function setTheme(theme) {
         localStorage.setItem(THEME_KEY, theme);
-    }
-
-    // Apply theme
-    function applyTheme(theme) {
-        if (theme === DARK_THEME) {
-            document.documentElement.setAttribute('data-theme', DARK_THEME);
+        if (theme === DARK) {
+            document.documentElement.setAttribute('data-theme', DARK);
         } else {
             document.documentElement.removeAttribute('data-theme');
         }
     }
 
-    // Toggle theme
-    function toggleTheme() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === DARK_THEME ? LIGHT_THEME : DARK_THEME;
-        applyTheme(newTheme);
-        saveTheme(newTheme);
-        updateToggleButton(newTheme);
-        console.log('[THEME] Switched to:', newTheme);
-    }
-
-    // Update toggle button
-    function updateToggleButton(theme) {
-        const toggleBtn = document.querySelector('.theme-toggle');
-        if (toggleBtn) {
-            toggleBtn.textContent = theme === DARK_THEME ? '☀️' : '🌙';
-            toggleBtn.setAttribute('aria-label', 
-                theme === DARK_THEME ? 'Switch to light mode' : 'Switch to dark mode'
-            );
-        }
-    }
-
-    // Create toggle button
     function createToggleButton() {
+        // Don't create if already exists
         if (document.querySelector('.theme-toggle')) {
             console.log('[THEME] Toggle button already exists');
             return;
         }
 
-        const toggleBtn = document.createElement('button');
-        toggleBtn.className = 'theme-toggle';
-        toggleBtn.setAttribute('aria-label', 'Toggle dark mode');
-        toggleBtn.setAttribute('type', 'button');
-        toggleBtn.addEventListener('click', toggleTheme);
-        document.body.appendChild(toggleBtn);
-        console.log('[THEME] Toggle button created');
+        const btn = document.createElement('button');
+        btn.className = 'theme-toggle';
+        btn.type = 'button';
+        btn.setAttribute('aria-label', 'Toggle dark mode');
+        
+        btn.addEventListener('click', function() {
+            const newTheme = getTheme() === DARK ? LIGHT : DARK;
+            setTheme(newTheme);
+            btn.textContent = newTheme === DARK ? '☀️' : '🌙';
+            console.log('[THEME] Switched to:', newTheme);
+        });
+
+        document.body.appendChild(btn);
+        btn.textContent = getTheme() === DARK ? '☀️' : '🌙';
+        console.log('[THEME] Button created');
     }
 
-    // Typing effect for home page header
+    // --- TYPING EFFECT (First H2 Only on Home Page) ---
     function applyTypingEffect() {
         // Only on home page
-        if (!document.body.classList.contains('home')) {
-            console.log('[TYPING] Not home page, skipping');
+        const isHome = document.body.classList.contains('home');
+        console.log('[TYPING] Is home page:', isHome);
+
+        if (!isHome) {
             return;
         }
 
-        // Find the h2 header
-        const header = document.querySelector('h2');
+        // Target ONLY the first h2 on home page
+        const header = document.querySelector('.home h2:first-of-type');
+        console.log('[TYPING] Header found:', !!header);
+
         if (!header) {
             console.log('[TYPING] No h2 header found');
             return;
         }
 
-        // Get original text
+        // Store original text
         const originalText = header.textContent.trim();
+        console.log('[TYPING] Text:', originalText);
+
         if (!originalText) {
             console.log('[TYPING] No text content');
             return;
         }
 
-        // Clear header
+        // Clear header content
         header.textContent = '';
 
-        // Create cursor span
-        const cursor = document.createElement('span');
-        cursor.className = 'cursor-blink';
-        cursor.textContent = '█';
-        header.appendChild(cursor);
-
-        // Typing animation
+        // Type characters
         let i = 0;
-        const speed = 80;
+        const speed = 80; // ms per character
 
         function type() {
             if (i < originalText.length) {
-                const char = document.createTextNode(originalText.charAt(i));
-                header.insertBefore(char, cursor);
+                header.textContent += originalText.charAt(i);
                 i++;
                 setTimeout(type, speed);
             }
+            // Cursor blink continues via CSS animation on .home h2:first-of-type
         }
 
+        // Start typing after delay
         setTimeout(type, 500);
-        console.log('[TYPING] Animation started for:', originalText);
+        console.log('[TYPING] Started');
     }
 
-    // Initialize everything
+    // --- INITIALIZE ---
     function init() {
-        const savedTheme = getSavedTheme();
-        applyTheme(savedTheme);
+        console.log('[INIT] Starting...');
+        console.log('[INIT] Saved theme:', getTheme());
+        
+        setTheme(getTheme());
         createToggleButton();
-        updateToggleButton(savedTheme);
-        console.log('[THEME] Initialized:', savedTheme);
-
-        // Apply typing effect
+        
+        // Apply typing effect after theme is set
         setTimeout(applyTypingEffect, 300);
     }
 
-    // Run when ready
+    // Run when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
