@@ -3,7 +3,6 @@ description: Architecture, Algorithms, System Design
 theme: minima
 plugins:
   - jekyll-feed
-
 header_pages:
   - index.md
   - about/

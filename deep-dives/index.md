@@ -1,6 +1,6 @@
 ---
 layout: page
-# title: Deep Dives
+title: Deep Dives
 permalink: /deep-dives/
 ---
 

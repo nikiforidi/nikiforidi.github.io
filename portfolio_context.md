@@ -1,6 +1,6 @@
 ---
 title: Portfolio Context Export
-generated: 2026-02-20 07:36:01
+generated: 2026-02-20 07:45:00
 format: Markdown
 scope: .md files only
 ---
@@ -69,8 +69,9 @@ permalink: /about/communities/
 ---
 
 [← Back to About](/about/)
-
 ```
+
+---
 
 ## File: `about/contact.md`
 
@@ -112,8 +113,9 @@ permalink: /about/contact/
 ---
 
 [← Back to About](/about/)
-
 ```
+
+---
 
 ## File: `about/index.md`
 
@@ -125,6 +127,7 @@ permalink: /about/
 ---
 
 ## Anatoly Nikiforov
+
 **Staff Software Engineer / Software Architect**
 
 📍 Moscow, Russia • ✈️ Open to Remote Work
@@ -183,8 +186,9 @@ Staff Software Engineer / Software Architect with **5+ years** of professional e
 ---
 
 **Last Updated:** February 2026
-
 ```
+
+---
 
 ## File: `about/philosophy.md`
 
@@ -263,10 +267,10 @@ I solidify understanding by teaching:
 
 ```
 Share Early → Accept Feedback → Improve → Repeat
-    ↓              ↓              ↓
-  GitHub        Issues, PRs    Real-world usage
-  Habr          Comments       237K views
-  PyPI          Downloads      anyd 0.4.1
+↓              ↓              ↓
+GitHub        Issues, PRs    Real-world usage
+Habr          Comments       237K views
+PyPI          Downloads      anyd 0.4.1
 ```
 
 ---
@@ -280,8 +284,9 @@ Share Early → Accept Feedback → Improve → Repeat
 ---
 
 [← Back to About](/about/)
-
 ```
+
+---
 
 ## File: `about/timeline.md`
 
@@ -296,14 +301,14 @@ permalink: /about/timeline/
 
 ```
 2017 ──── 2018 ──── 2019 ──── 2020 ──── 2021 ──── 2022 ──── 2023 ──── 2024 ──── 2025 ──── 2026
-  │         │         │         │         │         │         │         │         │         │
-  ▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼
+│         │         │         │         │         │         │         │         │         │
+▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼
 Habr      DNSCrypt  JetBrains VPN       Carrier   Forest    MIPT      MIND      MIND      1C
 Articles  (58K)     Academy   Manager   proxy     VPN       Course    Software  Software  Cloud
-                                                              │         │
-                                                              ▼         ▼
-                                                        Start       MHA, JEMP, SSA
-                                                        Course      Validation Stack
+│         │
+▼         ▼
+Start       MHA, JEMP, SSA
+Course      Validation Stack
 ```
 
 ---
@@ -343,8 +348,9 @@ Articles  (58K)     Academy   Manager   proxy     VPN       Course    Software  
 ---
 
 [← Back to About](/about/)
-
 ```
+
+---
 
 ## File: `deep-dives/anyd-daemon-framework.md`
 
@@ -417,25 +423,25 @@ This pattern applies to **unlimited possibilities**:
 │   Client    │                          │   Server    │
 │  (Unpriv.)  │                          │ (Privileged)│
 └──────┬──────┘                          └──────┬──────┘
-       │                                        │
-       │  1. Connect (socket + authkey)         │
-       │───────────────────────────────────────▶│
-       │                                        │
-       │  2. Register API methods (@api)        │
-       │                                        │◀──┐
-       │  3. commit("method", *args, **kwargs)  │   │
-       │───────────────────────────────────────▶│   │
-       │                                        │   │ Process
-       │                                        │───┘
-       │  4. Response or Exception              │
-       │◀───────────────────────────────────────│
-       │                                        │
-       │  5. end_session() (SIGENDS)            │
-       │───────────────────────────────────────▶│
-       │                                        │
-       │  6. Close connection                   │
-       │───────────────────────────────────────▶│
-       │                                        │
+│                                        │
+│  1. Connect (socket + authkey)         │
+│───────────────────────────────────────▶│
+│                                        │
+│  2. Register API methods (@api)        │
+│                                        │◀──┐
+│  3. commit("method", *args, **kwargs)  │   │
+│───────────────────────────────────────▶│   │
+│                                        │   │ Process
+│                                        │───┘
+│  4. Response or Exception              │
+│◀───────────────────────────────────────│
+│                                        │
+│  5. end_session() (SIGENDS)            │
+│───────────────────────────────────────▶│
+│                                        │
+│  6. Close connection                   │
+│───────────────────────────────────────▶│
+│                                        │
 ```
 
 ---
@@ -635,6 +641,8 @@ The beauty of **anyd** lies in its **agnosticism**:
 [← Back to Deep Dives](/deep-dives/)
 ```
 
+---
+
 ## File: `deep-dives/forestvpn-cli.md`
 
 ```markdown
@@ -714,15 +722,16 @@ Cross-platform VPN CLI client for Linux, OpenWRT, macOS, and Windows.
 ---
 
 [← Back to Deep Dives](/deep-dives/)
-
 ```
+
+---
 
 ## File: `deep-dives/index.md`
 
 ```markdown
 ---
 layout: page
-# title: Deep Dives
+title: Deep Dives
 permalink: /deep-dives/
 ---
 
@@ -745,8 +754,9 @@ Detailed architectural breakdowns of key projects with links to source code and 
 ---
 
 [← Back to Home](/)
-
 ```
+
+---
 
 ## File: `deep-dives/jetbrains-academy.md`
 
@@ -776,12 +786,12 @@ Educational Python project developed for JetBrains Academy Hyperskill track.
 │   User CLI  │────▶│  Translator │────▶│  Reverso    │
 │   Input     │     │   Logic     │     │   Context   │
 └─────────────┘     └─────────────┘     └─────────────┘
-                           │
-                           ▼
-                    ┌─────────────┐
-                    │   hs-test   │
-                    │  (Testing)  │
-                    └─────────────┘
+│
+▼
+┌─────────────┐
+│   hs-test   │
+│  (Testing)  │
+└─────────────┘
 ```
 
 ---
@@ -817,8 +827,9 @@ Educational Python project developed for JetBrains Academy Hyperskill track.
 ---
 
 [← Back to Deep Dives](/deep-dives/)
-
 ```
+
+---
 
 ## File: `deep-dives/mind-universe.md`
 
@@ -893,8 +904,9 @@ CRUD-like operations for cloud infrastructure resources (CIR):
 ---
 
 [← Back to Deep Dives](/deep-dives/)
-
 ```
+
+---
 
 ## File: `deep-dives/vpn-tunneling-architecture.md`
 
@@ -923,8 +935,8 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 │   vpnm CLI  │────▶│   vpnmd     │────▶│  anyd IPC   │
 │   (User)    │     │   (Root)    │     │  (Sockets)  │
 └─────────────┘     └─────────────┘     └─────────────┘
-       │                   │                   │
-       ▼                   ▼                   ▼
+│                   │                   │
+▼                   ▼                   ▼
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
 │  cloudflared│     │  tun2socks  │     │  v2ray-core │
 │    (DoH)    │     │   (TUN)     │     │   (Proxy)   │
@@ -973,8 +985,9 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 ---
 
 [← Back to Deep Dives](/deep-dives/)
-
 ```
+
+---
 
 ## File: `index.md`
 
@@ -1072,10 +1085,11 @@ Cross-platform VPN client (Linux, macOS, Windows, OpenWRT).
 ---
 
 > **Note:** All links are verified. All claims are backed by public evidence.
-> 
+>
 > **End of Line.**
-
 ```
+
+---
 
 ## File: `specs/index.md`
 
@@ -1096,11 +1110,11 @@ Technical specifications developed during tenure at MIND Software (2023-2025). E
 
 | Specification | Purpose | Status |
 |--------------|---------|--------|
-| [MHA](mha.md) | Model Hashing Algorithm — CIR change detection | Documented |
-| [SSA](ssa.md) | Sequence Sorting Algorithm — Go map ordering | Documented |
-| [JEMP](jemp.md) | Job Event Messaging Protocol — Concurrency model | Documented |
-| [Validation Stack](validation-stack.md) | Unified Model validation layer | Documented |
-| [Transactional Models](transactional-models.md) | VM deployment transaction process | Documented |
+| [MHA](mha.md) | Model Hashing Algorithm — CIR change detection | ✅ Documented |
+| [SSA](ssa.md) | Sequence Sorting Algorithm — Go map ordering | ✅ Documented |
+| [JEMP](jemp.md) | Job Event Messaging Protocol — Concurrency model | ✅ Documented |
+| [Validation Stack](validation-stack.md) | Unified Model validation layer | ✅ Documented |
+| [Transactional Models](transactional-models.md) | VM deployment transaction process | ✅ Documented |
 
 ---
 
@@ -1110,9 +1124,10 @@ Technical specifications developed during tenure at MIND Software (2023-2025). E
 
 ---
 
-**Author:** Anatoly Nikiforov, 2023-2025
-
+[← Back to Home](/)
 ```
+
+---
 
 ## File: `specs/jemp.md`
 
@@ -1121,7 +1136,6 @@ Technical specifications developed during tenure at MIND Software (2023-2025). E
 layout: page
 title: Job Event Messaging Protocol (JEMP)
 permalink: /specs/jemp/
-author: Anatoly Nikiforov, 2023
 ---
 
 ## Full Specification
@@ -1148,9 +1162,9 @@ author: Anatoly Nikiforov, 2023
 ┌─────────────┐         ┌─────────────┐
 │  Job Pool   │◄───────►│  Event Bus  │
 └─────────────┘         └─────────────┘
-                              │
-         ┌────────────────────┼────────────────────┐
-         ▼                    ▼                    ▼
+│
+┌────────────────────┼────────────────────┐
+▼                    ▼                    ▼
 ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
 │   Heartbeat     │  │   Finished      │  │   Internal      │
 │   Event         │  │   Event         │  │   Event         │
@@ -1163,9 +1177,9 @@ author: Anatoly Nikiforov, 2023
 ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐
 │  Queued │───▶│ Running │───▶│Finished │    │  Lost   │
 └─────────┘    └────┬────┘    └─────────┘    └────▲────┘
-                    │                              │
-                    └────── Heartbeat ─────────────┘
-                         (Timeout → Lost)
+│                              │
+└────── Heartbeat ─────────────┘
+(Timeout → Lost)
 ```
 
 ---
@@ -1220,8 +1234,9 @@ author: Anatoly Nikiforov, 2023
 ---
 
 [← Back to Specifications](/specs/)
-
 ```
+
+---
 
 ## File: `specs/mha.md`
 
@@ -1230,7 +1245,6 @@ author: Anatoly Nikiforov, 2023
 layout: page
 title: Model Hashing Algorithm (MHA)
 permalink: /specs/mha/
-author: Anatoly Nikiforov, 2023
 ---
 
 ## Full Specification
@@ -1258,11 +1272,11 @@ author: Anatoly Nikiforov, 2023
 │     CPU     │     RAM     │    Disks    │  OS / ID     │
 │   (hash)    │   (hash)    │   (hash)    │   (hash)     │
 └─────────────┴─────────────┴─────────────┴──────────────┘
-                          │
-                          ▼
-              ┌───────────────────────┐
-              │   Combined VM Hash    │
-              └───────────────────────┘
+│
+▼
+┌───────────────────────┐
+│   Combined VM Hash    │
+└───────────────────────┘
 ```
 
 ### Bidirectional Comparison
@@ -1274,13 +1288,13 @@ author: Anatoly Nikiforov, 2023
 ├──────────────────┤              ├──────────────────┤
 │  MHA Hash Calc   │              │  MHA Hash Calc   │
 └────────┬─────────┘              └────────┬─────────┘
-         │                                 │
-         └─────────────┬───────────────────┘
-                       ▼
-              ┌─────────────────┐
-              │   Hash Compare  │
-              │  (Change Detect)│
-              └─────────────────┘
+│                                 │
+└─────────────┬───────────────────┘
+▼
+┌─────────────────┐
+│   Hash Compare  │
+│  (Change Detect)│
+└─────────────────┘
 ```
 
 ---
@@ -1326,8 +1340,9 @@ author: Anatoly Nikiforov, 2023
 ---
 
 [← Back to Specifications](/specs/)
-
 ```
+
+---
 
 ## File: `specs/ssa.md`
 
@@ -1336,7 +1351,6 @@ author: Anatoly Nikiforov, 2023
 layout: page
 title: Sequence Sorting Algorithm (SSA)
 permalink: /specs/ssa/
-author: Anatoly Nikiforov, 2023
 ---
 
 ## Full Specification
@@ -1364,20 +1378,20 @@ author: Anatoly Nikiforov, 2023
 │   Input Map     │
 │ {0:1, 2:3, 4:5} │
 └────────┬────────┘
-         │
-         ▼
+│
+▼
 ┌─────────────────┐
 │  Extract Keys   │
 │   [0, 2, 4]     │
 └────────┬────────┘
-         │
-         ▼
+│
+▼
 ┌─────────────────┐
 │  Sort + Zero    │
 │   Last Logic    │
 └────────┬────────┘
-         │
-         ▼
+│
+▼
 ┌─────────────────┐
 │  Output Slice   │
 │   [2, 4, 0]     │
@@ -1393,7 +1407,6 @@ func SequenceSorting(m map[int]int) (order []int) {
     mlen := len(m)
     keys := make([]int, mlen)
     var mismatchCounter int
-
     for i := 0; i < mlen*2; i++ {
         _, ok := m[i]
         if ok {
@@ -1402,9 +1415,7 @@ func SequenceSorting(m map[int]int) (order []int) {
             mismatchCounter++
         }
     }
-
     sort.Ints(keys)
-
     order = make([]int, mlen)
     for i := 1; i < mlen; i++ {
         order[i-1] = keys[i]
@@ -1469,8 +1480,9 @@ Output: [2, 4, 6, 8, 0]
 ---
 
 [← Back to Specifications](/specs/)
-
 ```
+
+---
 
 ## File: `specs/transactional-models.md`
 
@@ -1479,7 +1491,6 @@ Output: [2, 4, 6, 8, 0]
 layout: page
 title: Transactional Models
 permalink: /specs/transactional-models/
-author: Anatoly Nikiforov, 2023
 ---
 
 ## Full Specification
@@ -1507,10 +1518,10 @@ author: Anatoly Nikiforov, 2023
 │  Prototype  │─────▶│    Base     │─────▶│  Complete   │
 │   Model     │      │   Model     │      │   Model     │
 └─────────────┘      └─────────────┘      └─────────────┘
-      │                    │                    │
-      ▼                    ▼                    ▼
- Source Unit +        User Input          Validation +
- Placement          Customization        Default Values
+│                    │                    │
+▼                    ▼                    ▼
+Source Unit +        User Input          Validation +
+Placement          Customization        Default Values
 ```
 
 ---
@@ -1561,8 +1572,9 @@ author: Anatoly Nikiforov, 2023
 ---
 
 [← Back to Specifications](/specs/)
-
 ```
+
+---
 
 ## File: `specs/validation-stack.md`
 
@@ -1571,7 +1583,6 @@ author: Anatoly Nikiforov, 2023
 layout: page
 title: Universe Validation Stack
 permalink: /specs/validation-stack/
-author: Anatoly Nikiforov, 2023
 ---
 
 ## Full Specification
@@ -1603,9 +1614,9 @@ author: Anatoly Nikiforov, 2023
 │  ...                                    │
 │  Validator 1 (Bottom)                   │
 └─────────────────────────────────────────┘
-         │
-         ▼
-    FILO Execution
+│
+▼
+FILO Execution
 ```
 
 ### Execution Flow
@@ -1670,21 +1681,3 @@ Validator 1 ✓ → Validator 2 ✗ → Validator 3 ✓ → Collect All
 ---
 
 [← Back to Specifications](/specs/)
-
-```
-
----
-
-## Export Summary
-
-| Metric | Value |
-|--------|-------|
-| **Total Files** | 18 |
-| **Generated** | 2026-02-20 07:36:01 |
-| **Format** | Markdown (.md) |
-| **Scope** | .md files only |
-| **Total Size** | 49KB |
-
----
-
-*Auto-generated by generate_context.py*

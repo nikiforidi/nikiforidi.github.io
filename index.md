@@ -65,7 +65,7 @@ Unix daemon IPC framework published on PyPI.
 
 ### ▶ VPN Tunneling Architecture
 Linux VPN client with TUN/TAP, Netfilter, and DNS redirection.
-- **Repositories:** [`vpnm`](https://github.com/anatolio-deb/vpnm) (154 commits), [`vpnmd`](https://github.com/anatolio-deb/vpnmd) (62 commits)
+- **Repositories:** [`vpnm`](https://github.com/nikiforidi/vpnm) (154 commits), [`vpnmd`](https://github.com/nikiforidi/vpnmd) (62 commits)
 - **Tech:** TUN/TAP, Netfilter, cloudflared DoH, tun2socks
 - **Execute:** [`/deep-dives/vpn-tunneling-architecture/`](/deep-dives/vpn-tunneling-architecture/)
 
@@ -91,5 +91,5 @@ Cross-platform VPN client (Linux, macOS, Windows, OpenWRT).
 ---
 
 > **Note:** All links are verified. All claims are backed by public evidence.
-> 
+>
 > **End of Line.**

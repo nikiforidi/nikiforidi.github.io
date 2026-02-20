@@ -72,10 +72,10 @@ I solidify understanding by teaching:
 
 ```
 Share Early → Accept Feedback → Improve → Repeat
-    ↓              ↓              ↓
-  GitHub        Issues, PRs    Real-world usage
-  Habr          Comments       237K views
-  PyPI          Downloads      anyd 0.4.1
+↓              ↓              ↓
+GitHub        Issues, PRs    Real-world usage
+Habr          Comments       237K views
+PyPI          Downloads      anyd 0.4.1
 ```
 
 ---
