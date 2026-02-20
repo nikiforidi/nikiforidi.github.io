@@ -25,9 +25,11 @@ header_pages:
 
 # Exclude
 exclude:
-  - generate_context.zsh
   - generate_context.py
-  - portfolio_context.txt
+  - init_portfolio.py
+  - rebuild.sh
   - portfolio_context.md
   - Gemfile
+  - Gemfile.lock
   - README.md
+  - .gitignore

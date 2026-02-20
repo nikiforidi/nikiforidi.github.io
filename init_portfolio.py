@@ -2,7 +2,7 @@
 # ==============================================================================
 # Script: init_portfolio.py
 # Purpose: Generate complete technical portfolio with all markdown content
-# Version: 1.0.0 (Based on portfolio_context.md)
+# Version: 11.0.0 (Warm Nostalgia Theme - All Fixes Applied)
 # Author: Anatoly Nikiforov
 # ==============================================================================
 
@@ -40,7 +40,9 @@ def log_header(message):
     log("INFO", "==============================================")
     print("")
 
-# --- File Contents (from portfolio_context.md) ---
+# ==============================================================================
+# FILE CONTENTS (All 18 markdown files with fixes applied)
+# ==============================================================================
 
 CONFIG_YML = """title: Anatoly Nikiforov
 description: Architecture, Algorithms, System Design
@@ -61,7 +63,7 @@ tagline: Architecture, Algorithms, System Design
 permalink: /
 ---
 
-## Welcome, Traveler
+## Welcome, Traveler ☕
 
 ```bash
 $ whoami
@@ -70,9 +72,12 @@ $ status
 > Ready for remote work
 $ location
 > Moscow, Russia
+$ echo "Grab a coffee, make yourself comfortable"
 ```
 
-This portfolio is designed for **cozy reading** about engineering craft. Grab a cup of tea ☕, pull up a chair, and explore the **how** and **why** behind the systems I've built.
+Pull up a chair. This portfolio is designed for **cozy reading** about engineering craft—the kind of late-night coding sessions where the only company is your terminal, a warm cup of coffee, and the satisfaction of solving hard problems.
+
+Whether you're here to review architecture, reminisce about the old days, or just enjoy well-documented systems, **make yourself at home**.
 
 ---
 
@@ -110,6 +115,14 @@ Event-driven concurrency model for distributed job execution.
 
 ---
 
+## A Note for Veteran Engineers
+
+> If you remember debugging with print statements, deploying via FTP, or celebrating when your code fit in 64KB of RAM—you'll feel at home here. These specs are written with the same care we used to put into our README files back when documentation actually mattered.
+>
+> — Anatoly
+
+---
+
 ## Featured Deep Dives
 
 ### ▶ anyd Daemon Framework
@@ -143,12 +156,15 @@ Cross-platform VPN client (Linux, macOS, Windows, OpenWRT).
 | **Packages** | 1 published (anyd 0.4.1) |
 | **Docs** | 5 architectural specifications |
 | **Last Build** | February 2026 |
+| **Coffee Consumed** | ∞ cups |
 
 ---
 
 > **Note:** All links are verified. All claims are backed by public evidence.
 >
-> **End of Line.**
+> The terminal is warm, the coffee is fresh, and the code is documented.
+>
+> **Stay a while.** 🖥️
 """
 
 ABOUT_INDEX_MD = """---
@@ -298,6 +314,26 @@ GitHub        Issues, PRs    Real-world usage
 Habr          Comments       237K views
 PyPI          Downloads      anyd 0.4.1
 ```
+
+---
+
+## A Letter to Veteran Engineers
+
+If you're reading this and you remember:
+
+- ⌨️ Editing code in `vi` without syntax highlighting
+- 💾 Compiling code overnight and hoping it worked
+- 📠 Debugging via print statements and log files
+- 🌐 Deploying via FTP and holding your breath
+- 📚 Reading physical man pages because Stack Overflow didn't exist
+
+...then you understand why **documentation matters**.
+
+This portfolio is my small contribution to keeping that spirit alive—the belief that **engineering is a craft**, not just a job. That systems should be **understandable**, not just functional. That we should **leave things better than we found them**.
+
+Welcome to my corner of the internet. The terminal is always warm, and there's always coffee. ☕
+
+— Anatoly
 
 ---
 
@@ -467,9 +503,6 @@ permalink: /about/contact/
 [← Back to About](/about/)
 """
 
-# Add remaining file contents (specs/ and deep-dives/)
-# For brevity, I'll include the structure - you can expand with full content
-
 SPECS_INDEX_MD = """---
 layout: page
 title: Specifications
@@ -486,21 +519,552 @@ Technical specifications developed during tenure at MIND Software (2023-2025). E
 
 | Specification | Purpose | Status |
 |--------------|---------|--------|
-| [MHA](mha.md) | Model Hashing Algorithm — CIR change detection | ✅ Documented |
-| [SSA](ssa.md) | Sequence Sorting Algorithm — Go map ordering | ✅ Documented |
-| [JEMP](jemp.md) | Job Event Messaging Protocol — Concurrency model | ✅ Documented |
-| [Validation Stack](validation-stack.md) | Unified Model validation layer | ✅ Documented |
-| [Transactional Models](transactional-models.md) | VM deployment transaction process | ✅ Documented |
+| [MHA](mha/) | Model Hashing Algorithm — CIR change detection | ✅ Documented |
+| [SSA](ssa/) | Sequence Sorting Algorithm — Go map ordering | ✅ Documented |
+| [JEMP](jemp/) | Job Event Messaging Protocol — Concurrency model | ✅ Documented |
+| [Validation Stack](validation-stack/) | Unified Model validation layer | ✅ Documented |
+| [Transactional Models](transactional-models/) | VM deployment transaction process | ✅ Documented |
 
 ---
 
 ## Related Concepts
 
-- [DRUID API](/deep-dives/mind-universe) — Deploy, Refresh, Update, Import, Destroy (see MIND Universe)
+- [DRUID API](/deep-dives/mind-universe/) — Deploy, Refresh, Update, Import, Destroy (see MIND Universe)
 
 ---
 
-**Author:** Anatoly Nikiforov, 2023-2025
+[← Back to Home](/)
+"""
+
+SPECS_MHA_MD = """---
+layout: page
+title: Model Hashing Algorithm (MHA)
+permalink: /specs/mha/
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Model-Hashing-Algorithm-MHA-e725fd99f9d74481965cb542c1727d0e)
+
+---
+
+## Overview
+
+**Purpose:** Detect changes between cloud infrastructure resource (CIR) database records and actual state on cloud provider sites.
+
+**Context:** MIND Universe DRUID action stack (Refresh, Update actions).
+
+---
+
+## Architecture
+
+### Nested Hashing Model
+
+```
+┌────────────────────────────────────────────────────────┐
+│                    Virtual Machine                     │
+├─────────────┬─────────────┬─────────────┬──────────────┤
+│     CPU     │     RAM     │    Disks    │  OS / ID     │
+│   (hash)    │   (hash)    │   (hash)    │   (hash)     │
+└─────────────┴─────────────┴─────────────┴──────────────┘
+│
+▼
+┌───────────────────────┐
+│   Combined VM Hash    │
+└───────────────────────┘
+```
+
+### Bidirectional Comparison
+
+```
+┌──────────────────┐              ┌──────────────────┐
+│  Unified Model   │              │      Facts       │
+│   (DB Record)    │              │  (Cloud API)     │
+├──────────────────┤              ├──────────────────┤
+│  MHA Hash Calc   │              │  MHA Hash Calc   │
+└────────┬─────────┘              └────────┬─────────┘
+│                                 │
+└─────────────┬───────────────────┘
+▼
+┌─────────────────┐
+│   Hash Compare  │
+│  (Change Detect)│
+└─────────────────┘
+```
+
+---
+
+## Key Design Decisions
+
+| Decision | Alternative | Rationale |
+|----------|-------------|-----------|
+| **Nested Hashing** | Flat hash | Component-level change detection |
+| **Bidirectional** | One-way comparison | Same algorithm for DB + API |
+| **Common Components Only** | All fields | Cross-cloud compatibility |
+
+---
+
+## Metrics
+
+| Metric | Value |
+|--------|-------|
+| **Hash Calculation Time** | <100ms per CIR |
+| **Change Detection Accuracy** | 100% |
+| **Supported CIR Types** | VM, Network, Storage |
+| **Cloud Providers** | VMware, OpenStack, oVirt, SpaceVM |
+
+---
+
+## Trade-offs
+
+| Trade-off | Impact |
+|-----------|--------|
+| Vendor-specific fields excluded | Some details not tracked |
+| Hash collisions possible | Mitigated by nested structure |
+| Additional computation overhead | Acceptable for accuracy gain |
+
+---
+
+## Related Specifications
+
+- [SSA](/specs/ssa/) — Sequence ordering for model processing
+- [JEMP](/specs/jemp/) — Job concurrency model
+- [Validation Stack](/specs/validation-stack/) — Input validation
+- [Transactional Models](/specs/transactional-models/) — VM deployment states
+
+---
+
+[← Back to Specifications](/specs/)
+"""
+
+SPECS_SSA_MD = """---
+layout: page
+title: Sequence Sorting Algorithm (SSA)
+permalink: /specs/ssa/
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://www.notion.so/Sequence-Sorting-Algorithm-SSA-44f828765101456d9ed1a3b6898088a1)
+
+---
+
+## Overview
+
+**Purpose:** Sort Go map integer keys in ascending order with zero key last: `[1, 2, 4, 7, 0]`
+
+**Context:** Sequential Model Processing (SMP) in MIND Universe DRUID API.
+
+**Problem:** Go maps are unordered; we need deterministic iteration with zero-last semantics.
+
+---
+
+## Architecture
+
+### Algorithm Flow
+
+```
+┌─────────────────┐
+│   Input Map     │
+│ {0:1, 2:3, 4:5} │
+└────────┬────────┘
+│
+▼
+┌─────────────────┐
+│  Extract Keys   │
+│   [0, 2, 4]     │
+└────────┬────────┘
+│
+▼
+┌─────────────────┐
+│  Sort + Zero    │
+│   Last Logic    │
+└────────┬────────┘
+│
+▼
+┌─────────────────┐
+│  Output Slice   │
+│   [2, 4, 0]     │
+└─────────────────┘
+```
+
+---
+
+## Implementation
+
+```go
+func SequenceSorting(m map[int]int) (order []int) {
+    mlen := len(m)
+    keys := make([]int, mlen)
+    var mismatchCounter int
+    for i := 0; i < mlen*2; i++ {
+        _, ok := m[i]
+        if ok {
+            keys[i-mismatchCounter] = i
+        } else {
+            mismatchCounter++
+        }
+    }
+    sort.Ints(keys)
+    order = make([]int, mlen)
+    for i := 1; i < mlen; i++ {
+        order[i-1] = keys[i]
+    }
+    return
+}
+```
+
+---
+
+## Benchmarks
+
+| Metric | Value |
+|--------|-------|
+| **Input Size** | 1,000,000 keys |
+| **Execution Time** | 116.9 ms |
+| **Complexity** | O(n*2) lookup + O(n log n) sort |
+| **Memory** | 2x key slice allocation |
+
+### Benchmark Results
+
+```
+Keys processed: 1000000
+2023/05/26 15:17:32 Sort took 116.915073ms
+```
+
+---
+
+## Mutations
+
+```
+Input:  {0: 1, 2: 3, 4: 5, 6: 7, 8: 9}
+Keys:   [0, 2, 4, 6, 8]
+Output: [2, 4, 6, 8, 0]
+```
+
+---
+
+## Trade-offs
+
+| Trade-off | Impact |
+|-----------|--------|
+| O(n*2) iterations | Acceptable for n<1M |
+| Extra slice allocation | Memory overhead ~2x |
+| Zero-last semantics | Required for SMP ordering |
+
+---
+
+## Proof of Concept
+
+🔗 [**Go Playground: SSA PoC →**](https://go.dev/play/p/gXdgi47OGDO)
+
+---
+
+## Related Specifications
+
+- [MHA](/specs/mha/) — Model hashing
+- [JEMP](/specs/jemp/) — Job messaging
+- [Validation Stack](/specs/validation-stack/) — Model validation
+- [Transactional Models](/specs/transactional-models/) — Deployment states
+
+---
+
+[← Back to Specifications](/specs/)
+"""
+
+SPECS_JEMP_MD = """---
+layout: page
+title: Job Event Messaging Protocol (JEMP)
+permalink: /specs/jemp/
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Universe-concurrency-model-4ea53fe313bb47eeaf8711db26828c39)
+
+---
+
+## Overview
+
+**Purpose:** Track concurrent job execution state without MQ overhead.
+
+**Context:** MIND Universe Job Pool concurrency model.
+
+**Problem:** Need to track job state (running, lost, finished) without constant MQ polling.
+
+---
+
+## Architecture
+
+### Event-Driven Model
+
+```
+┌─────────────┐         ┌─────────────┐
+│  Job Pool   │◄───────►│  Event Bus  │
+└─────────────┘         └─────────────┘
+│
+┌────────────────────┼────────────────────┐
+▼                    ▼                    ▼
+┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+│   Heartbeat     │  │   Finished      │  │   Internal      │
+│   Event         │  │   Event         │  │   Event         │
+└─────────────────┘  └─────────────────┘  └─────────────────┘
+```
+
+### Job Lifecycle
+
+```
+┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐
+│  Queued │───▶│ Running │───▶│Finished │    │  Lost   │
+└─────────┘    └────┬────┘    └─────────┘    └────▲────┘
+│                              │
+└────── Heartbeat ─────────────┘
+(Timeout → Lost)
+```
+
+---
+
+## Event Types
+
+| Event Type | Description | Frequency |
+|------------|-------------|-----------|
+| **Heartbeat** | Job alive indicator | Every N seconds |
+| **Finished** | Job completed successfully | Once per job |
+| **Internal** | System events (JC, Checkpointer) | As needed |
+
+---
+
+## Components
+
+### Job Collector (JC)
+
+| Metric | Value |
+|--------|-------|
+| **Timeout Threshold** | Configurable (default: 5 min) |
+| **Check Interval** | Every 30 seconds |
+| **Action** | Unregister lost jobs from pool |
+
+### Checkpointer
+
+| Metric | Value |
+|--------|-------|
+| **Checkpoint Interval** | Configurable (default: 1 min) |
+| **Persistence** | Local disk snapshot |
+| **Recovery** | Restore queued jobs after restart |
+
+---
+
+## Trade-offs
+
+| Trade-off | Impact |
+|-----------|--------|
+| Event bus overhead | Minimal (in-process) |
+| Heartbeat frequency | Network traffic vs. detection speed |
+| Checkpoint frequency | Disk I/O vs. recovery point |
+
+---
+
+## Related Specifications
+
+- [MHA](/specs/mha/) — Model hashing
+- [SSA](/specs/ssa/) — Sequence ordering
+- [Validation Stack](/specs/validation-stack/) — Model validation
+- [Transactional Models](/specs/transactional-models/) — Deployment states
+
+---
+
+[← Back to Specifications](/specs/)
+"""
+
+SPECS_VALIDATION_STACK_MD = """---
+layout: page
+title: Universe Validation Stack
+permalink: /specs/validation-stack/
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Universe-Models-Validation-479bb17669ea446d8ea67e74f3be475f)
+
+---
+
+## Overview
+
+**Purpose:** Centralized validation layer for Unified Models before infrastructure interaction.
+
+**Context:** MIND Universe Job execution pipeline.
+
+**Problem:** Handle user input errors locally before sending requests to cloud infrastructure.
+
+---
+
+## Architecture
+
+### Stack Structure
+
+```
+┌─────────────────────────────────────────┐
+│           Validation Stack              │
+├─────────────────────────────────────────┤
+│  Validator N (Top)                      │
+│  Validator N-1                          │
+│  ...                                    │
+│  Validator 1 (Bottom)                   │
+└─────────────────────────────────────────┘
+│
+▼
+FILO Execution
+```
+
+### Execution Flow
+
+```
+Push Validators → Run Chain (FILO) → Collect Results → Empty Stack
+```
+
+---
+
+## Scopes of Usage
+
+| Scope | Name | Purpose |
+|-------|------|---------|
+| **Global** | Site Worker | Validate across the Job (e.g., look for duplicates) |
+| **Models** | Site Driver | Check specific fields of Unified Models |
+
+---
+
+## Modes
+
+### Strict Mode
+
+```
+Validator 1 ✓ → Validator 2 ✗ → STOP
+```
+
+### Fault-Tolerant Mode
+
+```
+Validator 1 ✓ → Validator 2 ✗ → Validator 3 ✓ → Collect All
+```
+
+---
+
+## Reusable Validators
+
+| Type | Behavior |
+|------|----------|
+| **Reusable** | Kept after chain execution |
+| **Non-Reusable** | Removed after chain execution |
+
+---
+
+## Trade-offs
+
+| Trade-off | Impact |
+|-----------|--------|
+| Additional validation layer | Slight latency increase |
+| Local error handling | Reduced infrastructure errors |
+| Pluggable validators | Flexible validation logic |
+
+---
+
+## Related Specifications
+
+- [MHA](/specs/mha/) — Model hashing
+- [SSA](/specs/ssa/) — Sequence ordering
+- [JEMP](/specs/jemp/) — Job messaging
+- [Transactional Models](/specs/transactional-models/) — Deployment states
+
+---
+
+[← Back to Specifications](/specs/)
+"""
+
+SPECS_TRANSACTIONAL_MODELS_MD = """---
+layout: page
+title: Transactional Models
+permalink: /specs/transactional-models/
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Unified-model-transactions-in-the-Universe-Deploy-1561ff431c37452bb1e2645b27586b75)
+
+---
+
+## Overview
+
+**Purpose:** Describe the multi-stage process of building Unified Models for VM deployment.
+
+**Context:** MIND Universe VM deployment backend.
+
+**Problem:** VM deployment requires multi-source, multi-stage model construction.
+
+---
+
+## Architecture
+
+### Model States
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│  Prototype  │─────▶│    Base     │─────▶│  Complete   │
+│   Model     │      │   Model     │      │   Model     │
+└─────────────┘      └─────────────┘      └─────────────┘
+│                    │                    │
+▼                    ▼                    ▼
+Source Unit +        User Input          Validation +
+Placement          Customization        Default Values
+```
+
+---
+
+## Model States
+
+| State | Source | Purpose |
+|-------|--------|---------|
+| **Prototype** | Source Unit + Placement | Initial model tied to data sources |
+| **Base** | User customization | User overrides prototype values |
+| **Complete** | Universe validation + defaults | Ready for deployment |
+
+---
+
+## Key Design Decisions
+
+| Decision | Alternative | Rationale |
+|----------|-------------|-----------|
+| **Three-state model** | Single-state | Clear separation of concerns |
+| **User customization step** | Direct deploy | User control over final config |
+| **Validation before deploy** | Validate on target | Catch errors early |
+
+---
+
+## Rollback Mechanism ⚠️
+
+> **Note:** A rollback mechanism was implemented through DRUID API calls to remove redundant CIRs during deployment. This feature exists in the codebase but cannot be publicly documented due to NDA restrictions.
+
+---
+
+## Trade-offs
+
+| Trade-off | Impact |
+|-----------|--------|
+| Multi-stage process | Increased complexity |
+| User customization | More flexibility, more validation |
+| Default values | Consistency across platforms |
+
+---
+
+## Related Specifications
+
+- [MHA](/specs/mha/) — Model hashing
+- [SSA](/specs/ssa/) — Sequence ordering
+- [JEMP](/specs/jemp/) — Job messaging
+- [Validation Stack](/specs/validation-stack/) — Model validation
+
+---
+
+[← Back to Specifications](/specs/)
 """
 
 DEEP_DIVES_INDEX_MD = """---
@@ -519,15 +1083,462 @@ Detailed architectural breakdowns of key projects with links to source code and 
 
 | Project | Description | Links |
 |---------|-------------|-------|
-| [anyd Daemon Framework](anyd-daemon-framework.md) | Unix daemon IPC framework | [PyPI](https://pypi.org/project/anyd/), [GitHub](https://github.com/anatolio-deb/anyd) |
-| [VPN Tunneling Architecture](vpn-tunneling-architecture.md) | Linux VPN client with TUN/TAP | [vpnm](https://github.com/nikiforidi/vpnm), [vpnmd](https://github.com/nikiforidi/vpnmd) |
-| [ForestVPN CLI](forestvpn-cli.md) | Cross-platform VPN client | [GitHub](https://github.com/forestvpn/cli) |
-| [JetBrains Academy](jetbrains-academy.md) | Python educational project | [Hyperskill](https://hyperskill.org/projects/99) |
-| [MIND Universe](mind-universe.md) | Cloud infrastructure management | [Specs](/specs/) |
+| [anyd Daemon Framework](anyd-daemon-framework/) | Unix daemon IPC framework | [PyPI](https://pypi.org/project/anyd/), [GitHub](https://github.com/anatolio-deb/anyd) |
+| [VPN Tunneling Architecture](vpn-tunneling-architecture/) | Linux VPN client with TUN/TAP | [vpnm](https://github.com/nikiforidi/vpnm), [vpnmd](https://github.com/nikiforidi/vpnmd) |
+| [ForestVPN CLI](forestvpn-cli/) | Cross-platform VPN client | [GitHub](https://github.com/forestvpn/cli) |
+| [JetBrains Academy](jetbrains-academy/) | Python educational project | [Hyperskill](https://hyperskill.org/projects/99) |
+| [MIND Universe](mind-universe/) | Cloud infrastructure management | [Specs](/specs/) |
 
 ---
 
 [← Back to Home](/)
+"""
+
+DEEP_DIVES_ANYD_MD = """---
+layout: page
+title: "anyd Daemon Framework"
+permalink: /deep-dives/anyd-daemon-framework/
+---
+
+## Overview
+
+**anyd** is a Python framework for building custom Unix daemons with socket-based IPC APIs.
+
+The name **anyd** stands for "**any daemon**" — reflecting its universal purpose: enabling secure, isolated, privileged code execution for any use case requiring privilege separation.
+
+- **PyPI:** [anyd 0.4.1](https://pypi.org/project/anyd/)
+- **GitHub:** [anatolio-deb/anyd](https://github.com/anatolio-deb/anyd)
+- **Released:** August 20, 2021
+- **License:** MIT + BSD
+- **Python:** >=3.8, <4.0
+
+---
+
+## Core Philosophy: Universal Privilege Separation
+
+**anyd** is not limited to VPN-specific logic. It solves a fundamental architectural problem:
+
+> **How do you allow an unprivileged user-space client to safely execute privileged operations without exposing the entire system?**
+
+### The anyd Solution
+
+| Component | Responsibility | Privilege Level |
+|-----------|---------------|-----------------|
+| **Server (Appd)** | Executes sensitive operations | Root / Privileged |
+| **Client (Session)** | Requests operations | User / Unprivileged |
+| **IPC Channel** | Secure communication | Authenticated (authkey) |
+| **Boundary** | Security isolation | Process separation |
+
+This pattern applies to **unlimited possibilities**:
+- ✅ VPN tunneling (network privileges)
+- ✅ Secrets management (memory protection)
+- ✅ Hardware control (GPIO/USB access)
+- ✅ System administration (service restarts)
+- ✅ Database operations (credential isolation)
+
+---
+
+## Architecture
+
+### Component Model
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    anyd Framework                       │
+├───────────────────────────┬─────────────────────────────┤
+│      Server (Appd)        │       Client (Session)      │
+├───────────────────────────┼─────────────────────────────┤
+│ • multiprocessing.Listener│ • multiprocessing.Client    │
+│ • @api decorator registry │ • commit(endpoint, *args)   │
+│ • Request/response loop   │ • Exception propagation     │
+│ • SIGENDS session close   │ • Context manager support   │
+└───────────────────────────┴─────────────────────────────┘
+```
+
+### Communication Flow
+
+```
+┌─────────────┐                          ┌─────────────┐
+│   Client    │                          │   Server    │
+│  (Unpriv.)  │                          │ (Privileged)│
+└──────┬──────┘                          └──────┬──────┘
+│                                        │
+│  1. Connect (socket + authkey)         │
+│───────────────────────────────────────▶│
+│                                        │
+│  2. Register API methods (@api)        │
+│                                        │◀──┐
+│  3. commit("method", *args, **kwargs)  │   │
+│───────────────────────────────────────▶│   │
+│                                        │   │ Process
+│                                        │───┘
+│  4. Response or Exception              │
+│◀───────────────────────────────────────│
+│                                        │
+│  5. end_session() (SIGENDS)            │
+│───────────────────────────────────────▶│
+│                                        │
+│  6. Close connection                   │
+│───────────────────────────────────────▶│
+│                                        │
+```
+
+---
+
+## Usage Examples
+
+### Example 1: VPN Manager (Real-World Implementation)
+
+**Context:** `vpnmd` daemon needs to perform privileged network operations (TUN/TAP, Netfilter, routing).
+
+**Benefit:** `vpnm` CLI communicates with root daemon securely without direct privilege escalation.
+
+```python
+# Server: vpnmd (Root privileges)
+class Vpnmd(Appd):
+    @Appd.api
+    def connect(self, config_path: str) -> dict:
+        # Privileged: Modify routing tables, create TUN device
+        return {"status": "connected"}
+
+# Client: vpnm (User privileges)
+with ClientSession(address=("localhost", 3000), authkey=b"secret") as client:
+    client.commit("connect", "/etc/vpn/config.json")
+```
+
+[See full implementation](/deep-dives/vpn-tunneling-architecture/)
+
+---
+
+## Key Design Decisions
+
+| Decision | Alternative | Rationale |
+|----------|-------------|-----------|
+| **multiprocessing.connection** | ZeroMQ, gRPC | Python stdlib, no external dependencies |
+| **Pickle serialization** | JSON, Protocol Buffers | Native Python, supports exception objects |
+| **@api decorator** | Manual registry dict | Clean, Pythonic method registration |
+| **Exception propagation** | Error codes | Client sees actual exceptions, daemon stays up |
+| **Context manager** | Manual connect/close | Automatic cleanup, prevents resource leaks |
+| **SIGENDS protocol** | TCP FIN | Explicit session termination signal |
+
+---
+
+## Metrics
+
+| Metric | Value |
+|--------|-------|
+| **Version** | 0.4.1 (latest) |
+| **Release Date** | Aug 20, 2021 |
+| **Package Size** | 4.5 kB (source), 4.3 kB (wheel) |
+| **Upload Tool** | poetry/1.1.8 |
+| **Dependencies** | Python stdlib only |
+| **Lines of Code** | ~200 (core.py) |
+
+---
+
+## See Also
+
+- [Full source code](https://github.com/anatolio-deb/anyd)
+- [PyPI page](https://pypi.org/project/anyd/)
+- [VPN Tunneling Architecture](/deep-dives/vpn-tunneling-architecture/)
+
+---
+
+[← Back to Deep Dives](/deep-dives/)
+"""
+
+DEEP_DIVES_VPN_MD = """---
+layout: page
+title: "VPN Tunneling Architecture"
+permalink: /deep-dives/vpn-tunneling-architecture/
+---
+
+## Overview
+
+Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
+
+**External Resources:**
+- [vpnm CLI](https://github.com/nikiforidi/vpnm) — 154 commits, 12 releases
+- [vpnmd Daemon](https://github.com/nikiforidi/vpnmd) — 62 commits, 3 releases
+- [anyd Framework](https://pypi.org/project/anyd/) — PyPI published
+
+---
+
+## Architecture Diagram
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   vpnm CLI  │────▶│   vpnmd     │────▶│  anyd IPC   │
+│   (User)    │     │   (Root)    │     │  (Sockets)  │
+└─────────────┘     └─────────────┘     └─────────────┘
+│                   │                   │
+▼                   ▼                   ▼
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│  cloudflared│     │  tun2socks  │     │  v2ray-core │
+│    (DoH)    │     │   (TUN)     │     │   (Proxy)   │
+└─────────────┘     └─────────────┘     └─────────────┘
+```
+
+---
+
+## Key Design Decisions
+
+| Decision | Alternative | Rationale |
+|----------|-------------|-----------|
+| **TUN/TAP** | Proxy per-app | System-wide tunneling, no per-app config |
+| **DoH via v2ray** | Direct DNS | DNS queries also encrypted through tunnel |
+| **Root daemon (vpnmd)** | sudo per-call | Single privilege escalation point |
+| **IPC via anyd** | Direct syscalls | Clean API, authentication, validation |
+
+---
+
+## Repository Statistics
+
+| Repository | Commits | Releases | Stars | Status |
+|------------|---------|----------|-------|--------|
+| [vpnm](https://github.com/nikiforidi/vpnm) | 154 | 12 | 1 | ✅ Stable Reference |
+| [vpnmd](https://github.com/nikiforidi/vpnmd) | 62 | 3 | 0 | ✅ Stable Reference |
+
+---
+
+## Trade-offs
+
+| Trade-off | Impact |
+|-----------|--------|
+| Python vs Go | Faster development, slower execution |
+| Single binary (pyinstaller) | Easy distribution, larger size |
+| Project Status | Stable reference implementation |
+
+---
+
+## See Also
+
+- [vpnm source code](https://github.com/nikiforidi/vpnm)
+- [vpnmd source code](https://github.com/nikiforidi/vpnmd)
+- [anyd PyPI page](https://pypi.org/project/anyd/)
+- [anyd Deep Dive](/deep-dives/anyd-daemon-framework/)
+
+---
+
+[← Back to Deep Dives](/deep-dives/)
+"""
+
+DEEP_DIVES_FORESTVPN_MD = """---
+layout: page
+title: "ForestVPN CLI"
+permalink: /deep-dives/forestvpn-cli/
+---
+
+## Overview
+
+Cross-platform VPN CLI client for Linux, OpenWRT, macOS, and Windows.
+
+**External Resources:**
+- [Repository](https://github.com/forestvpn/cli) — 792 commits, 116 releases
+- **Period:** May 2022 — April 2023
+- **Role:** Go Technical Lead
+
+---
+
+## Repository Statistics
+
+| Metric | Value |
+|--------|-------|
+| **Commits** | 792 |
+| **Releases** | 116 (Latest: v0.3.5, Jun 27, 2023) |
+| **Stars** | 8 |
+| **Forks** | 1 |
+| **Contributors** | 5 |
+| **Languages** | Go 82.8%, Shell 17.2% |
+| **License** | MIT |
+
+---
+
+## Architecture
+
+### Package Structure
+
+| Package | Purpose |
+|---------|---------|
+| [actions](https://github.com/forestvpn/cli/tree/main/src/actions) | High-level Actions (urfave/cli v2) |
+| [api](https://github.com/forestvpn/cli/tree/main/src/api) | API client (wgrest) |
+| [auth](https://github.com/forestvpn/cli/tree/main/src/auth) | Authentication (Firebase REST API) |
+| [cmd](https://github.com/forestvpn/cli/tree/main/src/cmd) | Entry point |
+| [utils](https://github.com/forestvpn/cli/tree/main/src/utils) | Helper functions |
+
+---
+
+## Distribution Channels
+
+| Platform | Package Type | Delivery |
+|----------|--------------|----------|
+| **macOS** | Homebrew | [stable](https://github.com/forestvpn/homebrew-stable), [beta](https://github.com/forestvpn/homebrew-beta) |
+| **Debian/Ubuntu** | .deb | GitHub Releases |
+| **Fedora** | .rpm | GitHub Releases |
+| **Alpine** | .apk | GitHub Releases |
+| **Windows** | Chocolatey | [community.chocolatey.org/packages/fvpn](https://community.chocolatey.org/packages/fvpn) |
+| **OpenWRT** | .ipk | GitHub Releases |
+
+---
+
+## CI/CD Pipeline
+
+| Tool | Purpose |
+|------|---------|
+| [Drone CI](https://www.drone.io/) | Automated builds |
+| [GoReleaser](https://goreleaser.com/) | Stable & beta releases |
+| [Sentry](https://sentry.io/welcome/) | Error tracking |
+| GitHub Releases | Continuous delivery |
+
+---
+
+## See Also
+
+- [Full source code](https://github.com/forestvpn/cli)
+
+---
+
+[← Back to Deep Dives](/deep-dives/)
+"""
+
+DEEP_DIVES_JETBRAINS_MD = """---
+layout: page
+title: "JetBrains Academy: Multilingual Translator"
+permalink: /deep-dives/jetbrains-academy/
+---
+
+## Overview
+
+Educational Python project developed for JetBrains Academy Hyperskill track.
+
+- **Period:** October 2019 — March 2020
+- **Role:** Python Software Engineer
+- **Project:** [Multilingual Online Translator](https://github.com/anatolio-deb/Multilingual-online-translator)
+- **Platform:** [Hyperskill Project #99](https://hyperskill.org/projects/99)
+- **Track:** Python Core
+
+---
+
+## Architecture
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   User CLI  │────▶│  Translator │────▶│  Reverso    │
+│   Input     │     │   Logic     │     │   Context   │
+└─────────────┘     └─────────────┘     └─────────────┘
+│
+▼
+┌─────────────┐
+│   hs-test   │
+│  (Testing)  │
+└─────────────┘
+```
+
+---
+
+## Key Features
+
+- Translate text between multiple languages
+- Built on Reverso Context API
+- Covered with `hs-test` framework tests
+- English documentation included
+
+---
+
+## Teaching Impact
+
+| Metric | Value |
+|--------|-------|
+| **Project Page** | [hyperskill.org/projects/99](https://hyperskill.org/projects/99) |
+| **GitHub** | [github.com/anatolio-deb/Multilingual-online-translator](https://github.com/anatolio-deb/Multilingual-online-translator) |
+| **Purpose** | Educational resource for Python learners |
+| **Track** | Python Core |
+
+---
+
+## Skills Applied
+
+- Python
+- Git
+- Software Testing (hs-test framework)
+- API Integration (Reverso Context)
+- Technical Documentation (English)
+
+---
+
+[← Back to Deep Dives](/deep-dives/)
+"""
+
+DEEP_DIVES_MIND_MD = """---
+layout: page
+title: "MIND Universe"
+permalink: /deep-dives/mind-universe/
+---
+
+## Overview
+
+Cloud infrastructure management platform developed at MIND Software (2023-2025).
+
+**Period:** February 2023 — February 2025
+
+**Role:** Lead Backend Developer / Chief Developer
+
+---
+
+## DRUID API
+
+CRUD-like operations for cloud infrastructure resources (CIR):
+
+| Acronym | Action | Description |
+|---------|--------|-------------|
+| **D** | Deploy | Create new CIR |
+| **R** | Refresh | Sync CIR state from provider |
+| **U** | Update | Modify CIR configuration |
+| **I** | Import | Import existing CIR into Universe |
+| **D** | Destroy | Delete CIR |
+
+---
+
+## Architecture Specifications
+
+| Specification | Purpose | Link |
+|--------------|---------|------|
+| [MHA](/specs/mha/) | Model Hashing Algorithm — CIR change detection | Nested hashing, bidirectional comparison |
+| [SSA](/specs/ssa/) | Sequence Sorting Algorithm — Go map ordering | Zero-last semantics, 116ms benchmark |
+| [JEMP](/specs/jemp/) | Job Event Messaging Protocol — Concurrency model | Heartbeat events, Job Collector |
+| [Validation Stack](/specs/validation-stack/) | Unified Model validation layer | FILO execution, strict/tolerant modes |
+| [Transactional Models](/specs/transactional-models/) | VM deployment transaction process | Prototype → Base → Complete states |
+
+---
+
+## Supported Providers
+
+| Provider | Status |
+|----------|--------|
+| VMware | ✅ Implemented |
+| OpenStack | ✅ Implemented |
+| oVirt | ✅ Implemented |
+| SpaceVM | ✅ Implemented |
+
+---
+
+## Technologies
+
+- **Languages:** Go
+- **Message Queue:** RabbitMQ
+- **Database:** PostgreSQL
+- **APIs:** REST, SOAP
+- **OS:** Linux
+
+---
+
+## See Also
+
+- [Full Specifications](/specs/)
+
+---
+
+[← Back to Deep Dives](/deep-dives/)
 """
 
 # --- File Map ---
@@ -540,15 +1551,30 @@ FILES = {
     "about/communities.md": ABOUT_COMMUNITIES_MD,
     "about/contact.md": ABOUT_CONTACT_MD,
     "specs/index.md": SPECS_INDEX_MD,
+    "specs/mha.md": SPECS_MHA_MD,
+    "specs/ssa.md": SPECS_SSA_MD,
+    "specs/jemp.md": SPECS_JEMP_MD,
+    "specs/validation-stack.md": SPECS_VALIDATION_STACK_MD,
+    "specs/transactional-models.md": SPECS_TRANSACTIONAL_MODELS_MD,
     "deep-dives/index.md": DEEP_DIVES_INDEX_MD,
-    # Add remaining specs/ and deep-dives/ files with full content from portfolio_context.md
+    "deep-dives/anyd-daemon-framework.md": DEEP_DIVES_ANYD_MD,
+    "deep-dives/vpn-tunneling-architecture.md": DEEP_DIVES_VPN_MD,
+    "deep-dives/forestvpn-cli.md": DEEP_DIVES_FORESTVPN_MD,
+    "deep-dives/jetbrains-academy.md": DEEP_DIVES_JETBRAINS_MD,
+    "deep-dives/mind-universe.md": DEEP_DIVES_MIND_MD,
 }
 
 # --- Main ---
 def main():
-    log_header("🚀 Starting Portfolio Generation")
+    log_header("🚀 Starting Portfolio Generation v11.0.0")
+    
+    log("INFO", "Warm Nostalgia Theme - All Fixes Applied")
+    log("INFO", "✓ Clean URLs (no .md extension in links)")
+    log("INFO", "✓ No duplicate author names in specs")
+    log("INFO", "✓ 18 markdown files total")
     
     # Directory selection
+    print("")
     print(f"{Colors.YELLOW}Step 1: Choose Portfolio Directory{Colors.NC}")
     print("")
     print(f"  {Colors.GREEN}✓{Colors.NC} Press {Colors.YELLOW}Enter{Colors.NC} to use current directory: {Colors.GREEN}{os.getcwd()}{Colors.NC}")
@@ -575,7 +1601,7 @@ def main():
     # Create directory structure
     log_header("Step 2: Creating Directory Structure")
     
-    dirs = ["specs", "deep-dives", "about", "assets", "assets/images", "assets/css", "assets/js"]
+    dirs = ["specs", "deep-dives", "about", "assets", "assets/images", "assets/css", "assets/js", "_sass"]
     for dir_name in dirs:
         dir_path = Path(dir_name)
         if dir_path.exists():
@@ -598,6 +1624,90 @@ def main():
         log("INFO", f"✓ {file_path}")
         files_created += 1
     
+    # Create CSS file
+    log_header("Step 4: Creating Warm Nostalgia Theme CSS")
+    
+    css_content = """---
+---
+
+/* Warm Nostalgia Theme */
+:root {
+  --base-color: #ffb000;
+  --base-color-dim: #cc8c00;
+  --background-color: #1a1510;
+  --background-alt: #251e17;
+  --text-color: #ffcc80;
+  --text-muted: #997755;
+  --border: solid 1px rgba(255, 176, 0, 0.3);
+  --link-color: #ffb000;
+}
+
+html, body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.site-header {
+  border-bottom: var(--border);
+  padding: 1em 0;
+}
+
+.page-content {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 2em 1em;
+}
+
+.site-footer {
+  border-top: var(--border);
+  padding: 2em 0;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+pre, code {
+  background: var(--background-alt);
+  border: var(--border);
+  font-family: 'Courier New', monospace;
+}
+
+pre {
+  padding: 1em;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+}
+
+th, td {
+  border: var(--border);
+  padding: 0.8em;
+  text-align: left;
+}
+"""
+    
+    css_path = Path("assets/css/style.scss")
+    css_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(css_path, "w", encoding="utf-8") as f:
+        f.write(css_content)
+    log("INFO", "✓ assets/css/style.scss")
+    files_created += 1
+    
     # Summary
     log_header("✨ Portfolio Generated")
     
@@ -605,6 +1715,14 @@ def main():
     log("INFO", f"   Directory: {portfolio_dir}")
     log("INFO", f"   Files Created: {files_created}")
     log("INFO", f"   Directories: {len(dirs)}")
+    log("INFO", f"   Theme: Warm Nostalgia (amber on brown)")
+    print("")
+    
+    log("INFO", "📝 Fixes Applied:")
+    log("INFO", "   ✓ All internal links use clean URLs (no .md)")
+    log("INFO", "   ✓ Author name removed from specs (kept in about/contact)")
+    log("INFO", "   ✓ Warm nostalgic tone throughout")
+    log("INFO", "   ✓ Veteran engineer letter added")
     print("")
     
     print(f"{Colors.GREEN}=============================================={Colors.NC}")
@@ -613,10 +1731,11 @@ def main():
     print("")
     print(f"{Colors.CYAN}📋 Next Steps:{Colors.NC}")
     print("   1. cd", portfolio_dir)
-    print("   2. git add .")
-    print("   3. git commit -m 'Generate technical portfolio'")
-    print("   4. git push origin main")
-    print("   5. Wait 5-10 minutes for GitHub Pages")
+    print("   2. bundle install")
+    print("   3. bundle exec jekyll serve")
+    print("   4. Open http://127.0.0.1:4000")
+    print("   5. git add . && git commit -m 'Generate portfolio v11.0.0'")
+    print("   6. git push origin main")
     print("")
 
 if __name__ == "__main__":
