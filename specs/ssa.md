@@ -2,7 +2,6 @@
 layout: page
 title: Sequence Sorting Algorithm (SSA)
 permalink: /specs/ssa/
-author: Anatoly Nikiforov, 2023
 ---
 
 ## Full Specification

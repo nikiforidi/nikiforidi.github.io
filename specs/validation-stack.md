@@ -2,7 +2,6 @@
 layout: page
 title: Universe Validation Stack
 permalink: /specs/validation-stack/
-author: Anatoly Nikiforov, 2023
 ---
 
 ## Full Specification

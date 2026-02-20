@@ -2,7 +2,6 @@
 layout: page
 title: Job Event Messaging Protocol (JEMP)
 permalink: /specs/jemp/
-author: Anatoly Nikiforov, 2023
 ---
 
 ## Full Specification

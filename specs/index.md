@@ -25,7 +25,3 @@ Technical specifications developed during tenure at MIND Software (2023-2025). E
 ## Related Concepts
 
 - [DRUID API](/deep-dives/mind-universe) — Deploy, Refresh, Update, Import, Destroy (see MIND Universe)
-
----
-
-**Author:** Anatoly Nikiforov, 2023-2025

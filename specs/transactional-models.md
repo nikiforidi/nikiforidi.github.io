@@ -2,7 +2,6 @@
 layout: page
 title: Transactional Models
 permalink: /specs/transactional-models/
-author: Anatoly Nikiforov, 2023
 ---
 
 ## Full Specification

@@ -2,7 +2,6 @@
 layout: page
 title: Model Hashing Algorithm (MHA)
 permalink: /specs/mha/
-author: Anatoly Nikiforov, 2023
 ---
 
 ## Full Specification
