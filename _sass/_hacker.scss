@@ -1,0 +1,40 @@
+/**
+Warm Nostalgia Theme - For veteran computer scientists
+Inspired by: Vintage terminals, amber monitors, coffee shops, late-night coding
+*/
+@mixin theme() {
+  :root {
+    /* Warm amber/sepia palette (like old monitors + coffee) */
+    --base-color: #ffb000;           /* Amber glow */
+    --base-color-dim: #cc8c00;       /* Dimmed amber */
+    --background-color: #1a1510;     /* Warm dark brown (not pure black) */
+    --background-alt: #251e17;       /* Slightly lighter brown */
+    --text-color: #ffcc80;           /* Warm light orange */
+    --text-muted: #997755;           /* Muted brown-orange */
+    
+    /* Borders & Dividers */
+    --border: solid 1px rgba(255, 176, 0, 0.3);
+    --border-dashed: dashed 1px rgba(255, 176, 0, 0.2);
+    
+    /* Selection */
+    --selection-background: rgba(255, 176, 0, 0.4);
+    --selection-text: #1a1510;
+    
+    /* Links */
+    --link-color: #ffb000;
+    --link-hover: #ffcc80;
+    
+    /* Code Colors (warm palette) */
+    --code-comment: #887766;
+    --code-string: #ffcc80;
+    --code-keyword: #ffb000;
+    --code-function: #ffaa66;
+    --code-number: #ff9966;
+    --code-type: #ffcc99;
+    
+    /* Accents */
+    --accent-warm: #ff9966;          /* Warm orange */
+    --accent-coffee: #8b6f47;        /* Coffee brown */
+    --accent-cream: #fff8e7;         /* Cream (for highlights) */
+  }
+}

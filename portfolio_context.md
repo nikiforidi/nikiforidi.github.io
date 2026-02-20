@@ -1,6 +1,6 @@
 ---
 title: Portfolio Context Export
-generated: 2026-02-20 08:27:40
+generated: 2026-02-20 08:14:51
 format: Markdown
 scope: .md files only
 ---
@@ -856,11 +856,11 @@ CRUD-like operations for cloud infrastructure resources (CIR):
 
 | Specification | Purpose | Link |
 |--------------|---------|------|
-| [MHA](/specs/mha.md) | Model Hashing Algorithm — CIR change detection | Nested hashing, bidirectional comparison |
-| [SSA](/specs/ssa.md) | Sequence Sorting Algorithm — Go map ordering | Zero-last semantics, 116ms benchmark |
-| [JEMP](/specs/jemp.md) | Job Event Messaging Protocol — Concurrency model | Heartbeat events, Job Collector |
-| [Validation Stack](/specs/validation-stack.md) | Unified Model validation layer | FILO execution, strict/tolerant modes |
-| [Transactional Models](/specs/transactional-models.md) | VM deployment transaction process | Prototype → Base → Complete states |
+| [MHA](/specs/mha/) | Model Hashing Algorithm — CIR change detection | Nested hashing, bidirectional comparison |
+| [SSA](/specs/ssa/) | Sequence Sorting Algorithm — Go map ordering | Zero-last semantics, 116ms benchmark |
+| [JEMP](/specs/jemp/) | Job Event Messaging Protocol — Concurrency model | Heartbeat events, Job Collector |
+| [Validation Stack](/specs/validation-stack/) | Unified Model validation layer | FILO execution, strict/tolerant modes |
+| [Transactional Models](/specs/transactional-models/) | VM deployment transaction process | Prototype → Base → Complete states |
 
 ---
 
@@ -985,7 +985,7 @@ tagline: Architecture, Algorithms, System Design
 permalink: /
 ---
 
-## Welcome, Traveler
+## Welcome, Traveler ☕
 
 ```bash
 $ whoami
@@ -994,9 +994,12 @@ $ status
 > Ready for remote work
 $ location
 > Moscow, Russia
+$ echo "Grab a coffee, make yourself comfortable"
 ```
 
-This portfolio is designed for **cozy reading** about engineering craft. Grab a cup of tea ☕, pull up a chair, and explore the **how** and **why** behind the systems I've built.
+Pull up a chair. This portfolio is designed for **cozy reading** about engineering craft—the kind of late-night coding sessions where the only company is your terminal, a warm cup of coffee, and the satisfaction of solving hard problems.
+
+Whether you're here to review architecture, reminisce about the old days, or just enjoy well-documented systems, **make yourself at home**.
 
 ---
 
@@ -1009,6 +1012,8 @@ This portfolio is designed for **cozy reading** about engineering craft. Grab a 
 | [`[about/]`](/about/) | Engineering philosophy, career timeline | [`[ENTER]`](/about/){: .theme-enter} |
 
 ---
+
+<div class="coffee-break"></div>
 
 ## Featured Processes
 
@@ -1031,6 +1036,18 @@ Event-driven concurrency model for distributed job execution.
 - **Problem:** Track concurrent jobs without MQ overhead
 - **Solution:** Heartbeat events + Job Collector + Checkpointer
 - **Execute:** [`/specs/jemp/`](/specs/jemp/)
+
+---
+
+<div class="nostalgia-note">
+
+> **A Note for Veteran Engineers:**
+> 
+> If you remember debugging with print statements, deploying via FTP, or celebrating when your code fit in 64KB of RAM—you'll feel at home here. These specs are written with the same care we used to put into our README files back when documentation actually mattered.
+> 
+> — Anatoly
+
+</div>
 
 ---
 
@@ -1067,13 +1084,47 @@ Cross-platform VPN client (Linux, macOS, Windows, OpenWRT).
 | **Packages** | 1 published (anyd 0.4.1) |
 | **Docs** | 5 architectural specifications |
 | **Last Build** | February 2026 |
+| **Coffee Consumed** | ∞ cups |
 
 ---
 
-> **Note:** All links are verified. All claims are backed by public evidence.
->
-> **End of Line.**
+<div class="welcome-box">
 
+> **Note:** All links are verified. All claims are backed by public evidence.
+> 
+> The terminal is warm, the coffee is fresh, and the code is documented.
+> 
+> **Stay a while.** 🖥️
+
+</div>
+```
+
+---
+
+## 4. Add Nostalgic Touches to `about/philosophy.md`
+
+Add this section to your philosophy page:
+
+```markdown
+---
+
+## A Letter to Veteran Engineers
+
+If you're reading this and you remember:
+
+- ⌨️ Editing code in `vi` without syntax highlighting
+- 💾 Compiling code overnight and hoping it worked
+- 📠 Debugging via print statements and log files
+- 🌐 Deploying via FTP and holding your breath
+- 📚 Reading physical man pages because Stack Overflow didn't exist
+
+...then you understand why **documentation matters**.
+
+This portfolio is my small contribution to keeping that spirit alive—the belief that **engineering is a craft**, not just a job. That systems should be **understandable**, not just functional. That we should **leave things better than we found them**.
+
+Welcome to my corner of the internet. The terminal is always warm, and there's always coffee. ☕
+
+— Anatoly
 ```
 
 ## File: `specs/index.md`
@@ -1095,11 +1146,11 @@ Technical specifications developed during tenure at MIND Software (2023-2025). E
 
 | Specification | Purpose | Status |
 |--------------|---------|--------|
-| [MHA](mha.md) | Model Hashing Algorithm — CIR change detection | ✅ Documented |
-| [SSA](ssa.md) | Sequence Sorting Algorithm — Go map ordering | ✅ Documented |
-| [JEMP](jemp.md) | Job Event Messaging Protocol — Concurrency model | ✅ Documented |
-| [Validation Stack](validation-stack.md) | Unified Model validation layer | ✅ Documented |
-| [Transactional Models](transactional-models.md) | VM deployment transaction process | ✅ Documented |
+| [MHA](mha.md) | Model Hashing Algorithm — CIR change detection | Documented |
+| [SSA](ssa.md) | Sequence Sorting Algorithm — Go map ordering | Documented |
+| [JEMP](jemp.md) | Job Event Messaging Protocol — Concurrency model | Documented |
+| [Validation Stack](validation-stack.md) | Unified Model validation layer | Documented |
+| [Transactional Models](transactional-models.md) | VM deployment transaction process | Documented |
 
 ---
 
@@ -1669,10 +1720,10 @@ Validator 1 ✓ → Validator 2 ✗ → Validator 3 ✓ → Collect All
 | Metric | Value |
 |--------|-------|
 | **Total Files** | 18 |
-| **Generated** | 2026-02-20 08:27:40 |
+| **Generated** | 2026-02-20 08:14:51 |
 | **Format** | Markdown (.md) |
 | **Scope** | .md files only |
-| **Total Size** | 48KB |
+| **Total Size** | 50KB |
 
 ---
 

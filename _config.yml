@@ -1,10 +1,33 @@
 title: Anatoly Nikiforov
 description: Architecture, Algorithms, System Design
-theme: minima
+baseurl: ""
+url: "https://nikiforidi.github.io"
+
+# Build Settings
+markdown: kramdown
+highlighter: rouge
+
+# Sass Configuration (CRITICAL for CSS)
+sass:
+  sass_dir: assets/css
+  style: compressed
+
+# Plugins
 plugins:
   - jekyll-feed
+
+# Navigation
 header_pages:
   - index.md
   - about/
   - specs/
   - deep-dives/
+
+# Exclude
+exclude:
+  - generate_context.zsh
+  - generate_context.py
+  - portfolio_context.txt
+  - portfolio_context.md
+  - Gemfile
+  - README.md

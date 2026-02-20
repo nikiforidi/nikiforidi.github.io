@@ -32,11 +32,11 @@ CRUD-like operations for cloud infrastructure resources (CIR):
 
 | Specification | Purpose | Link |
 |--------------|---------|------|
-| [MHA](/specs/mha.md) | Model Hashing Algorithm — CIR change detection | Nested hashing, bidirectional comparison |
-| [SSA](/specs/ssa.md) | Sequence Sorting Algorithm — Go map ordering | Zero-last semantics, 116ms benchmark |
-| [JEMP](/specs/jemp.md) | Job Event Messaging Protocol — Concurrency model | Heartbeat events, Job Collector |
-| [Validation Stack](/specs/validation-stack.md) | Unified Model validation layer | FILO execution, strict/tolerant modes |
-| [Transactional Models](/specs/transactional-models.md) | VM deployment transaction process | Prototype → Base → Complete states |
+| [MHA](/specs/mha/) | Model Hashing Algorithm — CIR change detection | Nested hashing, bidirectional comparison |
+| [SSA](/specs/ssa/) | Sequence Sorting Algorithm — Go map ordering | Zero-last semantics, 116ms benchmark |
+| [JEMP](/specs/jemp/) | Job Event Messaging Protocol — Concurrency model | Heartbeat events, Job Collector |
+| [Validation Stack](/specs/validation-stack/) | Unified Model validation layer | FILO execution, strict/tolerant modes |
+| [Transactional Models](/specs/transactional-models/) | VM deployment transaction process | Prototype → Base → Complete states |
 
 ---
 
