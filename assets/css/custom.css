@@ -1,216 +1,173 @@
 /* =====================================================
-   DARK READER INSPIRED THEME
-   Base Colors extracted from Dark Reader defaults
-   Code Blocks: Distinct Editor Style (No Green)
+   FALLOUT TERMINAL THEME
+   Amber Phosphor | CRT Effects | Dark Code Blocks
    ===================================================== */
 
 /* ==================== VARIABLES ==================== */
 :root {
-    /* Dark Reader Defaults (Extracted from JS) */
-    --bg-primary: #181a1b;
-    --text-primary: #e8e6e3;
-    
-    /* Distinct Code Block Colors (No Green) */
-    --code-bg: #21252b;
-    --code-border: #3e4451;
-    --code-header: #2c313a;
-    
-    /* Accent Colors (Amber/Warm - No Green) */
-    --accent-primary: #d4a574;
-    --accent-secondary: #c9c4be;
-    --accent-keyword: #c678dd;   /* Purple */
-    --accent-function: #61afef;  /* Blue */
-    --accent-string: #e5c07b;    /* Yellow/Amber */
-    --accent-comment: #5c6370;   /* Gray */
-    
-    /* UI Elements */
-    --border-color: #3e4451;
-    --shadow-color: rgba(0, 0, 0, 0.5);
+    /* Fallout Amber Colors */
+    --fallout-amber: #ffb000;
+    --fallout-amber-dim: #cc8d00;
+    --fallout-amber-bright: #ffc83d;
+    --fallout-bg: #1a1816;
+    --fallout-bg-dark: #0d0c0a;
+    --fallout-bg-code: #12110f;
+    --fallout-border: #3d3834;
+    --fallout-glow: 0 0 2px rgba(255, 176, 0, 0.5);
     
     /* Fonts */
     --font-body: 'JetBrains Mono', monospace;
     --font-heading: 'VT323', monospace;
+    
+    /* Effects */
+    --scanline-color: rgba(255, 176, 0, 0.03);
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 /* ==================== BASE STYLES ==================== */
 body {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
+    background-color: var(--fallout-bg);
+    color: var(--fallout-amber);
     font-family: var(--font-body);
     line-height: 1.6;
+    position: relative;
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* CRT Scanline Effect */
+body::before {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(
+        to bottom,
+        var(--scanline-color) 50%,
+        rgba(0, 0, 0, 0) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Text Glow Effect */
+p, li, h1, h2, h3, h4, h5, h6, a, code, pre {
+    text-shadow: var(--fallout-glow);
 }
 
 /* ==================== TYPOGRAPHY ==================== */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    color: var(--text-primary);
+    color: var(--fallout-amber);
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 2px;
 }
 
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; border-bottom: 2px solid var(--fallout-border); padding-bottom: 10px; }
+h3 { font-size: 1.5rem; }
+
+p, li {
+    color: var(--fallout-amber);
+    font-size: 1rem;
+}
+
 a {
-    color: var(--accent-primary);
+    color: var(--fallout-amber-bright);
     text-decoration: none;
-    border-bottom: 1px dotted var(--accent-primary);
+    border-bottom: 1px dotted var(--fallout-amber);
     transition: all 0.2s ease;
 }
 
 a:hover {
-    color: var(--text-primary);
-    background-color: var(--accent-primary);
-    border-bottom: 1px solid var(--text-primary);
+    color: var(--fallout-amber);
+    background-color: var(--fallout-amber);
+    color: var(--fallout-bg);
+    border-bottom: 1px solid var(--fallout-amber);
 }
 
-/* ==================== SHELL / CODE BLOCKS (Distinct Look) ==================== */
-pre {
-    background-color: var(--code-bg);
-    border: 1px solid var(--code-border);
-    border-radius: 6px;
-    padding: 0;
-    overflow-x: auto;
-    box-shadow: 0 4px 12px var(--shadow-color);
-    margin: 20px 0;
-    position: relative;
-}
-
-/* Fake Terminal Header */
-pre::before {
-    content: "● ● ●";
-    display: block;
-    background-color: var(--code-header);
-    color: var(--accent-comment);
-    padding: 8px 12px;
-    font-size: 12px;
-    letter-spacing: 4px;
-    border-bottom: 1px solid var(--code-border);
-    border-radius: 6px 6px 0 0;
-    font-family: var(--font-body);
-}
-
+/* ==================== CODE BLOCKS (DARKER) ==================== */
 code {
-    background-color: var(--code-bg);
-    color: var(--accent-string);
+    background-color: var(--fallout-bg-code);
+    color: var(--fallout-amber-bright);
     font-family: var(--font-body);
     padding: 0.2em 0.4em;
+    border-radius: 2px;
+    border: 1px solid var(--fallout-border);
+    text-shadow: var(--fallout-glow);
+}
+
+pre {
+    background-color: var(--fallout-bg-code);
+    border: 1px solid var(--fallout-border);
     border-radius: 4px;
-    border: 1px solid var(--code-border);
+    padding: 16px;
+    overflow-x: auto;
+    box-shadow: var(--shadow);
 }
 
 pre code {
     background-color: transparent;
     border: none;
-    padding: 16px;
-    display: block;
-    color: var(--text-primary);
-    line-height: 1.5;
+    padding: 0;
+    color: var(--fallout-amber-bright);
 }
-
-/* Syntax Highlighting (No Green) */
-.highlight .c { color: var(--accent-comment); font-style: italic; } /* Comment */
-.highlight .k { color: var(--accent-keyword); } /* Keyword */
-.highlight .o { color: var(--text-primary); } /* Operator */
-.highlight .cm { color: var(--accent-comment); font-style: italic; }
-.highlight .cp { color: var(--accent-comment); }
-.highlight .c1 { color: var(--accent-comment); font-style: italic; }
-.highlight .cs { color: var(--accent-comment); font-style: italic; }
-.highlight .gd { color: #ff6b6b; } /* Deleted */
-.highlight .ge { font-style: italic; }
-.highlight .gi { color: #98c379; } /* Inserted (Light Green-ish but distinct) */
-.highlight .gs { font-weight: bold; }
-.highlight .gu { color: var(--accent-function); }
-.highlight .kc { color: var(--accent-keyword); }
-.highlight .kd { color: var(--accent-keyword); }
-.highlight .kn { color: var(--accent-keyword); }
-.highlight .kp { color: var(--accent-keyword); }
-.highlight .kr { color: var(--accent-keyword); }
-.highlight .kt { color: var(--accent-keyword); }
-.highlight .m { color: var(--accent-string); } /* Number */
-.highlight .s { color: var(--accent-string); } /* String */
-.highlight .na { color: var(--accent-function); }
-.highlight .nb { color: var(--text-primary); }
-.highlight .nc { color: var(--accent-function); }
-.highlight .no { color: var(--accent-string); }
-.highlight .nd { color: var(--accent-function); }
-.highlight .ni { color: var(--text-primary); }
-.highlight .ne { color: var(--accent-function); }
-.highlight .nf { color: var(--accent-function); } /* Function */
-.highlight .nl { color: var(--text-primary); }
-.highlight .nn { color: var(--accent-function); }
-.highlight .nx { color: var(--text-primary); }
-.highlight .py { color: var(--text-primary); }
-.highlight .nt { color: var(--accent-keyword); }
-.highlight .nv { color: var(--text-primary); }
-.highlight .ow { color: var(--accent-keyword); }
-.highlight .w { color: var(--text-primary); }
-.highlight .mf { color: var(--accent-string); }
-.highlight .mh { color: var(--accent-string); }
-.highlight .mi { color: var(--accent-string); }
-.highlight .mo { color: var(--accent-string); }
-.highlight .sb { color: var(--accent-string); }
-.highlight .sc { color: var(--accent-string); }
-.highlight .sd { color: var(--accent-comment); }
-.highlight .s2 { color: var(--accent-string); }
-.highlight .se { color: var(--accent-string); }
-.highlight .sh { color: var(--accent-string); }
-.highlight .si { color: var(--accent-string); }
-.highlight .sx { color: var(--accent-string); }
-.highlight .sr { color: var(--accent-string); }
-.highlight .s1 { color: var(--accent-string); }
-.highlight .ss { color: var(--accent-string); }
-.highlight .bp { color: var(--text-primary); }
-.highlight .vc { color: var(--text-primary); }
-.highlight .vg { color: var(--text-primary); }
-.highlight .vi { color: var(--text-primary); }
-.highlight .il { color: var(--accent-string); }
 
 /* ==================== TABLES ==================== */
 table {
-    border-color: var(--border-color);
-    background-color: var(--bg-primary);
+    border-color: var(--fallout-border);
+    background-color: var(--fallout-bg-dark);
     border-collapse: collapse;
     width: 100%;
     margin: 20px 0;
-    box-shadow: 0 2px 8px var(--shadow-color);
+    box-shadow: var(--shadow);
 }
 
 table td,
 table th {
-    border-color: var(--border-color);
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
+    border-color: var(--fallout-border);
+    background-color: var(--fallout-bg-dark);
+    color: var(--fallout-amber);
     padding: 12px 16px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--fallout-border);
+    font-family: var(--font-body);
 }
 
 table th {
-    background-color: var(--code-header);
-    color: var(--accent-primary);
+    background-color: var(--fallout-bg-code);
+    color: var(--fallout-amber-bright);
     font-family: var(--font-heading);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 table tr:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.02);
+    background-color: var(--fallout-bg);
 }
 
 /* ==================== BLOCKQUOTES ==================== */
 blockquote {
-    border-left-color: var(--accent-primary);
-    background-color: var(--code-bg);
-    color: var(--accent-secondary);
+    border-left-color: var(--fallout-amber);
+    background-color: var(--fallout-bg-code);
+    color: var(--fallout-amber-dim);
     padding: 16px;
     border-left-width: 4px;
     border-left-style: solid;
     margin: 20px 0;
-    border-radius: 0 4px 4px 0;
+}
+
+blockquote p {
+    color: var(--fallout-amber);
 }
 
 /* ==================== SEPARATORS ==================== */
 hr {
-    border: 0;
+    border: none;
     height: 20px;
     margin: 60px auto;
     width: 60%;
@@ -221,9 +178,9 @@ hr {
 
 hr::before {
     content: "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒......";
-    color: var(--accent-primary);
+    color: var(--fallout-amber);
     letter-spacing: 3px;
-    opacity: 0.6;
+    opacity: 0.8;
     font-size: 12px;
     display: block;
     white-space: nowrap;
@@ -231,69 +188,8 @@ hr::before {
     text-overflow: ellipsis;
 }
 
-/* ==================== HEADER & NAV ==================== */
-.site-header {
-    background-color: var(--code-header);
-    border-bottom: 2px solid var(--accent-primary);
-    padding: 20px 0;
-}
-
-.site-title {
-    color: var(--accent-primary);
-    font-family: var(--font-heading);
-    font-size: 2rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-}
-
-.site-nav a {
-    color: var(--accent-secondary);
-    font-family: var(--font-heading);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 1.2rem;
-}
-
-.site-nav a:hover {
-    color: var(--accent-primary);
-    background-color: transparent;
-    border-bottom: 2px solid var(--accent-primary);
-}
-
-/* ==================== FOOTER ==================== */
-.site-footer {
-    text-align: center;
-    padding: 20px 0;
-    border-top: 1px solid var(--border-color);
-    margin-top: 60px;
-    background-color: var(--code-header);
-    color: var(--accent-secondary);
-}
-
-/* ==================== SCROLLBAR ==================== */
-::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--bg-primary);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--code-border);
-    border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-primary);
-}
-
-/* ==================== MOBILE ==================== */
+/* Mobile responsive */
 @media (max-width: 768px) {
-    h1 { font-size: 2rem; }
-    h2 { font-size: 1.5rem; }
-    
     hr {
         margin: 40px auto;
         width: 80%;
@@ -303,9 +199,85 @@ hr::before {
         letter-spacing: 2px;
         font-size: 10px;
     }
-    
-    pre::before {
-        font-size: 10px;
-        padding: 6px 10px;
+}
+
+/* ==================== HEADER & NAV ==================== */
+.site-header {
+    background-color: var(--fallout-bg-dark);
+    border-bottom: 2px solid var(--fallout-amber);
+    padding: 20px 0;
+}
+
+.site-title {
+    color: var(--fallout-amber);
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.site-nav a {
+    color: var(--fallout-amber-dim);
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
+}
+
+.site-nav a:hover {
+    color: var(--fallout-amber);
+    background-color: transparent;
+    border-bottom: 2px solid var(--fallout-amber);
+}
+
+/* ==================== FOOTER ==================== */
+.site-footer {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid var(--fallout-border);
+    margin-top: 60px;
+    background-color: var(--fallout-bg-dark);
+    color: var(--fallout-amber-dim);
+}
+
+/* ==================== BLINKING CURSOR ==================== */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.cursor-blink::after {
+    content: '█';
+    animation: blink 1s step-end infinite;
+    margin-left: 5px;
+    color: var(--fallout-amber);
+}
+
+/* ==================== SCROLLBAR ==================== */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--fallout-bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--fallout-border);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--fallout-amber);
+}
+
+/* ==================== MOBILE ==================== */
+@media (max-width: 768px) {
+    body::before {
+        background-size: 100% 2px;
     }
+    
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
 }
