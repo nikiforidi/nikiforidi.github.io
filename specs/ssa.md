@@ -29,20 +29,20 @@ permalink: /specs/ssa/
 │   Input Map     │
 │ {0:1, 2:3, 4:5} │
 └────────┬────────┘
-         │
-         ▼
+│
+▼
 ┌─────────────────┐
 │  Extract Keys   │
 │   [0, 2, 4]     │
 └────────┬────────┘
-         │
-         ▼
+│
+▼
 ┌─────────────────┐
 │  Sort + Zero    │
 │   Last Logic    │
 └────────┬────────┘
-         │
-         ▼
+│
+▼
 ┌─────────────────┐
 │  Output Slice   │
 │   [2, 4, 0]     │
@@ -58,7 +58,6 @@ func SequenceSorting(m map[int]int) (order []int) {
     mlen := len(m)
     keys := make([]int, mlen)
     var mismatchCounter int
-
     for i := 0; i < mlen*2; i++ {
         _, ok := m[i]
         if ok {
@@ -67,9 +66,7 @@ func SequenceSorting(m map[int]int) (order []int) {
             mismatchCounter++
         }
     }
-
     sort.Ints(keys)
-
     order = make([]int, mlen)
     for i := 1; i < mlen; i++ {
         order[i-1] = keys[i]
@@ -126,10 +123,10 @@ Output: [2, 4, 6, 8, 0]
 
 ## Related Specifications
 
-- [MHA](mha.md) — Model hashing
-- [JEMP](jemp.md) — Job messaging
-- [Validation Stack](validation-stack.md) — Model validation
-- [Transactional Models](transactional-models.md) — Deployment states
+- [MHA](/specs/mha/) — Model hashing
+- [JEMP](/specs/jemp/) — Job messaging
+- [Validation Stack](/specs/validation-stack/) — Model validation
+- [Transactional Models](/specs/transactional-models/) — Deployment states
 
 ---
 

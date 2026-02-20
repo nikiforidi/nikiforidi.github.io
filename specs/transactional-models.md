@@ -29,10 +29,10 @@ permalink: /specs/transactional-models/
 │  Prototype  │─────▶│    Base     │─────▶│  Complete   │
 │   Model     │      │   Model     │      │   Model     │
 └─────────────┘      └─────────────┘      └─────────────┘
-      │                    │                    │
-      ▼                    ▼                    ▼
- Source Unit +        User Input          Validation +
- Placement          Customization        Default Values
+│                    │                    │
+▼                    ▼                    ▼
+Source Unit +        User Input          Validation +
+Placement          Customization        Default Values
 ```
 
 ---
@@ -75,10 +75,10 @@ permalink: /specs/transactional-models/
 
 ## Related Specifications
 
-- [MHA](mha.md) — Model hashing
-- [SSA](ssa.md) — Sequence ordering
-- [JEMP](jemp.md) — Job messaging
-- [Validation Stack](validation-stack.md) — Model validation
+- [MHA](/specs/mha/) — Model hashing
+- [SSA](/specs/ssa/) — Sequence ordering
+- [JEMP](/specs/jemp/) — Job messaging
+- [Validation Stack](/specs/validation-stack/) — Model validation
 
 ---
 

@@ -28,9 +28,9 @@ permalink: /specs/jemp/
 ┌─────────────┐         ┌─────────────┐
 │  Job Pool   │◄───────►│  Event Bus  │
 └─────────────┘         └─────────────┘
-                              │
-         ┌────────────────────┼────────────────────┐
-         ▼                    ▼                    ▼
+│
+┌────────────────────┼────────────────────┐
+▼                    ▼                    ▼
 ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
 │   Heartbeat     │  │   Finished      │  │   Internal      │
 │   Event         │  │   Event         │  │   Event         │
@@ -43,9 +43,9 @@ permalink: /specs/jemp/
 ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐
 │  Queued │───▶│ Running │───▶│Finished │    │  Lost   │
 └─────────┘    └────┬────┘    └─────────┘    └────▲────┘
-                    │                              │
-                    └────── Heartbeat ─────────────┘
-                         (Timeout → Lost)
+│                              │
+└────── Heartbeat ─────────────┘
+(Timeout → Lost)
 ```
 
 ---
@@ -92,10 +92,10 @@ permalink: /specs/jemp/
 
 ## Related Specifications
 
-- [MHA](mha.md) — Model hashing
-- [SSA](ssa.md) — Sequence ordering
-- [Validation Stack](validation-stack.md) — Model validation
-- [Transactional Models](transactional-models.md) — Deployment states
+- [MHA](/specs/mha/) — Model hashing
+- [SSA](/specs/ssa/) — Sequence ordering
+- [Validation Stack](/specs/validation-stack/) — Model validation
+- [Transactional Models](/specs/transactional-models/) — Deployment states
 
 ---
 

@@ -22,8 +22,8 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 │   vpnm CLI  │────▶│   vpnmd     │────▶│  anyd IPC   │
 │   (User)    │     │   (Root)    │     │  (Sockets)  │
 └─────────────┘     └─────────────┘     └─────────────┘
-       │                   │                   │
-       ▼                   ▼                   ▼
+│                   │                   │
+▼                   ▼                   ▼
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
 │  cloudflared│     │  tun2socks  │     │  v2ray-core │
 │    (DoH)    │     │   (TUN)     │     │   (Proxy)   │
@@ -67,7 +67,7 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 - [vpnm source code](https://github.com/nikiforidi/vpnm)
 - [vpnmd source code](https://github.com/nikiforidi/vpnmd)
 - [anyd PyPI page](https://pypi.org/project/anyd/)
-- [anyd Deep Dive](/deep-dives/anyd-daemon-framework)
+- [anyd Deep Dive](/deep-dives/anyd-daemon-framework/)
 
 ---
 

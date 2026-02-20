@@ -33,9 +33,9 @@ permalink: /specs/validation-stack/
 │  ...                                    │
 │  Validator 1 (Bottom)                   │
 └─────────────────────────────────────────┘
-         │
-         ▼
-    FILO Execution
+│
+▼
+FILO Execution
 ```
 
 ### Execution Flow
@@ -92,10 +92,10 @@ Validator 1 ✓ → Validator 2 ✗ → Validator 3 ✓ → Collect All
 
 ## Related Specifications
 
-- [MHA](mha.md) — Model hashing
-- [SSA](ssa.md) — Sequence ordering
-- [JEMP](jemp.md) — Job messaging
-- [Transactional Models](transactional-models.md) — Deployment states
+- [MHA](/specs/mha/) — Model hashing
+- [SSA](/specs/ssa/) — Sequence ordering
+- [JEMP](/specs/jemp/) — Job messaging
+- [Transactional Models](/specs/transactional-models/) — Deployment states
 
 ---
 

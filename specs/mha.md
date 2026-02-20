@@ -29,11 +29,11 @@ permalink: /specs/mha/
 │     CPU     │     RAM     │    Disks    │  OS / ID     │
 │   (hash)    │   (hash)    │   (hash)    │   (hash)     │
 └─────────────┴─────────────┴─────────────┴──────────────┘
-                          │
-                          ▼
-              ┌───────────────────────┐
-              │   Combined VM Hash    │
-              └───────────────────────┘
+│
+▼
+┌───────────────────────┐
+│   Combined VM Hash    │
+└───────────────────────┘
 ```
 
 ### Bidirectional Comparison
@@ -45,13 +45,13 @@ permalink: /specs/mha/
 ├──────────────────┤              ├──────────────────┤
 │  MHA Hash Calc   │              │  MHA Hash Calc   │
 └────────┬─────────┘              └────────┬─────────┘
-         │                                 │
-         └─────────────┬───────────────────┘
-                       ▼
-              ┌─────────────────┐
-              │   Hash Compare  │
-              │  (Change Detect)│
-              └─────────────────┘
+│                                 │
+└─────────────┬───────────────────┘
+▼
+┌─────────────────┐
+│   Hash Compare  │
+│  (Change Detect)│
+└─────────────────┘
 ```
 
 ---
@@ -89,10 +89,10 @@ permalink: /specs/mha/
 
 ## Related Specifications
 
-- [SSA](ssa.md) — Sequence ordering for model processing
-- [JEMP](jemp.md) — Job concurrency model
-- [Validation Stack](validation-stack.md) — Input validation
-- [Transactional Models](transactional-models.md) — VM deployment states
+- [SSA](/specs/ssa/) — Sequence ordering for model processing
+- [JEMP](/specs/jemp/) — Job concurrency model
+- [Validation Stack](/specs/validation-stack/) — Input validation
+- [Transactional Models](/specs/transactional-models/) — VM deployment states
 
 ---
 

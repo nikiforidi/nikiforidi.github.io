@@ -14,11 +14,11 @@ Detailed architectural breakdowns of key projects with links to source code and 
 
 | Project | Description | Links |
 |---------|-------------|-------|
-| [anyd Daemon Framework](anyd-daemon-framework.md) | Unix daemon IPC framework | [PyPI](https://pypi.org/project/anyd/), [GitHub](https://github.com/anatolio-deb/anyd) |
-| [VPN Tunneling Architecture](vpn-tunneling-architecture.md) | Linux VPN client with TUN/TAP | [vpnm](https://github.com/nikiforidi/vpnm), [vpnmd](https://github.com/nikiforidi/vpnmd) |
-| [ForestVPN CLI](forestvpn-cli.md) | Cross-platform VPN client | [GitHub](https://github.com/forestvpn/cli) |
-| [JetBrains Academy](jetbrains-academy.md) | Python educational project | [Hyperskill](https://hyperskill.org/projects/99) |
-| [MIND Universe](mind-universe.md) | Cloud infrastructure management | [Specs](/specs/) |
+| [anyd Daemon Framework](anyd-daemon-framework/) | Unix daemon IPC framework | [PyPI](https://pypi.org/project/anyd/), [GitHub](https://github.com/anatolio-deb/anyd) |
+| [VPN Tunneling Architecture](vpn-tunneling-architecture/) | Linux VPN client with TUN/TAP | [vpnm](https://github.com/nikiforidi/vpnm), [vpnmd](https://github.com/nikiforidi/vpnmd) |
+| [ForestVPN CLI](forestvpn-cli/) | Cross-platform VPN client | [GitHub](https://github.com/forestvpn/cli) |
+| [JetBrains Academy](jetbrains-academy/) | Python educational project | [Hyperskill](https://hyperskill.org/projects/99) |
+| [MIND Universe](mind-universe/) | Cloud infrastructure management | [Specs](/specs/) |
 
 ---
 

@@ -23,12 +23,12 @@ Educational Python project developed for JetBrains Academy Hyperskill track.
 │   User CLI  │────▶│  Translator │────▶│  Reverso    │
 │   Input     │     │   Logic     │     │   Context   │
 └─────────────┘     └─────────────┘     └─────────────┘
-                           │
-                           ▼
-                    ┌─────────────┐
-                    │   hs-test   │
-                    │  (Testing)  │
-                    └─────────────┘
+│
+▼
+┌─────────────┐
+│   hs-test   │
+│  (Testing)  │
+└─────────────┘
 ```
 
 ---

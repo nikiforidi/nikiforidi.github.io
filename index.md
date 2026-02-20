@@ -33,8 +33,6 @@ Whether you're here to review architecture, reminisce about the old days, or jus
 
 ---
 
-<div class="coffee-break"></div>
-
 ## Featured Processes
 
 ### ▶ Model Hashing Algorithm (MHA)
@@ -59,15 +57,11 @@ Event-driven concurrency model for distributed job execution.
 
 ---
 
-<div class="nostalgia-note">
+## A Note for Veteran Engineers
 
-> **A Note for Veteran Engineers:**
-> 
 > If you remember debugging with print statements, deploying via FTP, or celebrating when your code fit in 64KB of RAM—you'll feel at home here. These specs are written with the same care we used to put into our README files back when documentation actually mattered.
-> 
+>
 > — Anatoly
-
-</div>
 
 ---
 
@@ -108,40 +102,8 @@ Cross-platform VPN client (Linux, macOS, Windows, OpenWRT).
 
 ---
 
-<div class="welcome-box">
-
 > **Note:** All links are verified. All claims are backed by public evidence.
-> 
+>
 > The terminal is warm, the coffee is fresh, and the code is documented.
-> 
+>
 > **Stay a while.** 🖥️
-
-</div>
-```
-
----
-
-## 4. Add Nostalgic Touches to `about/philosophy.md`
-
-Add this section to your philosophy page:
-
-```markdown
----
-
-## A Letter to Veteran Engineers
-
-If you're reading this and you remember:
-
-- ⌨️ Editing code in `vi` without syntax highlighting
-- 💾 Compiling code overnight and hoping it worked
-- 📠 Debugging via print statements and log files
-- 🌐 Deploying via FTP and holding your breath
-- 📚 Reading physical man pages because Stack Overflow didn't exist
-
-...then you understand why **documentation matters**.
-
-This portfolio is my small contribution to keeping that spirit alive—the belief that **engineering is a craft**, not just a job. That systems should be **understandable**, not just functional. That we should **leave things better than we found them**.
-
-Welcome to my corner of the internet. The terminal is always warm, and there's always coffee. ☕
-
-— Anatoly

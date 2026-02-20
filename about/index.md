@@ -4,6 +4,8 @@ title: About
 permalink: /about/
 ---
 
+## Anatoly Nikiforov
+
 **Staff Software Engineer / Software Architect**
 
 📍 Moscow, Russia • ✈️ Open to Remote Work
