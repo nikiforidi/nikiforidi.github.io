@@ -14,11 +14,11 @@ Technical specifications developed during tenure at MIND Software (2023-2025). E
 
 | Specification | Purpose | Status |
 |--------------|---------|--------|
-| [MHA](mha/) | Model Hashing Algorithm — CIR change detection | [✓] Documented |
-| [SSA](ssa/) | Sequence Sorting Algorithm — Go map ordering | [✓] Documented |
-| [JEMP](jemp/) | Job Event Messaging Protocol — Concurrency model | [✓] Documented |
-| [Validation Stack](validation-stack/) | Unified Model validation layer | [✓] Documented |
-| [Transactional Models](transactional-models/) | VM deployment transaction process | [✓] Documented |
+| [MHA](mha/) | Model Hashing Algorithm — CIR change detection | ✅ Documented |
+| [SSA](ssa/) | Sequence Sorting Algorithm — Go map ordering | ✅ Documented |
+| [JEMP](jemp/) | Job Event Messaging Protocol — Concurrency model | ✅ Documented |
+| [Validation Stack](validation-stack/) | Unified Model validation layer | ✅ Documented |
+| [Transactional Models](transactional-models/) | VM deployment transaction process | ✅ Documented |
 
 ---
 

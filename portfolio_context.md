@@ -1,20 +1,4 @@
 ---
-title: Portfolio Context Export
-generated: 2026-02-20 08:14:51
-format: Markdown
-scope: .md files only
----
-
-# Portfolio Context Export
-
-Complete markdown export for audit and review.
-
----
-
-## File: `about/communities.md`
-
-```markdown
----
 layout: page
 title: Professional Communities
 permalink: /about/communities/
@@ -69,12 +53,7 @@ permalink: /about/communities/
 ---
 
 [← Back to About](/about/)
-
-```
-
-## File: `about/contact.md`
-
-```markdown
+File: `about/contact.md`
 ---
 layout: page
 title: Contact
@@ -112,17 +91,14 @@ permalink: /about/contact/
 ---
 
 [← Back to About](/about/)
-
-```
-
-## File: `about/index.md`
-
-```markdown
+File: `about/index.md`
 ---
 layout: page
 title: About
 permalink: /about/
 ---
+
+## Anatoly Nikiforov
 
 **Staff Software Engineer / Software Architect**
 
@@ -182,12 +158,7 @@ Staff Software Engineer / Software Architect with **5+ years** of professional e
 ---
 
 **Last Updated:** February 2026
-
-```
-
-## File: `about/philosophy.md`
-
-```markdown
+File: `about/philosophy.md`
 ---
 layout: page
 title: Engineering Philosophy
@@ -200,17 +171,17 @@ permalink: /about/philosophy/
 
 I work comfortably across all layers of the stack:
 
-```
-┌─────────────────────────────────────────┐
-│  Application (Go, Python, Vue.js)       │
-│  - REST APIs, CLI clients, Web UI       │
-├─────────────────────────────────────────┤
-│  System (Linux, Docker, systemd)        │
-│  - Daemons, IPC, network tunneling      │
-├─────────────────────────────────────────┤
-│  Kernel (Netfilter, TUN/TAP, POSIX)     │
-│  - Kernel modules, sockets, syscalls    │
-└─────────────────────────────────────────┘
+```text
+┌───────────────────────────────────────────┐
+│  Application (Go, Python, Vue.js)         │
+│  - REST APIs, CLI clients, Web UI         │
+├───────────────────────────────────────────┤
+│  System (Linux, Docker, systemd)          │
+│  - Daemons, IPC, network tunneling        │
+├───────────────────────────────────────────┤
+│  Kernel (Netfilter, TUN/TAP, POSIX)       │
+│  - Kernel modules, sockets, syscalls      │
+└───────────────────────────────────────────┘
 ```
 
 **Example:** VPN Manager project required all three layers:
@@ -259,14 +230,30 @@ I solidify understanding by teaching:
 ---
 
 ### 5. Iterate Publicly
-
-```
 Share Early → Accept Feedback → Improve → Repeat
 ↓              ↓              ↓
 GitHub        Issues, PRs    Real-world usage
 Habr          Comments       237K views
 PyPI          Downloads      anyd 0.4.1
-```
+---
+
+## A Letter to Veteran Engineers
+
+If you're reading this and you remember:
+
+- ⌨️ Editing code in `vi` without syntax highlighting
+- 💾 Compiling code overnight and hoping it worked
+- 📠 Debugging via print statements and log files
+- 🌐 Deploying via FTP and holding your breath
+- 📚 Reading physical man pages because Stack Overflow didn't exist
+
+...then you understand why **documentation matters**.
+
+This portfolio is my small contribution to keeping that spirit alive—the belief that **engineering is a craft**, not just a job. That systems should be **understandable**, not just functional. That we should **leave things better than we found them**.
+
+Welcome to my corner of the internet. The terminal is always warm, and there's always coffee. ☕
+
+— Anatoly
 
 ---
 
@@ -279,12 +266,7 @@ PyPI          Downloads      anyd 0.4.1
 ---
 
 [← Back to About](/about/)
-
-```
-
-## File: `about/timeline.md`
-
-```markdown
+File: `about/timeline.md`
 ---
 layout: page
 title: Career Timeline
@@ -292,8 +274,6 @@ permalink: /about/timeline/
 ---
 
 ## Visual Timeline
-
-```
 2017 ──── 2018 ──── 2019 ──── 2020 ──── 2021 ──── 2022 ──── 2023 ──── 2024 ──── 2025 ──── 2026
 │         │         │         │         │         │         │         │         │         │
 ▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼
@@ -303,8 +283,6 @@ Articles  (58K)     Academy   Manager   proxy     VPN       Course    Software  
 ▼         ▼
 Start       MHA, JEMP, SSA
 Course      Validation Stack
-```
-
 ---
 
 ## Detailed Chronology
@@ -342,12 +320,7 @@ Course      Validation Stack
 ---
 
 [← Back to About](/about/)
-
-```
-
-## File: `deep-dives/anyd-daemon-framework.md`
-
-```markdown
+File: `deep-dives/anyd-daemon-framework.md`
 ---
 layout: page
 title: "anyd Daemon Framework"
@@ -384,11 +357,11 @@ The name **anyd** stands for "**any daemon**" — reflecting its universal purpo
 | **Boundary** | Security isolation | Process separation |
 
 This pattern applies to **unlimited possibilities**:
-- [✓] VPN tunneling (network privileges)
-- [✓] Secrets management (memory protection)
-- [✓] Hardware control (GPIO/USB access)
-- [✓] System administration (service restarts)
-- [✓] Database operations (credential isolation)
+- ✅ VPN tunneling (network privileges)
+- ✅ Secrets management (memory protection)
+- ✅ Hardware control (GPIO/USB access)
+- ✅ System administration (service restarts)
+- ✅ Database operations (credential isolation)
 
 ---
 
@@ -396,45 +369,44 @@ This pattern applies to **unlimited possibilities**:
 
 ### Component Model
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    anyd Framework                       │
-├───────────────────────────┬─────────────────────────────┤
-│      Server (Appd)        │       Client (Session)      │
-├───────────────────────────┼─────────────────────────────┤
-│ • multiprocessing.Listener│ • multiprocessing.Client    │
-│ • @api decorator registry │ • commit(endpoint, *args)   │
-│ • Request/response loop   │ • Exception propagation     │
-│ • SIGENDS session close   │ • Context manager support   │
-└───────────────────────────┴─────────────────────────────┘
+```text
+┌───────────────────────────────────────────────────────────────┐
+│                       anyd Framework                          │
+├───────────────────────────────┬───────────────────────────────┤
+│      Server (Appd)            │       Client (Session)        │
+├───────────────────────────────┼───────────────────────────────┤
+│ • multiprocessing.Listener    │ • multiprocessing.Client      │
+│ • @api decorator registry     │ • commit(endpoint, *args)     │
+│ • Request/response loop       │ • Exception propagation       │
+│ • SIGENDS session close       │ • Context manager support     │
+└───────────────────────────────┴───────────────────────────────┘
 ```
 
 ### Communication Flow
 
-```
-┌─────────────┐                          ┌─────────────┐
-│   Client    │                          │   Server    │
-│  (Unpriv.)  │                          │ (Privileged)│
-└──────┬──────┘                          └──────┬──────┘
-       │                                        │
-       │  1. Connect (socket + authkey)         │
-       │───────────────────────────────────────▶│
-       │                                        │
-       │  2. Register API methods (@api)        │
-       │                                        │◀──┐
-       │  3. commit("method", *args, **kwargs)  │   │
-       │───────────────────────────────────────▶│   │
-       │                                        │   │ Process
-       │                                        │───┘
-       │  4. Response or Exception              │
-       │◀───────────────────────────────────────│
-       │                                        │
-       │  5. end_session() (SIGENDS)            │
-       │───────────────────────────────────────▶│
-       │                                        │
-       │  6. Close connection                   │
-       │───────────────────────────────────────▶│
-       │                                        │
+```text
+┌───────────────┐                         ┌───────────────┐
+│    Client     │                         │    Server     │
+│   (Unpriv.)   │                         │  (Privileged) │
+└───────┬───────┘                         └───────┬───────┘
+        │                                         │
+        │  1. Connect (socket + authkey)          │
+        │────────────────────────────────────────▶│
+        │                                         │
+        │  2. Register API methods (@api)         │
+        │                                         │◀──┐
+        │  3. commit("method", *args, **kwargs)   │   │
+        │────────────────────────────────────────▶│   │ Process
+        │                                         │───┘
+        │  4. Response or Exception               │
+        │◀────────────────────────────────────────│
+        │                                         │
+        │  5. end_session() (SIGENDS)             │
+        │────────────────────────────────────────▶│
+        │                                         │
+        │  6. Close connection                    │
+        │────────────────────────────────────────▶│
+        │                                         │
 ```
 
 ---
@@ -453,7 +425,7 @@ class Vpnmd(Appd):
     @Appd.api
     def connect(self, config_path: str) -> dict:
         # Privileged: Modify routing tables, create TUN device
-        return {"status": "connected"}
+        return { "status": "connected" }
 
 # Client: vpnm (User privileges)
 with ClientSession(address=("localhost", 3000), authkey=b"secret") as client:
@@ -461,8 +433,6 @@ with ClientSession(address=("localhost", 3000), authkey=b"secret") as client:
 ```
 
 [See full implementation](/deep-dives/vpn-tunneling-architecture/)
-
----
 
 ### Example 2: Secure Secrets Vault (Conceptual)
 
@@ -473,7 +443,7 @@ with ClientSession(address=("localhost", 3000), authkey=b"secret") as client:
 ```python
 # Server: VaultD (Root privileges, holds secrets in memory)
 class VaultD(Appd):
-    _secrets = {"api_key": "super_secret_123"}
+    _secrets = { "api_key": "super_secret_123" }
     
     @Appd.api
     def decrypt(self, resource: str) -> str:
@@ -486,7 +456,7 @@ class VaultD(Appd):
     def rotate(self, resource: str, new_value: str) -> dict:
         # Privileged: Update secrets securely
         self._secrets[resource] = new_value
-        return {"status": "rotated"}
+        return { "status": "rotated" }
 
 # Client: CLI (User privileges, never sees raw keys)
 with ClientSession(address=("localhost", 3000), authkey=b"vault_key") as client:
@@ -504,8 +474,6 @@ with ClientSession(address=("localhost", 3000), authkey=b"vault_key") as client:
 - Client cannot dump daemon memory (process isolation)
 - All operations logged by daemon
 
----
-
 ### Example 3: System Administration Toolkit (Conceptual)
 
 **Context:** Allow developers to restart services without giving them full `sudo` access.
@@ -522,7 +490,7 @@ class SysAdminD(Appd):
         if service_name not in allowed:
             raise PermissionError(f"{service_name} not allowed")
         # subprocess.run(["systemctl", "restart", service_name])
-        return {"status": "restarted"}
+        return { "status": "restarted" }
 
 # Client: Dev CLI (User privileges)
 with ClientSession(address=("localhost", 3000), authkey=b"admin_key") as client:
@@ -539,12 +507,12 @@ with ClientSession(address=("localhost", 3000), authkey=b"admin_key") as client:
 
 | Decision | Alternative | Rationale |
 |----------|-------------|-----------|
-| **multiprocessing.connection** | ZeroMQ, gRPC | Python stdlib, no external dependencies |
-| **Pickle serialization** | JSON, Protocol Buffers | Native Python, supports exception objects |
-| **@api decorator** | Manual registry dict | Clean, Pythonic method registration |
-| **Exception propagation** | Error codes | Client sees actual exceptions, daemon stays up |
-| **Context manager** | Manual connect/close | Automatic cleanup, prevents resource leaks |
-| **SIGENDS protocol** | TCP FIN | Explicit session termination signal |
+| multiprocessing.connection | ZeroMQ, gRPC | Python stdlib, no external dependencies |
+| Pickle serialization | JSON, Protocol Buffers | Native Python, supports exception objects |
+| @api decorator | Manual registry dict | Clean, Pythonic method registration |
+| Exception propagation | Error codes | Client sees actual exceptions, daemon stays up |
+| Context manager | Manual connect/close | Automatic cleanup, prevents resource leaks |
+| SIGENDS protocol | TCP FIN | Explicit session termination signal |
 
 ---
 
@@ -554,22 +522,22 @@ with ClientSession(address=("localhost", 3000), authkey=b"admin_key") as client:
 
 | Feature | Description |
 |---------|-------------|
-| **Inheritance** | `multiprocessing.connection.Listener` |
-| **API Registry** | `_api` dictionary stores decorated methods |
-| **Request Format** | `(endpoint, args, kwargs)` tuple |
-| **Response** | Any Python object or Exception |
-| **Session Close** | `SIGENDS` byte signal |
-| **Logging** | Connection, request, response events |
+| Inheritance | multiprocessing.connection.Listener |
+| API Registry | _api dictionary stores decorated methods |
+| Request Format | (endpoint, args, kwargs) tuple |
+| Response | Any Python object or Exception |
+| Session Close | SIGENDS byte signal |
+| Logging | Connection, request, response events |
 
 ### Client (via ClientSession)
 
 | Feature | Description |
 |---------|-------------|
-| **Wrapper** | `multiprocessing.connection.Client` |
-| **Method** | `commit(endpoint, *args, **kwargs)` |
-| **Exception Handling** | Re-raises server exceptions locally |
-| **Session Management** | Context manager (`with` statement) |
-| **Cleanup** | Automatic `end_session()` on exit |
+| Wrapper | multiprocessing.connection.Client |
+| Method | commit(endpoint, *args, **kwargs) |
+| Exception Handling | Re-raises server exceptions locally |
+| Session Management | Context manager (with statement) |
+| Cleanup | Automatic end_session() on exit |
 
 ---
 
@@ -577,11 +545,11 @@ with ClientSession(address=("localhost", 3000), authkey=b"admin_key") as client:
 
 | Layer | Mechanism | Purpose |
 |-------|-----------|---------|
-| **Authentication** | `authkey` (bytes) | Prevent unauthorized connections |
-| **Transport** | TCP/Unix sockets | Local IPC only (localhost) |
-| **Serialization** | Pickle | Python-native, but trusted environment only |
-| **Session** | SIGENDS signal | Clean connection termination |
-| **Isolation** | Process boundary | Memory separation between client/server |
+| Authentication | authkey (bytes) | Prevent unauthorized connections |
+| Transport | TCP/Unix sockets | Local IPC only (localhost) |
+| Serialization | Pickle | Python-native, but trusted environment only |
+| Session | SIGENDS signal | Clean connection termination |
+| Isolation | Process boundary | Memory separation between client/server |
 
 ---
 
@@ -589,12 +557,12 @@ with ClientSession(address=("localhost", 3000), authkey=b"admin_key") as client:
 
 | Metric | Value |
 |--------|-------|
-| **Version** | 0.4.1 (latest) |
-| **Release Date** | Aug 20, 2021 |
-| **Package Size** | 4.5 kB (source), 4.3 kB (wheel) |
-| **Upload Tool** | poetry/1.1.8 |
-| **Dependencies** | Python stdlib only |
-| **Lines of Code** | ~200 (core.py) |
+| Version | 0.4.1 (latest) |
+| Release Date | Aug 20, 2021 |
+| Package Size | 4.5 kB (source), 4.3 kB (wheel) |
+| Upload Tool | poetry/1.1.8 |
+| Dependencies | Python stdlib only |
+| Lines of Code | ~200 (core.py) |
 
 ---
 
@@ -611,15 +579,15 @@ with ClientSession(address=("localhost", 3000), authkey=b"admin_key") as client:
 
 ## Why anyd? Universal Possibilities
 
-The beauty of **anyd** lies in its **agnosticism**:
+The beauty of anyd lies in its agnosticism:
 
-1.  **Logic-Agnostic:** The framework doesn't care *what* your daemon does. VPN, secrets, hardware, databases — any privileged operation works.
-2.  **Security-First:** Built-in authentication (`authkey`) and process isolation ensure clients can't escalate privileges beyond the API surface.
-3.  **Developer-Friendly:** Pythonic decorators (`@api`), context managers (`with ClientSession`), and exception propagation make it intuitive.
-4.  **Zero Dependencies:** Uses Python stdlib only (`multiprocessing.connection`), making it portable and easy to audit.
-5.  **Extensible:** Add logging, monitoring, rate-limiting — the framework doesn't constrain your architecture.
+- **Logic-Agnostic:** The framework doesn't care what your daemon does. VPN, secrets, hardware, databases — any privileged operation works.
+- **Security-First:** Built-in authentication (`authkey`) and process isolation ensure clients can't escalate privileges beyond the API surface.
+- **Developer-Friendly:** Pythonic decorators (`@api`), context managers (`with ClientSession`), and exception propagation make it intuitive.
+- **Zero Dependencies:** Uses Python stdlib only (`multiprocessing.connection`), making it portable and easy to audit.
+- **Extensible:** Add logging, monitoring, rate-limiting — the framework doesn't constrain your architecture.
 
-**anyd** proves that **privilege separation doesn't have to be complex**. With ~200 lines of code, you can build secure, isolated daemons for **unlimited use cases**.
+anyd proves that privilege separation doesn't have to be complex. With ~200 lines of code, you can build secure, isolated daemons for unlimited use cases.
 
 ---
 
@@ -632,11 +600,7 @@ The beauty of **anyd** lies in its **agnosticism**:
 ---
 
 [← Back to Deep Dives](/deep-dives/)
-```
-
-## File: `deep-dives/forestvpn-cli.md`
-
-```markdown
+File: `deep-dives/forestvpn-cli.md`
 ---
 layout: page
 title: "ForestVPN CLI"
@@ -713,12 +677,7 @@ Cross-platform VPN CLI client for Linux, OpenWRT, macOS, and Windows.
 ---
 
 [← Back to Deep Dives](/deep-dives/)
-
-```
-
-## File: `deep-dives/index.md`
-
-```markdown
+File: `deep-dives/index.md`
 ---
 layout: page
 title: Deep Dives
@@ -735,21 +694,16 @@ Detailed architectural breakdowns of key projects with links to source code and 
 
 | Project | Description | Links |
 |---------|-------------|-------|
-| [anyd Daemon Framework](anyd-daemon-framework.md) | Unix daemon IPC framework | [PyPI](https://pypi.org/project/anyd/), [GitHub](https://github.com/anatolio-deb/anyd) |
-| [VPN Tunneling Architecture](vpn-tunneling-architecture.md) | Linux VPN client with TUN/TAP | [vpnm](https://github.com/nikiforidi/vpnm), [vpnmd](https://github.com/nikiforidi/vpnmd) |
-| [ForestVPN CLI](forestvpn-cli.md) | Cross-platform VPN client | [GitHub](https://github.com/forestvpn/cli) |
-| [JetBrains Academy](jetbrains-academy.md) | Python educational project | [Hyperskill](https://hyperskill.org/projects/99) |
-| [MIND Universe](mind-universe.md) | Cloud infrastructure management | [Specs](/specs/) |
+| [anyd Daemon Framework](anyd-daemon-framework/) | Unix daemon IPC framework | [PyPI](https://pypi.org/project/anyd/), [GitHub](https://github.com/anatolio-deb/anyd) |
+| [VPN Tunneling Architecture](vpn-tunneling-architecture/) | Linux VPN client with TUN/TAP | [vpnm](https://github.com/nikiforidi/vpnm), [vpnmd](https://github.com/nikiforidi/vpnmd) |
+| [ForestVPN CLI](forestvpn-cli/) | Cross-platform VPN client | [GitHub](https://github.com/forestvpn/cli) |
+| [JetBrains Academy](jetbrains-academy/) | Python educational project | [Hyperskill](https://hyperskill.org/projects/99) |
+| [MIND Universe](mind-universe/) | Cloud infrastructure management | [Specs](/specs/) |
 
 ---
 
 [← Back to Home](/)
-
-```
-
-## File: `deep-dives/jetbrains-academy.md`
-
-```markdown
+File: `deep-dives/jetbrains-academy.md`
 ---
 layout: page
 title: "JetBrains Academy: Multilingual Translator"
@@ -770,17 +724,17 @@ Educational Python project developed for JetBrains Academy Hyperskill track.
 
 ## Architecture
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   User CLI  │────▶│  Translator │────▶│  Reverso    │
-│   Input     │     │   Logic     │     │   Context   │
-└─────────────┘     └─────────────┘     └─────────────┘
-                           │
-                           ▼
-                    ┌─────────────┐
-                    │   hs-test   │
-                    │  (Testing)  │
-                    └─────────────┘
+```text
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│   User CLI    │────▶│  Translator   │────▶│   Reverso     │
+│   Input       │     │   Logic       │     │   Context     │
+└───────────────┘     └───────┬───────┘     └───────────────┘
+                              │
+                              ▼
+                      ┌───────────────┐
+                      │    hs-test    │
+                      │  (Testing)    │
+                      └───────────────┘
 ```
 
 ---
@@ -816,12 +770,7 @@ Educational Python project developed for JetBrains Academy Hyperskill track.
 ---
 
 [← Back to Deep Dives](/deep-dives/)
-
-```
-
-## File: `deep-dives/mind-universe.md`
-
-```markdown
+File: `deep-dives/mind-universe.md`
 ---
 layout: page
 title: "MIND Universe"
@@ -892,12 +841,7 @@ CRUD-like operations for cloud infrastructure resources (CIR):
 ---
 
 [← Back to Deep Dives](/deep-dives/)
-
-```
-
-## File: `deep-dives/vpn-tunneling-architecture.md`
-
-```markdown
+File: `deep-dives/vpn-tunneling-architecture.md`
 ---
 layout: page
 title: "VPN Tunneling Architecture"
@@ -917,17 +861,17 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 
 ## Architecture Diagram
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   vpnm CLI  │────▶│   vpnmd     │────▶│  anyd IPC   │
-│   (User)    │     │   (Root)    │     │  (Sockets)  │
-└─────────────┘     └─────────────┘     └─────────────┘
-       │                   │                   │
-       ▼                   ▼                   ▼
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│  cloudflared│     │  tun2socks  │     │  v2ray-core │
-│    (DoH)    │     │   (TUN)     │     │   (Proxy)   │
-└─────────────┘     └─────────────┘     └─────────────┘
+```text
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│   vpnm CLI    │────▶│   vpnmd       │────▶│  anyd IPC     │
+│   (User)      │     │   (Root)      │     │  (Sockets)    │
+└───────┬───────┘     └───────┬───────┘     └───────┬───────┘
+        │                     │                     │
+        ▼                     ▼                     ▼
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│  cloudflared  │     │  tun2socks    │     │  v2ray-core   │
+│    (DoH)      │     │   (TUN)       │     │   (Proxy)     │
+└───────────────┘     └───────────────┘     └───────────────┘
 ```
 
 ---
@@ -967,17 +911,12 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 - [vpnm source code](https://github.com/nikiforidi/vpnm)
 - [vpnmd source code](https://github.com/nikiforidi/vpnmd)
 - [anyd PyPI page](https://pypi.org/project/anyd/)
-- [anyd Deep Dive](/deep-dives/anyd-daemon-framework)
+- [anyd Deep Dive](/deep-dives/anyd-daemon-framework/)
 
 ---
 
 [← Back to Deep Dives](/deep-dives/)
-
-```
-
-## File: `index.md`
-
-```markdown
+File: `index.md`
 ---
 layout: home
 title: Technical Portfolio
@@ -997,9 +936,9 @@ $ location
 $ echo "Grab a coffee, make yourself comfortable"
 ```
 
-Pull up a chair. This portfolio is designed for **cozy reading** about engineering craft—the kind of late-night coding sessions where the only company is your terminal, a warm cup of coffee, and the satisfaction of solving hard problems.
+Pull up a chair. This portfolio is designed for cozy reading about engineering craft—the kind of late-night coding sessions where the only company is your terminal, a warm cup of coffee, and the satisfaction of solving hard problems.
 
-Whether you're here to review architecture, reminisce about the old days, or just enjoy well-documented systems, **make yourself at home**.
+Whether you're here to review architecture, reminisce about the old days, or just enjoy well-documented systems, make yourself at home.
 
 ---
 
@@ -1007,71 +946,72 @@ Whether you're here to review architecture, reminisce about the old days, or jus
 
 | Module | Content | Access |
 |--------|---------|--------|
-| [`[specs/]`](/specs/) | 5 architectural specs (MHA, SSA, JEMP) | [`[ENTER]`](/specs/){: .theme-enter} |
-| [`[deep-dives/]`](/deep-dives/) | Technical breakdowns of key projects | [`[ENTER]`](/deep-dives/){: .theme-enter} |
-| [`[about/]`](/about/) | Engineering philosophy, career timeline | [`[ENTER]`](/about/){: .theme-enter} |
+| [[specs/](/specs/)](/specs/) | 5 architectural specs (MHA, SSA, JEMP) | [[ENTER](/specs/)](/specs/) {: .theme-enter} |
+| [[deep-dives/](/deep-dives/)](/deep-dives/) | Technical breakdowns of key projects | [[ENTER](/deep-dives/)](/deep-dives/) {: .theme-enter} |
+| [[about/](/about/)](/about/) | Engineering philosophy, career timeline | [[ENTER](/about/)](/about/) {: .theme-enter} |
 
 ---
-
-<div class="coffee-break"></div>
 
 ## Featured Processes
 
 ### ▶ Model Hashing Algorithm (MHA)
+
 Bidirectional hashing for cloud infrastructure resource comparison.
+
 - **Problem:** Detect CIR changes across different cloud providers
 - **Solution:** Nested hashing with unified model abstraction
 - **Metrics:** <100ms hash calculation, 100% change detection
-- **Execute:** [`/specs/mha/`](/specs/mha/)
+- **Execute:** `[/specs/mha/](/specs/mha/)`
 
 ### ▶ Sequence Sorting Algorithm (SSA)
+
 Custom Go algorithm for ordered map iteration with zero-last semantics.
+
 - **Problem:** Go maps are unordered, but we need `[1, 2, 4, 7, 0]`
 - **Solution:** O(n*2) lookup with mismatch counter
 - **Benchmark:** 1,000,000 keys in 116.9 ms
-- **Execute:** [`/specs/ssa/`](/specs/ssa/)
+- **Execute:** `[/specs/ssa/](/specs/ssa/)`
 
 ### ▶ Job Event Messaging Protocol (JEMP)
+
 Event-driven concurrency model for distributed job execution.
+
 - **Problem:** Track concurrent jobs without MQ overhead
 - **Solution:** Heartbeat events + Job Collector + Checkpointer
-- **Execute:** [`/specs/jemp/`](/specs/jemp/)
+- **Execute:** `[/specs/jemp/](/specs/jemp/)`
 
----
-
-<div class="nostalgia-note">
-
-> **A Note for Veteran Engineers:**
-> 
-> If you remember debugging with print statements, deploying via FTP, or celebrating when your code fit in 64KB of RAM—you'll feel at home here. These specs are written with the same care we used to put into our README files back when documentation actually mattered.
-> 
-> — Anatoly
-
-</div>
+> "What I cannot create, I do not understand."
+> — Richard Feynman
 
 ---
 
 ## Featured Deep Dives
 
 ### ▶ anyd Daemon Framework
+
 Unix daemon IPC framework published on PyPI.
-- **PyPI:** [`anyd 0.4.1`](https://pypi.org/project/anyd/)
-- **GitHub:** [`anatolio-deb/anyd`](https://github.com/anatolio-deb/anyd)
+
+- **PyPI:** `[anyd 0.4.1](https://pypi.org/project/anyd/)`
+- **GitHub:** `[anatolio-deb/anyd](https://github.com/anatolio-deb/anyd)`
 - **Tech:** POSIX sockets, IPC, authentication, validation
-- **Execute:** [`/deep-dives/anyd-daemon-framework/`](/deep-dives/anyd-daemon-framework/)
+- **Execute:** `[/deep-dives/anyd-daemon-framework/](/deep-dives/anyd-daemon-framework/)`
 
 ### ▶ VPN Tunneling Architecture
+
 Linux VPN client with TUN/TAP, Netfilter, and DNS redirection.
-- **Repositories:** [`vpnm`](https://github.com/nikiforidi/vpnm) (154 commits), [`vpnmd`](https://github.com/nikiforidi/vpnmd) (62 commits)
+
+- **Repositories:** `[vpnm](https://github.com/nikiforidi/vpnm)` (154 commits), `[vpnmd](https://github.com/nikiforidi/vpnmd)` (62 commits)
 - **Tech:** TUN/TAP, Netfilter, cloudflared DoH, tun2socks
-- **Execute:** [`/deep-dives/vpn-tunneling-architecture/`](/deep-dives/vpn-tunneling-architecture/)
+- **Execute:** `[/deep-dives/vpn-tunneling-architecture/](/deep-dives/vpn-tunneling-architecture/)`
 
 ### ▶ ForestVPN CLI
+
 Cross-platform VPN client (Linux, macOS, Windows, OpenWRT).
-- **Repository:** [`forestvpn/cli`](https://github.com/forestvpn/cli)
+
+- **Repository:** `[forestvpn/cli](https://github.com/forestvpn/cli)`
 - **Stats:** 792 commits, 116 releases, 8 stars
 - **Tech:** Go 82.8%, Shell 17.2%, Homebrew, Chocolatey
-- **Execute:** [`/deep-dives/forestvpn-cli/`](/deep-dives/forestvpn-cli/)
+- **Execute:** `[/deep-dives/forestvpn-cli/](/deep-dives/forestvpn-cli/)`
 
 ---
 
@@ -1079,57 +1019,19 @@ Cross-platform VPN client (Linux, macOS, Windows, OpenWRT).
 
 | Metric | Value |
 |--------|-------|
-| **Uptime** | 5+ years (2019–2026) |
-| **Commits** | 1,756+ contributions |
-| **Packages** | 1 published (anyd 0.4.1) |
-| **Docs** | 5 architectural specifications |
-| **Last Build** | February 2026 |
-| **Coffee Consumed** | ∞ cups |
-
----
-
-<div class="welcome-box">
+| Uptime | 5+ years (2019–2026) |
+| Commits | 1,756+ contributions |
+| Packages | 1 published (anyd 0.4.1) |
+| Docs | 5 architectural specifications |
+| Last Build | February 2026 |
+| Coffee Consumed | ∞ cups |
 
 > **Note:** All links are verified. All claims are backed by public evidence.
-> 
-> The terminal is warm, the coffee is fresh, and the code is documented.
-> 
-> **Stay a while.** 🖥️
 
-</div>
-```
+The terminal is warm, the coffee is fresh, and the code is documented.
 
----
-
-## 4. Add Nostalgic Touches to `about/philosophy.md`
-
-Add this section to your philosophy page:
-
-```markdown
----
-
-## A Letter to Veteran Engineers
-
-If you're reading this and you remember:
-
-- ⌨️ Editing code in `vi` without syntax highlighting
-- 💾 Compiling code overnight and hoping it worked
-- 📠 Debugging via print statements and log files
-- 🌐 Deploying via FTP and holding your breath
-- 📚 Reading physical man pages because Stack Overflow didn't exist
-
-...then you understand why **documentation matters**.
-
-This portfolio is my small contribution to keeping that spirit alive—the belief that **engineering is a craft**, not just a job. That systems should be **understandable**, not just functional. That we should **leave things better than we found them**.
-
-Welcome to my corner of the internet. The terminal is always warm, and there's always coffee. ☕
-
-— Anatoly
-```
-
-## File: `specs/index.md`
-
-```markdown
+Stay a while. 🖥️
+File: `specs/index.md`
 ---
 layout: page
 title: Specifications
@@ -1146,22 +1048,22 @@ Technical specifications developed during tenure at MIND Software (2023-2025). E
 
 | Specification | Purpose | Status |
 |--------------|---------|--------|
-| [MHA](mha.md) | Model Hashing Algorithm — CIR change detection | Documented |
-| [SSA](ssa.md) | Sequence Sorting Algorithm — Go map ordering | Documented |
-| [JEMP](jemp.md) | Job Event Messaging Protocol — Concurrency model | Documented |
-| [Validation Stack](validation-stack.md) | Unified Model validation layer | Documented |
-| [Transactional Models](transactional-models.md) | VM deployment transaction process | Documented |
+| [MHA](mha/) | Model Hashing Algorithm — CIR change detection | [✓] Documented |
+| [SSA](ssa/) | Sequence Sorting Algorithm — Go map ordering | [✓] Documented |
+| [JEMP](jemp/) | Job Event Messaging Protocol — Concurrency model | [✓] Documented |
+| [Validation Stack](validation-stack/) | Unified Model validation layer | [✓] Documented |
+| [Transactional Models](transactional-models/) | VM deployment transaction process | [✓] Documented |
 
 ---
 
 ## Related Concepts
 
-- [DRUID API](/deep-dives/mind-universe) — Deploy, Refresh, Update, Import, Destroy (see MIND Universe)
-```
+- [DRUID API](/deep-dives/mind-universe/) — Deploy, Refresh, Update, Import, Destroy (see MIND Universe)
 
-## File: `specs/jemp.md`
+---
 
-```markdown
+[← Back to Home](/)
+File: `specs/jemp.md`
 ---
 layout: page
 title: Job Event Messaging Protocol (JEMP)
@@ -1188,28 +1090,28 @@ permalink: /specs/jemp/
 
 ### Event-Driven Model
 
-```
-┌─────────────┐         ┌─────────────┐
-│  Job Pool   │◄───────►│  Event Bus  │
-└─────────────┘         └─────────────┘
-                              │
-         ┌────────────────────┼────────────────────┐
-         ▼                    ▼                    ▼
-┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
-│   Heartbeat     │  │   Finished      │  │   Internal      │
-│   Event         │  │   Event         │  │   Event         │
-└─────────────────┘  └─────────────────┘  └─────────────────┘
+```text
+┌─────────────────┐         ┌─────────────────┐
+│    Job Pool     │◀───────▶│    Event Bus    │
+└────────┬────────┘         └─────────────────┘
+         │
+         ├───────────────────┼───────────────────┐
+         ▼                   ▼                   ▼
+┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+│   Heartbeat     │ │   Finished      │ │   Internal      │
+│   Event         │ │   Event         │ │   Event         │
+└─────────────────┘ └─────────────────┘ └─────────────────┘
 ```
 
 ### Job Lifecycle
 
-```
-┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐
-│  Queued │───▶│ Running │───▶│Finished │    │  Lost   │
-└─────────┘    └────┬────┘    └─────────┘    └────▲────┘
-                    │                              │
-                    └────── Heartbeat ─────────────┘
-                         (Timeout → Lost)
+```text
+┌───────────┐     ┌───────────┐     ┌───────────┐     ┌───────────┐
+│  Queued   │────▶│  Running  │────▶│  Finished │     │   Lost    │
+└───────────┘     └─────┬─────┘     └───────────┘     └─────▲─────┘
+                        │                                   │
+                        └───────── Heartbeat ───────────────┘
+                          (Timeout → Lost)
 ```
 
 ---
@@ -1256,20 +1158,15 @@ permalink: /specs/jemp/
 
 ## Related Specifications
 
-- [MHA](mha.md) — Model hashing
-- [SSA](ssa.md) — Sequence ordering
-- [Validation Stack](validation-stack.md) — Model validation
-- [Transactional Models](transactional-models.md) — Deployment states
+- [MHA](/specs/mha/) — Model hashing
+- [SSA](/specs/ssa/) — Sequence ordering
+- [Validation Stack](/specs/validation-stack/) — Model validation
+- [Transactional Models](/specs/transactional-models/) — Deployment states
 
 ---
 
 [← Back to Specifications](/specs/)
-
-```
-
-## File: `specs/mha.md`
-
-```markdown
+File: `specs/mha.md`
 ---
 layout: page
 title: Model Hashing Algorithm (MHA)
@@ -1294,23 +1191,23 @@ permalink: /specs/mha/
 
 ### Nested Hashing Model
 
-```
-┌────────────────────────────────────────────────────────┐
-│                    Virtual Machine                     │
-├─────────────┬─────────────┬─────────────┬──────────────┤
-│     CPU     │     RAM     │    Disks    │  OS / ID     │
-│   (hash)    │   (hash)    │   (hash)    │   (hash)     │
-└─────────────┴─────────────┴─────────────┴──────────────┘
-                          │
-                          ▼
-              ┌───────────────────────┐
-              │   Combined VM Hash    │
-              └───────────────────────┘
+```text
+┌───────────────────────────────────────────────────────────────┐
+│                      Virtual Machine                          │
+├───────────────┬───────────────┬───────────────┬───────────────┤
+│     CPU       │     RAM       │    Disks      │   OS / ID     │
+│    (hash)     │    (hash)     │    (hash)     │    (hash)     │
+└───────────────┴───────────────┴───────────────┴───────────────┘
+                              │
+                              ▼
+                     ┌───────────────────────┐
+                     │   Combined VM Hash    │
+                     └───────────────────────┘
 ```
 
 ### Bidirectional Comparison
 
-```
+```text
 ┌──────────────────┐              ┌──────────────────┐
 │  Unified Model   │              │      Facts       │
 │   (DB Record)    │              │  (Cloud API)     │
@@ -1318,12 +1215,12 @@ permalink: /specs/mha/
 │  MHA Hash Calc   │              │  MHA Hash Calc   │
 └────────┬─────────┘              └────────┬─────────┘
          │                                 │
-         └─────────────┬───────────────────┘
-                       ▼
-              ┌─────────────────┐
-              │   Hash Compare  │
-              │  (Change Detect)│
-              └─────────────────┘
+         └───────────────┬─────────────────┘
+                         ▼
+                 ┌─────────────────┐
+                 │   Hash Compare  │
+                 │  (Change Detect)│
+                 └─────────────────┘
 ```
 
 ---
@@ -1361,20 +1258,15 @@ permalink: /specs/mha/
 
 ## Related Specifications
 
-- [SSA](ssa.md) — Sequence ordering for model processing
-- [JEMP](jemp.md) — Job concurrency model
-- [Validation Stack](validation-stack.md) — Input validation
-- [Transactional Models](transactional-models.md) — VM deployment states
+- [SSA](/specs/ssa/) — Sequence ordering for model processing
+- [JEMP](/specs/jemp/) — Job concurrency model
+- [Validation Stack](/specs/validation-stack/) — Input validation
+- [Transactional Models](/specs/transactional-models/) — VM deployment states
 
 ---
 
 [← Back to Specifications](/specs/)
-
-```
-
-## File: `specs/ssa.md`
-
-```markdown
+File: `specs/ssa.md`
 ---
 layout: page
 title: Sequence Sorting Algorithm (SSA)
@@ -1401,29 +1293,29 @@ permalink: /specs/ssa/
 
 ### Algorithm Flow
 
-```
-┌─────────────────┐
-│   Input Map     │
-│ {0:1, 2:3, 4:5} │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Extract Keys   │
-│   [0, 2, 4]     │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Sort + Zero    │
-│   Last Logic    │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Output Slice   │
-│   [2, 4, 0]     │
-└─────────────────┘
+```text
+┌───────────────────┐
+│   Input Map       │
+│ {0:1, 2:3, 4:5}   │
+└─────────┬─────────┘
+          │
+          ▼
+┌───────────────────┐
+│  Extract Keys     │
+│   [0, 2, 4]       │
+└─────────┬─────────┘
+          │
+          ▼
+┌───────────────────┐
+│  Sort + Zero      │
+│   Last Logic      │
+└─────────┬─────────┘
+          │
+          ▼
+┌───────────────────┐
+│  Output Slice     │
+│   [2, 4, 0]       │
+└───────────────────┘
 ```
 
 ---
@@ -1435,7 +1327,6 @@ func SequenceSorting(m map[int]int) (order []int) {
     mlen := len(m)
     keys := make([]int, mlen)
     var mismatchCounter int
-
     for i := 0; i < mlen*2; i++ {
         _, ok := m[i]
         if ok {
@@ -1444,9 +1335,7 @@ func SequenceSorting(m map[int]int) (order []int) {
             mismatchCounter++
         }
     }
-
     sort.Ints(keys)
-
     order = make([]int, mlen)
     for i := 1; i < mlen; i++ {
         order[i-1] = keys[i]
@@ -1461,10 +1350,10 @@ func SequenceSorting(m map[int]int) (order []int) {
 
 | Metric | Value |
 |--------|-------|
-| **Input Size** | 1,000,000 keys |
-| **Execution Time** | 116.9 ms |
-| **Complexity** | O(n*2) lookup + O(n log n) sort |
-| **Memory** | 2x key slice allocation |
+| Input Size | 1,000,000 keys |
+| Execution Time | 116.9 ms |
+| Complexity | O(n*2) lookup + O(n log n) sort |
+| Memory | 2x key slice allocation |
 
 ### Benchmark Results
 
@@ -1473,9 +1362,7 @@ Keys processed: 1000000
 2023/05/26 15:17:32 Sort took 116.915073ms
 ```
 
----
-
-## Mutations
+### Mutations
 
 ```
 Input:  {0: 1, 2: 3, 4: 5, 6: 7, 8: 9}
@@ -1489,7 +1376,7 @@ Output: [2, 4, 6, 8, 0]
 
 | Trade-off | Impact |
 |-----------|--------|
-| O(n*2) iterations | Acceptable for n<1M |
+| O(n*2) iterations | Acceptable for n <1M |
 | Extra slice allocation | Memory overhead ~2x |
 | Zero-last semantics | Required for SMP ordering |
 
@@ -1497,26 +1384,21 @@ Output: [2, 4, 6, 8, 0]
 
 ## Proof of Concept
 
-🔗 [**Go Playground: SSA PoC →**](https://go.dev/play/p/gXdgi47OGDO)
+🔗 [Go Playground: SSA PoC →](https://go.dev/play/p/gXdgi47OGDO)
 
 ---
 
 ## Related Specifications
 
-- [MHA](mha.md) — Model hashing
-- [JEMP](jemp.md) — Job messaging
-- [Validation Stack](validation-stack.md) — Model validation
-- [Transactional Models](transactional-models.md) — Deployment states
+- [MHA](/specs/mha/) — Model hashing
+- [JEMP](/specs/jemp/) — Job messaging
+- [Validation Stack](/specs/validation-stack/) — Model validation
+- [Transactional Models](/specs/transactional-models/) — Deployment states
 
 ---
 
 [← Back to Specifications](/specs/)
-
-```
-
-## File: `specs/transactional-models.md`
-
-```markdown
+File: `specs/transactional-models.md`
 ---
 layout: page
 title: Transactional Models
@@ -1543,15 +1425,17 @@ permalink: /specs/transactional-models/
 
 ### Model States
 
-```
-┌─────────────┐      ┌─────────────┐      ┌─────────────┐
-│  Prototype  │─────▶│    Base     │─────▶│  Complete   │
-│   Model     │      │   Model     │      │   Model     │
-└─────────────┘      └─────────────┘      └─────────────┘
-      │                    │                    │
-      ▼                    ▼                    ▼
- Source Unit +        User Input          Validation +
- Placement          Customization        Default Values
+```text
+┌───────────────┐      ┌───────────────┐      ┌───────────────┐
+│   Prototype   │─────▶│     Base      │─────▶│   Complete    │
+│    Model      │      │    Model      │      │    Model      │
+└───────┬───────┘      └───────┬───────┘      └───────┬───────┘
+        │                      │                      │
+        ▼                      ▼                      ▼
+┌───────────────┐      ┌───────────────┐      ┌───────────────┐
+│ Source Unit + │      │  User Input   │      │  Validation + │
+│  Placement    │      │ Customization │      │ Default Values│
+└───────────────┘      └───────────────┘      └───────────────┘
 ```
 
 ---
@@ -1594,20 +1478,15 @@ permalink: /specs/transactional-models/
 
 ## Related Specifications
 
-- [MHA](mha.md) — Model hashing
-- [SSA](ssa.md) — Sequence ordering
-- [JEMP](jemp.md) — Job messaging
-- [Validation Stack](validation-stack.md) — Model validation
+- [MHA](/specs/mha/) — Model hashing
+- [SSA](/specs/ssa/) — Sequence ordering
+- [JEMP](/specs/jemp/) — Job messaging
+- [Validation Stack](/specs/validation-stack/) — Model validation
 
 ---
 
 [← Back to Specifications](/specs/)
-
-```
-
-## File: `specs/validation-stack.md`
-
-```markdown
+File: `specs/validation-stack.md`
 ---
 layout: page
 title: Universe Validation Stack
@@ -1634,18 +1513,18 @@ permalink: /specs/validation-stack/
 
 ### Stack Structure
 
-```
-┌─────────────────────────────────────────┐
-│           Validation Stack              │
-├─────────────────────────────────────────┤
-│  Validator N (Top)                      │
-│  Validator N-1                          │
-│  ...                                    │
-│  Validator 1 (Bottom)                   │
-└─────────────────────────────────────────┘
-         │
-         ▼
-    FILO Execution
+```text
+┌───────────────────────────────────────────┐
+│           Validation Stack                │
+├───────────────────────────────────────────┤
+│  Validator N (Top)                        │
+│  Validator N-1                            │
+│  ...                                      │
+│  Validator 1 (Bottom)                     │
+└───────────────────────────────────────────┘
+                    │
+                    ▼
+              FILO Execution
 ```
 
 ### Execution Flow
@@ -1668,13 +1547,11 @@ Push Validators → Run Chain (FILO) → Collect Results → Empty Stack
 ## Modes
 
 ### Strict Mode
-
 ```
 Validator 1 ✓ → Validator 2 ✗ → STOP
 ```
 
 ### Fault-Tolerant Mode
-
 ```
 Validator 1 ✓ → Validator 2 ✗ → Validator 3 ✓ → Collect All
 ```
@@ -1702,29 +1579,11 @@ Validator 1 ✓ → Validator 2 ✗ → Validator 3 ✓ → Collect All
 
 ## Related Specifications
 
-- [MHA](mha.md) — Model hashing
-- [SSA](ssa.md) — Sequence ordering
-- [JEMP](jemp.md) — Job messaging
-- [Transactional Models](transactional-models.md) — Deployment states
+- [MHA](/specs/mha/) — Model hashing
+- [SSA](/specs/ssa/) — Sequence ordering
+- [JEMP](/specs/jemp/) — Job messaging
+- [Transactional Models](/specs/transactional-models/) — Deployment states
 
 ---
 
 [← Back to Specifications](/specs/)
-
-```
-
----
-
-## Export Summary
-
-| Metric | Value |
-|--------|-------|
-| **Total Files** | 18 |
-| **Generated** | 2026-02-20 08:14:51 |
-| **Format** | Markdown (.md) |
-| **Scope** | .md files only |
-| **Total Size** | 50KB |
-
----
-
-*Auto-generated by generate_context.py*

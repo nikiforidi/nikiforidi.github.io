@@ -57,9 +57,11 @@ Event-driven concurrency model for distributed job execution.
 
 ---
 
-> "What I cannot create, I do not understand."
-> 
-> — **Richard Feynman**
+## A Note for Veteran Engineers
+
+> If you remember debugging with print statements, deploying via FTP, or celebrating when your code fit in 64KB of RAM—you'll feel at home here. These specs are written with the same care we used to put into our README files back when documentation actually mattered.
+>
+> — Anatoly
 
 ---
 

@@ -47,8 +47,8 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 
 | Repository | Commits | Releases | Stars | Status |
 |------------|---------|----------|-------|--------|
-| [vpnm](https://github.com/nikiforidi/vpnm) | 154 | 12 | 1 | [✓] Stable Reference |
-| [vpnmd](https://github.com/nikiforidi/vpnmd) | 62 | 3 | 0 | [✓] Stable Reference |
+| [vpnm](https://github.com/nikiforidi/vpnm) | 154 | 12 | 1 | ✅ Stable Reference |
+| [vpnmd](https://github.com/nikiforidi/vpnmd) | 62 | 3 | 0 | ✅ Stable Reference |
 
 ---
 
