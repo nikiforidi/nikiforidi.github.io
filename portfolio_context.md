@@ -1,6 +1,6 @@
 ---
 title: Portfolio Context Export
-generated: 2026-02-20 07:45:00
+generated: 2026-02-20 08:00:00
 format: Markdown
 scope: .md files only
 ---
@@ -1059,7 +1059,7 @@ Unix daemon IPC framework published on PyPI.
 
 ### ▶ VPN Tunneling Architecture
 Linux VPN client with TUN/TAP, Netfilter, and DNS redirection.
-- **Repositories:** [`vpnm`](https://github.com/anatolio-deb/vpnm) (154 commits), [`vpnmd`](https://github.com/anatolio-deb/vpnmd) (62 commits)
+- **Repositories:** [`vpnm`](https://github.com/nikiforidi/vpnm) (154 commits), [`vpnmd`](https://github.com/nikiforidi/vpnmd) (62 commits)
 - **Tech:** TUN/TAP, Netfilter, cloudflared DoH, tun2socks
 - **Execute:** [`/deep-dives/vpn-tunneling-architecture/`](/deep-dives/vpn-tunneling-architecture/)
 
