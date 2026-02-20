@@ -1,5 +1,5 @@
 // =====================================================
-// THEME TOGGLE FUNCTIONALITY
+// THEME TOGGLE + TYPING EFFECT
 // Retro Terminal Theme | Persistent Storage | Smooth Transition
 // =====================================================
 
@@ -64,6 +64,55 @@
         return toggleBtn;
     }
 
+    // Typing effect for home page header only
+    function applyTypingEffect() {
+        // Only apply on home page
+        if (!document.body.classList.contains('home')) {
+            return;
+        }
+
+        // Find the "Welcome, Traveler" h2 element
+        const welcomeHeader = document.querySelector('.home h2:first-of-type');
+        
+        if (!welcomeHeader) {
+            return;
+        }
+
+        // Get the original text (without the cursor span)
+        const originalText = welcomeHeader.textContent.replace('█', '').trim();
+        
+        // Clear the header
+        welcomeHeader.textContent = '';
+        
+        // Create cursor span
+        const cursorSpan = document.createElement('span');
+        cursorSpan.className = 'cursor-blink';
+        cursorSpan.textContent = '█';
+        
+        // Add cursor to header
+        welcomeHeader.appendChild(cursorSpan);
+        
+        // Typing animation
+        let i = 0;
+        const typingSpeed = 80; // ms per character
+        
+        const typeWriter = () => {
+            if (i < originalText.length) {
+                // Insert character before cursor
+                const char = originalText.charAt(i);
+                const textNode = document.createTextNode(char);
+                welcomeHeader.insertBefore(textNode, cursorSpan);
+                i++;
+                setTimeout(typeWriter, typingSpeed);
+            }
+        };
+        
+        // Start typing after a short delay
+        setTimeout(typeWriter, 500);
+        
+        console.log('Typing effect applied to home page header');
+    }
+
     // Initialize theme on page load
     function initTheme() {
         const savedTheme = getSavedTheme();
@@ -71,6 +120,9 @@
         createToggleButton();
         updateToggleButton(savedTheme);
         console.log('Theme initialized:', savedTheme);
+        
+        // Apply typing effect after theme is set
+        setTimeout(applyTypingEffect, 300);
     }
 
     // Run when DOM is ready
@@ -79,20 +131,4 @@
     } else {
         initTheme();
     }
-
-    // Optional: Typing effect for h1 elements
-    const headings = document.querySelectorAll('h1');
-    headings.forEach(heading => {
-        const text = heading.textContent;
-        heading.textContent = '';
-        let i = 0;
-        const typeWriter = () => {
-            if (i < text.length) {
-                heading.textContent += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, 50);
-            }
-        };
-        setTimeout(typeWriter, 500);
-    });
 })();

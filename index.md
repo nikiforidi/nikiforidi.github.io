@@ -5,7 +5,7 @@ tagline: Architecture, Algorithms, System Design
 permalink: /
 ---
 
-## Welcome, Traveler <span class="cursor-blink"></span>
+## Welcome, Traveler
 
 ```bash
 $ whoami

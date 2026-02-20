@@ -441,3 +441,45 @@ blockquote p {
         font-size: 0.75rem;
     }
 }
+/* ==================== BLINKING CURSOR ==================== */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.cursor-blink::after {
+    content: '█';
+    animation: blink 1s step-end infinite;
+    margin-left: 5px;
+    color: var(--accent-color);
+    display: inline-block;
+}
+
+/* ==================== TYPING EFFECT ==================== */
+.typing-effect {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 0;
+    animation: none;
+}
+
+/* Hide cursor during typing animation */
+.typing-effect .cursor-blink::after {
+    animation: blink 1s step-end infinite;
+}
+
+/* Home page specific - prevent layout shift */
+.home h2:first-of-type {
+    min-height: 3rem;
+}
+
+/* Mobile adjustment */
+@media (max-width: 768px) {
+    .cursor-blink::after {
+        font-size: 1.2rem;
+    }
+    
+    .home h2:first-of-type {
+        min-height: 2.5rem;
+    }
+}
