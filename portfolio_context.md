@@ -384,11 +384,11 @@ The name **anyd** stands for "**any daemon**" — reflecting its universal purpo
 | **Boundary** | Security isolation | Process separation |
 
 This pattern applies to **unlimited possibilities**:
-- ✅ VPN tunneling (network privileges)
-- ✅ Secrets management (memory protection)
-- ✅ Hardware control (GPIO/USB access)
-- ✅ System administration (service restarts)
-- ✅ Database operations (credential isolation)
+- [✓] VPN tunneling (network privileges)
+- [✓] Secrets management (memory protection)
+- [✓] Hardware control (GPIO/USB access)
+- [✓] System administration (service restarts)
+- [✓] Database operations (credential isolation)
 
 ---
 
@@ -868,10 +868,10 @@ CRUD-like operations for cloud infrastructure resources (CIR):
 
 | Provider | Status |
 |----------|--------|
-| VMware | ✅ Implemented |
-| OpenStack | ✅ Implemented |
-| oVirt | ✅ Implemented |
-| SpaceVM | ✅ Implemented |
+| VMware | [✓] Implemented |
+| OpenStack | [✓] Implemented |
+| oVirt | [✓] Implemented |
+| SpaceVM | [✓] Implemented |
 
 ---
 
@@ -947,8 +947,8 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 
 | Repository | Commits | Releases | Stars | Status |
 |------------|---------|----------|-------|--------|
-| [vpnm](https://github.com/nikiforidi/vpnm) | 154 | 12 | 1 | ✅ Stable Reference |
-| [vpnmd](https://github.com/nikiforidi/vpnmd) | 62 | 3 | 0 | ✅ Stable Reference |
+| [vpnm](https://github.com/nikiforidi/vpnm) | 154 | 12 | 1 | [✓] Stable Reference |
+| [vpnmd](https://github.com/nikiforidi/vpnmd) | 62 | 3 | 0 | [✓] Stable Reference |
 
 ---
 

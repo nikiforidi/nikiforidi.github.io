@@ -34,11 +34,11 @@ The name **anyd** stands for "**any daemon**" — reflecting its universal purpo
 | **Boundary** | Security isolation | Process separation |
 
 This pattern applies to **unlimited possibilities**:
-- ✅ VPN tunneling (network privileges)
-- ✅ Secrets management (memory protection)
-- ✅ Hardware control (GPIO/USB access)
-- ✅ System administration (service restarts)
-- ✅ Database operations (credential isolation)
+- [✓] VPN tunneling (network privileges)
+- [✓] Secrets management (memory protection)
+- [✓] Hardware control (GPIO/USB access)
+- [✓] System administration (service restarts)
+- [✓] Database operations (credential isolation)
 
 ---
 
