@@ -53,3 +53,61 @@ body::before {
 .home .page-heading, .home .post-title, .site-footer .site-title {
     display: none !important;
 }
+
+/* ==================== TABLES - CLEAN TERMINAL STYLE ==================== */
+table {
+    border: 2px solid var(--fallout-green);
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+    background-color: var(--fallout-bg);
+    box-shadow: 0 0 10px var(--fallout-shadow);
+}
+
+table thead {
+    background-color: var(--fallout-bg-light);
+    border-bottom: 2px solid var(--fallout-green);
+}
+
+table th {
+    border: 1px solid var(--fallout-green);
+    padding: 12px 16px;
+    text-align: left;
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--fallout-green);
+    text-shadow: var(--fallout-shadow);
+}
+
+table td {
+    border: 1px solid var(--fallout-border);
+    padding: 10px 14px;
+    color: var(--text-primary);
+    vertical-align: top;
+}
+
+table tr:nth-child(even) {
+    background-color: var(--fallout-bg-light);
+}
+
+table tr:nth-child(odd) {
+    background-color: var(--fallout-bg);
+}
+
+table tr:hover {
+    background-color: var(--fallout-bg-light);
+    box-shadow: inset 0 0 5px var(--fallout-green);
+}
+
+/* Responsive tables */
+@media (max-width: 768px) {
+    table {
+        font-size: 0.85rem;
+    }
+    
+    table th,
+    table td {
+        padding: 8px 10px;
+    }
+}
