@@ -1,230 +1,292 @@
 /* =====================================================
-   FALLOUT TERMINAL THEME
-   Pip-Boy Style | Phosphor Green | CRT Effects
+   DARK READER INSPIRED THEME
+   Base Colors extracted from Dark Reader defaults
+   Code Blocks: Distinct Editor Style (No Green)
    ===================================================== */
 
 /* ==================== VARIABLES ==================== */
 :root {
-    --fallout-green: #33ff00;
-    --fallout-dim: #1a8000;
-    --fallout-bg: #051405;
-    --fallout-bg-light: #0a280a;
-    --fallout-shadow: 0 0 10px var(--fallout-green);
-    --font-body: 'Share Tech Mono', monospace;
+    /* Dark Reader Defaults (Extracted from JS) */
+    --bg-primary: #181a1b;
+    --text-primary: #e8e6e3;
+    
+    /* Distinct Code Block Colors (No Green) */
+    --code-bg: #21252b;
+    --code-border: #3e4451;
+    --code-header: #2c313a;
+    
+    /* Accent Colors (Amber/Warm - No Green) */
+    --accent-primary: #d4a574;
+    --accent-secondary: #c9c4be;
+    --accent-keyword: #c678dd;   /* Purple */
+    --accent-function: #61afef;  /* Blue */
+    --accent-string: #e5c07b;    /* Yellow/Amber */
+    --accent-comment: #5c6370;   /* Gray */
+    
+    /* UI Elements */
+    --border-color: #3e4451;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    
+    /* Fonts */
+    --font-body: 'JetBrains Mono', monospace;
     --font-heading: 'VT323', monospace;
 }
 
 /* ==================== BASE STYLES ==================== */
 body {
-    background-color: var(--fallout-bg);
-    color: var(--fallout-green);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     font-family: var(--font-body);
     line-height: 1.6;
-    overflow-x: hidden;
-    position: relative;
-}
-
-/* ==================== CRT SCANLINES ==================== */
-body::before {
-    content: " ";
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(18, 16, 16, 0) 50%,
-        rgba(0, 0, 0, 0.25) 50%
-    );
-    background-size: 100% 4px;
-    z-index: 9999;
-    pointer-events: none;
-    animation: scanline 10s linear infinite;
-}
-
-/* ==================== CRT FLICKER ==================== */
-body::after {
-    content: " ";
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: rgba(18, 16, 16, 0.1);
-    opacity: 0;
-    z-index: 9998;
-    pointer-events: none;
-    animation: flicker 0.15s infinite;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ==================== TYPOGRAPHY ==================== */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    color: var(--fallout-green);
+    color: var(--text-primary);
+    font-weight: 400;
     text-transform: uppercase;
-    text-shadow: var(--fallout-shadow);
     letter-spacing: 2px;
-    border-bottom: 2px solid var(--fallout-dim);
-    padding-bottom: 10px;
-}
-
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.5rem; }
-
-p, li {
-    color: var(--fallout-green);
-    text-shadow: 0 0 2px var(--fallout-dim);
 }
 
 a {
-    color: var(--fallout-green);
+    color: var(--accent-primary);
     text-decoration: none;
-    border-bottom: 1px dashed var(--fallout-green);
-    transition: all 0.3s ease;
-    text-shadow: var(--fallout-shadow);
+    border-bottom: 1px dotted var(--accent-primary);
+    transition: all 0.2s ease;
 }
 
 a:hover {
-    background-color: var(--fallout-green);
-    color: var(--fallout-bg);
-    box-shadow: var(--fallout-shadow);
-    border-bottom: 1px solid var(--fallout-green);
+    color: var(--text-primary);
+    background-color: var(--accent-primary);
+    border-bottom: 1px solid var(--text-primary);
 }
 
-/* ==================== CODE BLOCKS - DARKER ==================== */
-code {
-    background-color: var(--fallout-bg);
-    color: var(--fallout-green);
-    border: 1px solid var(--fallout-dim);
-    padding: 0.2em 0.4em;
-    font-family: var(--font-body);
-    text-shadow: 0 0 2px var(--fallout-dim);
-}
-
+/* ==================== SHELL / CODE BLOCKS (Distinct Look) ==================== */
 pre {
-    background-color: var(--fallout-bg);
-    border: 2px solid var(--fallout-green);
-    padding: 16px;
+    background-color: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 6px;
+    padding: 0;
     overflow-x: auto;
-    box-shadow: inset 0 0 20px var(--fallout-dim);
+    box-shadow: 0 4px 12px var(--shadow-color);
+    margin: 20px 0;
+    position: relative;
+}
+
+/* Fake Terminal Header */
+pre::before {
+    content: "● ● ●";
+    display: block;
+    background-color: var(--code-header);
+    color: var(--accent-comment);
+    padding: 8px 12px;
+    font-size: 12px;
+    letter-spacing: 4px;
+    border-bottom: 1px solid var(--code-border);
+    border-radius: 6px 6px 0 0;
+    font-family: var(--font-body);
+}
+
+code {
+    background-color: var(--code-bg);
+    color: var(--accent-string);
+    font-family: var(--font-body);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    border: 1px solid var(--code-border);
 }
 
 pre code {
     background-color: transparent;
     border: none;
-    padding: 0;
+    padding: 16px;
+    display: block;
+    color: var(--text-primary);
+    line-height: 1.5;
 }
+
+/* Syntax Highlighting (No Green) */
+.highlight .c { color: var(--accent-comment); font-style: italic; } /* Comment */
+.highlight .k { color: var(--accent-keyword); } /* Keyword */
+.highlight .o { color: var(--text-primary); } /* Operator */
+.highlight .cm { color: var(--accent-comment); font-style: italic; }
+.highlight .cp { color: var(--accent-comment); }
+.highlight .c1 { color: var(--accent-comment); font-style: italic; }
+.highlight .cs { color: var(--accent-comment); font-style: italic; }
+.highlight .gd { color: #ff6b6b; } /* Deleted */
+.highlight .ge { font-style: italic; }
+.highlight .gi { color: #98c379; } /* Inserted (Light Green-ish but distinct) */
+.highlight .gs { font-weight: bold; }
+.highlight .gu { color: var(--accent-function); }
+.highlight .kc { color: var(--accent-keyword); }
+.highlight .kd { color: var(--accent-keyword); }
+.highlight .kn { color: var(--accent-keyword); }
+.highlight .kp { color: var(--accent-keyword); }
+.highlight .kr { color: var(--accent-keyword); }
+.highlight .kt { color: var(--accent-keyword); }
+.highlight .m { color: var(--accent-string); } /* Number */
+.highlight .s { color: var(--accent-string); } /* String */
+.highlight .na { color: var(--accent-function); }
+.highlight .nb { color: var(--text-primary); }
+.highlight .nc { color: var(--accent-function); }
+.highlight .no { color: var(--accent-string); }
+.highlight .nd { color: var(--accent-function); }
+.highlight .ni { color: var(--text-primary); }
+.highlight .ne { color: var(--accent-function); }
+.highlight .nf { color: var(--accent-function); } /* Function */
+.highlight .nl { color: var(--text-primary); }
+.highlight .nn { color: var(--accent-function); }
+.highlight .nx { color: var(--text-primary); }
+.highlight .py { color: var(--text-primary); }
+.highlight .nt { color: var(--accent-keyword); }
+.highlight .nv { color: var(--text-primary); }
+.highlight .ow { color: var(--accent-keyword); }
+.highlight .w { color: var(--text-primary); }
+.highlight .mf { color: var(--accent-string); }
+.highlight .mh { color: var(--accent-string); }
+.highlight .mi { color: var(--accent-string); }
+.highlight .mo { color: var(--accent-string); }
+.highlight .sb { color: var(--accent-string); }
+.highlight .sc { color: var(--accent-string); }
+.highlight .sd { color: var(--accent-comment); }
+.highlight .s2 { color: var(--accent-string); }
+.highlight .se { color: var(--accent-string); }
+.highlight .sh { color: var(--accent-string); }
+.highlight .si { color: var(--accent-string); }
+.highlight .sx { color: var(--accent-string); }
+.highlight .sr { color: var(--accent-string); }
+.highlight .s1 { color: var(--accent-string); }
+.highlight .ss { color: var(--accent-string); }
+.highlight .bp { color: var(--text-primary); }
+.highlight .vc { color: var(--text-primary); }
+.highlight .vg { color: var(--text-primary); }
+.highlight .vi { color: var(--text-primary); }
+.highlight .il { color: var(--accent-string); }
 
 /* ==================== TABLES ==================== */
 table {
-    border: 2px solid var(--fallout-green);
+    border-color: var(--border-color);
+    background-color: var(--bg-primary);
     border-collapse: collapse;
     width: 100%;
     margin: 20px 0;
-    box-shadow: 0 0 10px var(--fallout-dim);
+    box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 table td,
 table th {
-    border: 1px solid var(--fallout-dim);
+    border-color: var(--border-color);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     padding: 12px 16px;
-    color: var(--fallout-green);
+    border: 1px solid var(--border-color);
 }
 
 table th {
-    background-color: var(--fallout-bg-light);
+    background-color: var(--code-header);
+    color: var(--accent-primary);
+    font-family: var(--font-heading);
     text-transform: uppercase;
-    text-shadow: var(--fallout-shadow);
+    letter-spacing: 1px;
 }
 
 table tr:nth-child(even) {
-    background-color: rgba(51, 255, 0, 0.05);
+    background-color: rgba(255, 255, 255, 0.02);
 }
 
 /* ==================== BLOCKQUOTES ==================== */
 blockquote {
-    border-left: 4px solid var(--fallout-green);
-    background-color: var(--fallout-bg-light);
-    color: var(--fallout-green);
+    border-left-color: var(--accent-primary);
+    background-color: var(--code-bg);
+    color: var(--accent-secondary);
     padding: 16px;
+    border-left-width: 4px;
+    border-left-style: solid;
     margin: 20px 0;
-    box-shadow: inset 5px 0 10px var(--fallout-dim);
+    border-radius: 0 4px 4px 0;
+}
+
+/* ==================== SEPARATORS ==================== */
+hr {
+    border: 0;
+    height: 20px;
+    margin: 60px auto;
+    width: 60%;
+    max-width: 400px;
+    text-align: center;
+    line-height: 1;
+}
+
+hr::before {
+    content: "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒......";
+    color: var(--accent-primary);
+    letter-spacing: 3px;
+    opacity: 0.6;
+    font-size: 12px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* ==================== HEADER & NAV ==================== */
 .site-header {
-    background-color: var(--fallout-bg-light);
-    border-bottom: 2px solid var(--fallout-green);
+    background-color: var(--code-header);
+    border-bottom: 2px solid var(--accent-primary);
     padding: 20px 0;
-    box-shadow: 0 5px 15px var(--fallout-dim);
 }
 
 .site-title {
-    color: var(--fallout-green);
+    color: var(--accent-primary);
     font-family: var(--font-heading);
     font-size: 2rem;
     text-transform: uppercase;
-    text-shadow: var(--fallout-shadow);
+    letter-spacing: 3px;
 }
 
 .site-nav a {
-    color: var(--fallout-green);
-    font-family: var(--font-body);
+    color: var(--accent-secondary);
+    font-family: var(--font-heading);
     text-transform: uppercase;
-    border: 1px solid transparent;
-    padding: 5px 10px;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
 }
 
 .site-nav a:hover {
-    border: 1px solid var(--fallout-green);
-    background-color: var(--fallout-bg-light);
-    box-shadow: var(--fallout-shadow);
+    color: var(--accent-primary);
+    background-color: transparent;
+    border-bottom: 2px solid var(--accent-primary);
 }
 
 /* ==================== FOOTER ==================== */
 .site-footer {
     text-align: center;
     padding: 20px 0;
-    border-top: 2px solid var(--fallout-dim);
+    border-top: 1px solid var(--border-color);
     margin-top: 60px;
-    color: var(--fallout-dim);
-    font-size: 0.9rem;
+    background-color: var(--code-header);
+    color: var(--accent-secondary);
 }
 
-/* ==================== ANIMATIONS ==================== */
-@keyframes scanline {
-    0% { background-position: 0 0; }
-    100% { background-position: 0 100%; }
+/* ==================== SCROLLBAR ==================== */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
 }
 
-@keyframes flicker {
-    0% { opacity: 0.02; }
-    5% { opacity: 0.05; }
-    10% { opacity: 0.02; }
-    15% { opacity: 0.06; }
-    20% { opacity: 0.02; }
-    50% { opacity: 0.02; }
-    55% { opacity: 0.05; }
-    60% { opacity: 0.02; }
-    100% { opacity: 0.02; }
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
 }
 
-/* ==================== BLINKING CURSOR ==================== */
-.cursor-blink::after {
-    content: '█';
-    animation: blink 1s step-end infinite;
-    margin-left: 5px;
-    color: var(--fallout-green);
-    text-shadow: var(--fallout-shadow);
+::-webkit-scrollbar-thumb {
+    background: var(--code-border);
+    border-radius: 5px;
 }
 
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-primary);
 }
 
 /* ==================== MOBILE ==================== */
@@ -232,83 +294,18 @@ blockquote {
     h1 { font-size: 2rem; }
     h2 { font-size: 1.5rem; }
     
-    body::before {
-        background-size: 100% 2px;
+    hr {
+        margin: 40px auto;
+        width: 80%;
     }
-}
-
-/* ==================== ACCESSIBILITY (Reduce Motion) ==================== */
-@media (prefers-reduced-motion: reduce) {
-    body::after,
-    body::before {
-        animation: none;
+    
+    hr::before {
+        letter-spacing: 2px;
+        font-size: 10px;
     }
-}
-/* =====================================================
-   HIDE DUPLICATE HEADERS & FOOTERS
-   Retro Terminal Theme Compatible
-   ===================================================== */
-
-/* ==================== HEADER FIXES ==================== */
-
-/* Hide Minima's auto-generated page title on home page */
-.home .page-heading,
-.home h1.page-title,
-.home article > h1:first-child,
-.home .post-title {
-    display: none !important;
-}
-
-/* Hide duplicate "Welcome, Traveler" from navigation/menu */
-.site-nav .welcome-traveler-duplicate,
-nav .page-title,
-header .page-title {
-    display: none !important;
-}
-
-/* Keep only ONE instance of the main heading */
-.home .main-content h2:first-of-type,
-.home #welcome-heading {
-    display: block !important;
-}
-
-/* ==================== FOOTER FIXES ==================== */
-
-/* Hide duplicate site title in footer */
-.site-footer .site-title,
-.site-footer h2,
-.site-footer h3,
-footer .site-title {
-    display: none !important;
-}
-
-/* Hide duplicate author name */
-.site-footer .author-name-duplicate,
-.site-footer p:first-of-type,
-footer p.author {
-    display: none !important;
-}
-
-/* Keep only the description line */
-.site-footer .site-description,
-.site-footer p:last-child {
-    display: block !important;
-    color: var(--text-secondary) !important;
-}
-
-/* ==================== MINIMA OVERRIDES ==================== */
-
-/* Prevent Minima from injecting extra titles */
-.wrapper > header,
-.page-content > header {
-    display: none !important;
-}
-
-/* Clean up any remaining duplicates */
-.duplicate-header,
-.duplicate-footer,
-[aria-label="Site title"] + h1,
-h1 + h1,
-h2 + h2 {
-    display: none !important;
+    
+    pre::before {
+        font-size: 10px;
+        padding: 6px 10px;
+    }
 }
