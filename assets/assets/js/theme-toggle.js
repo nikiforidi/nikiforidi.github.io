@@ -1,6 +1,5 @@
 // =====================================================
-// THEME TOGGLE + TYPING EFFECT
-// Retro Terminal Theme | Persistent Storage | Smooth Transition
+// THEME TOGGLE + TYPING EFFECT + BLINKING CURSOR
 // =====================================================
 
 (function() {
@@ -8,17 +7,17 @@
     const DARK_THEME = 'dark';
     const LIGHT_THEME = 'light';
 
-    // Get saved theme or default to light
+    // Get saved theme
     function getSavedTheme() {
         return localStorage.getItem(THEME_KEY) || LIGHT_THEME;
     }
 
-    // Save theme to localStorage
+    // Save theme
     function saveTheme(theme) {
         localStorage.setItem(THEME_KEY, theme);
     }
 
-    // Apply theme to document
+    // Apply theme
     function applyTheme(theme) {
         if (theme === DARK_THEME) {
             document.documentElement.setAttribute('data-theme', DARK_THEME);
@@ -34,10 +33,10 @@
         applyTheme(newTheme);
         saveTheme(newTheme);
         updateToggleButton(newTheme);
-        console.log('Theme switched to:', newTheme);
+        console.log('[THEME] Switched to:', newTheme);
     }
 
-    // Update toggle button icon
+    // Update toggle button
     function updateToggleButton(theme) {
         const toggleBtn = document.querySelector('.theme-toggle');
         if (toggleBtn) {
@@ -50,9 +49,8 @@
 
     // Create toggle button
     function createToggleButton() {
-        // Check if button already exists
         if (document.querySelector('.theme-toggle')) {
-            console.log('Toggle button already exists');
+            console.log('[THEME] Toggle button already exists');
             return;
         }
 
@@ -62,74 +60,73 @@
         toggleBtn.setAttribute('type', 'button');
         toggleBtn.addEventListener('click', toggleTheme);
         document.body.appendChild(toggleBtn);
-        console.log('Toggle button created');
-        return toggleBtn;
+        console.log('[THEME] Toggle button created');
     }
 
-    // Typing effect for home page header only
+    // Typing effect for home page header
     function applyTypingEffect() {
-        // Only apply on home page
+        // Only on home page
         if (!document.body.classList.contains('home')) {
+            console.log('[TYPING] Not home page, skipping');
             return;
         }
 
-        // Find the "Welcome, Traveler" h2 element
-        const welcomeHeader = document.querySelector('.home h2:first-of-type');
-        
-        if (!welcomeHeader) {
+        // Find the h2 header
+        const header = document.querySelector('h2');
+        if (!header) {
+            console.log('[TYPING] No h2 header found');
             return;
         }
 
-        // Get the original text (without the cursor span)
-        const originalText = welcomeHeader.textContent.trim();
-        
-        // Clear the header
-        welcomeHeader.textContent = '';
-        
+        // Get original text
+        const originalText = header.textContent.trim();
+        if (!originalText) {
+            console.log('[TYPING] No text content');
+            return;
+        }
+
+        // Clear header
+        header.textContent = '';
+
         // Create cursor span
-        const cursorSpan = document.createElement('span');
-        cursorSpan.className = 'cursor-blink';
-        
-        // Add cursor to header
-        welcomeHeader.appendChild(cursorSpan);
-        
+        const cursor = document.createElement('span');
+        cursor.className = 'cursor-blink';
+        cursor.textContent = '█';
+        header.appendChild(cursor);
+
         // Typing animation
         let i = 0;
-        const typingSpeed = 80; // ms per character
-        
-        const typeWriter = () => {
+        const speed = 80;
+
+        function type() {
             if (i < originalText.length) {
-                // Insert character before cursor
-                const char = originalText.charAt(i);
-                const textNode = document.createTextNode(char);
-                welcomeHeader.insertBefore(textNode, cursorSpan);
+                const char = document.createTextNode(originalText.charAt(i));
+                header.insertBefore(char, cursor);
                 i++;
-                setTimeout(typeWriter, typingSpeed);
+                setTimeout(type, speed);
             }
-        };
-        
-        // Start typing after a short delay
-        setTimeout(typeWriter, 500);
-        
-        console.log('Typing effect applied to home page header');
+        }
+
+        setTimeout(type, 500);
+        console.log('[TYPING] Animation started for:', originalText);
     }
 
-    // Initialize theme on page load
-    function initTheme() {
+    // Initialize everything
+    function init() {
         const savedTheme = getSavedTheme();
         applyTheme(savedTheme);
         createToggleButton();
         updateToggleButton(savedTheme);
-        console.log('Theme initialized:', savedTheme);
-        
-        // Apply typing effect after theme is set
+        console.log('[THEME] Initialized:', savedTheme);
+
+        // Apply typing effect
         setTimeout(applyTypingEffect, 300);
     }
 
-    // Run when DOM is ready
+    // Run when ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initTheme);
+        document.addEventListener('DOMContentLoaded', init);
     } else {
-        initTheme();
+        init();
     }
 })();

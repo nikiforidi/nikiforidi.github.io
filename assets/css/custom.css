@@ -1,9 +1,8 @@
 /* =====================================================
    COZY RETRO TERMINAL THEME
-   Inspired by: VT100, Amber Monitors, Old Paper Docs
    ===================================================== */
 
-/* ==================== LIGHT MODE (Old Paper) ==================== */
+/* ==================== LIGHT MODE ==================== */
 :root {
     --bg-primary: #f4f1ea;
     --bg-secondary: #e8e4dc;
@@ -31,7 +30,7 @@
     --separator-color: #c05621;
 }
 
-/* ==================== DARK MODE (Amber Phosphor) ==================== */
+/* ==================== DARK MODE ==================== */
 [data-theme="dark"] {
     --bg-primary: #1a1816;
     --bg-secondary: #252220;
@@ -58,7 +57,7 @@
     --separator-color: #ffb000;
 }
 
-/* ==================== BASE STYLES ==================== */
+/* ==================== BASE ==================== */
 body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
@@ -68,7 +67,6 @@ body {
     position: relative;
 }
 
-/* CRT Scanline Effect (Subtle) */
 body::before {
     content: " ";
     display: block;
@@ -117,7 +115,7 @@ a:hover {
     border-bottom: 1px solid var(--link-hover);
 }
 
-/* ==================== CODE BLOCKS ==================== */
+/* ==================== CODE ==================== */
 code {
     background-color: var(--code-bg);
     color: var(--accent-color);
@@ -152,8 +150,7 @@ table {
     box-shadow: var(--shadow);
 }
 
-table td,
-table th {
+table td, table th {
     border-color: var(--table-border);
     background-color: var(--table-bg);
     color: var(--text-primary);
@@ -174,44 +171,17 @@ table tr:nth-child(even) {
     background-color: var(--table-bg-alt);
 }
 
-table tr:nth-child(even) td,
-table tr:nth-child(even) th {
+table tr:nth-child(even) td, table tr:nth-child(even) th {
     background-color: var(--table-bg-alt);
     color: var(--text-primary);
 }
 
-table tr:nth-child(odd) td,
-table tr:nth-child(odd) th {
+table tr:nth-child(odd) td, table tr:nth-child(odd) th {
     background-color: var(--table-bg);
     color: var(--text-primary);
 }
 
-/* Markdown Body Tables */
-.markdown-body table td,
-.markdown-body table th {
-    border-color: var(--table-border);
-    background-color: var(--table-bg);
-    color: var(--text-primary);
-}
-
-.markdown-body table tr:nth-child(2n) {
-    background-color: var(--table-bg-alt);
-}
-
-/* Force table theme override */
-table,
-table td,
-table th,
-table tr,
-table tbody,
-table thead,
-table tfoot {
-    background-color: var(--table-bg);
-    border-color: var(--table-border);
-    color: var(--text-primary);
-}
-
-/* ==================== SEPARATORS - RETRO BLOCK STYLE ==================== */
+/* ==================== SEPARATORS ==================== */
 hr {
     border: none;
     height: 20px;
@@ -255,7 +225,7 @@ blockquote p {
     color: var(--text-primary);
 }
 
-/* ==================== THEME TOGGLE - BOTTOM RIGHT FLOATING ==================== */
+/* ==================== THEME TOGGLE ==================== */
 .theme-toggle {
     position: fixed;
     bottom: 30px;
@@ -274,7 +244,6 @@ blockquote p {
     box-shadow: var(--shadow);
     transition: all 0.2s ease;
     z-index: 1000;
-    font-family: var(--font-heading);
     -webkit-text-fill-color: var(--toggle-text);
 }
 
@@ -290,7 +259,7 @@ blockquote p {
     outline-offset: 2px;
 }
 
-/* ==================== ENTER BUTTON (Table Links) ==================== */
+/* ==================== ENTER BUTTON ==================== */
 .theme-enter {
     display: inline-block;
     padding: 4px 10px;
@@ -342,7 +311,7 @@ blockquote p {
     border-bottom: 2px solid var(--accent-color);
 }
 
-/* ==================== FOOTER - NO DUPLICATES ==================== */
+/* ==================== FOOTER ==================== */
 .site-footer .site-title {
     display: none !important;
 }
@@ -364,7 +333,7 @@ blockquote p {
     font-size: 0.9rem;
 }
 
-/* ==================== HOME PAGE - NO DUPLICATE HEADERS ==================== */
+/* ==================== HOME PAGE - NO DUPLICATES ==================== */
 .home .page-heading {
     display: none !important;
 }
@@ -383,14 +352,19 @@ blockquote p {
     50% { opacity: 0; }
 }
 
+.cursor-blink {
+    color: var(--cursor-color);
+}
+
 .cursor-blink::after {
     content: '█';
     animation: blink 1s step-end infinite;
-    margin-left: 5px;
+    margin-left: 2px;
     color: var(--accent-color);
+    display: inline-block;
 }
 
-/* ==================== SCROLLBAR (Dark Mode) ==================== */
+/* ==================== SCROLLBAR ==================== */
 [data-theme="dark"] ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -409,7 +383,7 @@ blockquote p {
     background: var(--link-color);
 }
 
-/* ==================== MOBILE RESPONSIVE ==================== */
+/* ==================== MOBILE ==================== */
 @media (max-width: 768px) {
     .theme-toggle {
         bottom: 20px;
@@ -439,91 +413,5 @@ blockquote p {
     .theme-enter {
         padding: 3px 8px;
         font-size: 0.75rem;
-    }
-}
-/* ==================== BLINKING CURSOR ==================== */
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-
-.cursor-blink::after {
-    content: '█';
-    animation: blink 1s step-end infinite;
-    margin-left: 5px;
-    color: var(--accent-color);
-    display: inline-block;
-}
-
-/* ==================== TYPING EFFECT ==================== */
-.typing-effect {
-    overflow: hidden;
-    white-space: nowrap;
-    border-right: 0;
-    animation: none;
-}
-
-/* Hide cursor during typing animation */
-.typing-effect .cursor-blink::after {
-    animation: blink 1s step-end infinite;
-}
-
-/* Home page specific - prevent layout shift */
-.home h2:first-of-type {
-    min-height: 3rem;
-}
-
-/* Mobile adjustment */
-@media (max-width: 768px) {
-    .cursor-blink::after {
-        font-size: 1.2rem;
-    }
-    
-    .home h2:first-of-type {
-        min-height: 2.5rem;
-    }
-}
-/* ==================== THEME TOGGLE - BOTTOM RIGHT FLOATING ==================== */
-.theme-toggle {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 56px;
-    height: 56px;
-    border-radius: 4px;
-    background-color: var(--toggle-bg);
-    border: 2px solid var(--toggle-border);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    color: var(--toggle-text);
-    box-shadow: var(--shadow);
-    transition: all 0.2s ease;
-    z-index: 1000;
-    -webkit-text-fill-color: var(--toggle-text);
-}
-
-.theme-toggle:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 var(--toggle-border);
-    background-color: var(--toggle-hover);
-    color: var(--bg-primary);
-}
-
-.theme-toggle:focus {
-    outline: 2px solid var(--toggle-border);
-    outline-offset: 2px;
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-    .theme-toggle {
-        bottom: 20px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
-        font-size: 22px;
     }
 }
