@@ -1,32 +1,61 @@
 /* =====================================================
-   COZY WARM DARK RETRO THEME
-   Warm Charcoal | Soft Amber | Diffuse Glow
+   COZY RETRO TERMINAL THEME
+   Inspired by: VT100, Amber Monitors, Old Paper Docs
    ===================================================== */
 
-/* ==================== VARIABLES ==================== */
+/* ==================== LIGHT MODE (Old Paper) ==================== */
 :root {
-    /* Backgrounds */
-    --bg-primary: #191614;       /* Deep Warm Charcoal */
-    --bg-secondary: #231f1d;     /* Warm Dark Gray */
-    --bg-tertiary: #2a2522;      /* Slightly Lighter Warm Gray */
-    
-    /* Text */
-    --text-primary: #c9c2b8;     /* Soft Warm White */
-    --text-secondary: #a8a29e;   /* Warm Gray */
-    --text-accent: #d4a373;      /* Muted Amber */
-    
-    /* UI Elements */
-    --border-color: #3d3430;     /* Warm Brown */
-    --code-bg: #231f1d;          /* Match Secondary BG */
-    --accent-glow: rgba(212, 163, 115, 0.15); /* Soft Amber Glow */
-    
-    /* Fonts */
+    --bg-primary: #f4f1ea;
+    --bg-secondary: #e8e4dc;
+    --text-primary: #2b2b2b;
+    --text-secondary: #5a5a5a;
+    --border-color: #d4cfc7;
+    --link-color: #c05621;
+    --link-hover: #dd6b20;
+    --code-bg: #e8e4dc;
+    --accent-color: #c05621;
+    --cursor-color: #c05621;
+    --scanline-color: rgba(0, 0, 0, 0.03);
     --font-body: 'JetBrains Mono', monospace;
     --font-heading: 'VT323', monospace;
-    
-    /* Effects */
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    --scanline-color: rgba(201, 194, 184, 0.03); /* Very Subtle */
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --toggle-bg: #e8e4dc;
+    --toggle-border: #c05621;
+    --toggle-text: #c05621;
+    --toggle-hover: #c05621;
+    --table-bg: #f4f1ea;
+    --table-bg-alt: #e8e4dc;
+    --table-header-bg: #e8e4dc;
+    --table-header-text: #2b2b2b;
+    --table-border: #d4cfc7;
+    --separator-color: #c05621;
+}
+
+/* ==================== DARK MODE (Amber Phosphor) ==================== */
+[data-theme="dark"] {
+    --bg-primary: #1a1816;
+    --bg-secondary: #252220;
+    --text-primary: #ffb000;
+    --text-secondary: #cc8d00;
+    --border-color: #3d3834;
+    --link-color: #ffb000;
+    --link-hover: #ffc83d;
+    --code-bg: #252220;
+    --accent-color: #ffb000;
+    --cursor-color: #ffb000;
+    --scanline-color: rgba(255, 176, 0, 0.03);
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    --text-glow: 0 0 2px rgba(255, 176, 0, 0.5);
+    --toggle-bg: #252220;
+    --toggle-border: #ffb000;
+    --toggle-text: #ffb000;
+    --toggle-hover: #ffb000;
+    --table-bg: #1a1816;
+    --table-bg-alt: #252220;
+    --table-header-bg: #252220;
+    --table-header-text: #ffb000;
+    --table-border: #3d3834;
+    --separator-color: #ffb000;
 }
 
 /* ==================== BASE STYLES ==================== */
@@ -34,52 +63,40 @@ body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
     font-family: var(--font-body);
-    line-height: 1.7; /* More comfortable reading */
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
     position: relative;
-    overflow-x: hidden;
 }
 
-/* Subtle Vignette for Coziness */
-body::after {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle, transparent 60%, rgba(0, 0, 0, 0.4) 100%);
-    pointer-events: none;
-    z-index: 9998;
-}
-
-/* Soft CRT Scanlines */
+/* CRT Scanline Effect (Subtle) */
 body::before {
     content: " ";
     display: block;
     position: fixed;
-    top: 0; left: 0; bottom: 0; right: 0;
-    background: linear-gradient(
-        to bottom,
-        var(--scanline-color) 50%,
-        rgba(0, 0, 0, 0) 50%
-    );
-    background-size: 100% 3px; /* Wider lines for softer look */
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(to bottom, var(--scanline-color) 50%, rgba(0, 0, 0, 0) 50%);
+    background-size: 100% 4px;
     z-index: 9999;
     pointer-events: none;
-    opacity: 0.4;
+    opacity: 0.5;
 }
 
 /* ==================== TYPOGRAPHY ==================== */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    color: var(--text-accent);
+    color: var(--text-primary);
     font-weight: 400;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: 0 0 8px var(--accent-glow); /* Diffuse Glow */
-    margin-top: 1.5em;
+    letter-spacing: 2px;
+    text-shadow: var(--text-glow);
 }
 
-h1 { font-size: 2.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-h2 { font-size: 1.8rem; }
-h3 { font-size: 1.4rem; }
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+h3 { font-size: 1.5rem; }
 
 p, li {
     color: var(--text-primary);
@@ -87,82 +104,114 @@ p, li {
 }
 
 a {
-    color: var(--text-accent);
+    color: var(--link-color);
     text-decoration: none;
-    border-bottom: 1px dotted var(--border-color);
-    transition: all 0.3s ease;
+    border-bottom: 1px dotted var(--link-color);
+    transition: all 0.2s ease;
 }
 
 a:hover {
-    color: var(--text-primary);
-    background-color: var(--accent-glow);
-    border-bottom: 1px solid var(--text-accent);
-    text-shadow: 0 0 5px var(--accent-glow);
+    color: var(--link-hover);
+    background-color: var(--link-color);
+    color: var(--bg-primary);
+    border-bottom: 1px solid var(--link-hover);
 }
 
 /* ==================== CODE BLOCKS ==================== */
 code {
     background-color: var(--code-bg);
-    color: var(--text-accent);
+    color: var(--accent-color);
     font-family: var(--font-body);
     padding: 0.2em 0.4em;
-    border-radius: 3px;
+    border-radius: 2px;
     border: 1px solid var(--border-color);
-    font-size: 0.9em;
 }
 
 pre {
-    background-color: var(--bg-secondary);
+    background-color: var(--code-bg);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 20px;
+    border-radius: 4px;
+    padding: 16px;
     overflow-x: auto;
     box-shadow: var(--shadow);
-    position: relative;
 }
 
 pre code {
     background-color: transparent;
     border: none;
     padding: 0;
-    color: var(--text-primary);
-    line-height: 1.6;
 }
 
 /* ==================== TABLES ==================== */
 table {
-    border-color: var(--border-color);
-    background-color: var(--bg-secondary);
+    border-color: var(--table-border);
+    background-color: var(--table-bg);
     border-collapse: collapse;
     width: 100%;
     margin: 20px 0;
     box-shadow: var(--shadow);
-    border-radius: 6px;
-    overflow: hidden;
 }
 
 table td,
 table th {
-    border-color: var(--border-color);
-    background-color: var(--bg-secondary);
+    border-color: var(--table-border);
+    background-color: var(--table-bg);
     color: var(--text-primary);
     padding: 12px 16px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--table-border);
+    font-family: var(--font-body);
 }
 
 table th {
-    background-color: var(--bg-tertiary);
-    color: var(--text-accent);
+    background-color: var(--table-header-bg);
+    color: var(--table-header-text);
     font-family: var(--font-heading);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 table tr:nth-child(even) {
-    background-color: var(--bg-primary);
+    background-color: var(--table-bg-alt);
 }
 
-/* ==================== SEPARATORS ==================== */
+table tr:nth-child(even) td,
+table tr:nth-child(even) th {
+    background-color: var(--table-bg-alt);
+    color: var(--text-primary);
+}
+
+table tr:nth-child(odd) td,
+table tr:nth-child(odd) th {
+    background-color: var(--table-bg);
+    color: var(--text-primary);
+}
+
+/* Markdown Body Tables */
+.markdown-body table td,
+.markdown-body table th {
+    border-color: var(--table-border);
+    background-color: var(--table-bg);
+    color: var(--text-primary);
+}
+
+.markdown-body table tr:nth-child(2n) {
+    background-color: var(--table-bg-alt);
+}
+
+/* Force table theme override */
+table,
+table td,
+table th,
+table tr,
+table tbody,
+table thead,
+table tfoot {
+    background-color: var(--table-bg);
+    border-color: var(--table-border);
+    color: var(--text-primary);
+}
+
+/* ==================== SEPARATORS - RETRO BLOCK STYLE ==================== */
 hr {
     border: none;
     height: 20px;
@@ -174,10 +223,10 @@ hr {
 }
 
 hr::before {
-    content: "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒......";
-    color: var(--text-secondary);
+    content: "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒......";
+    color: var(--separator-color);
     letter-spacing: 3px;
-    opacity: 0.5;
+    opacity: 0.6;
     font-size: 12px;
     display: block;
     white-space: nowrap;
@@ -185,20 +234,98 @@ hr::before {
     text-overflow: ellipsis;
 }
 
+[data-theme="dark"] hr::before {
+    opacity: 0.8;
+    text-shadow: 0 0 3px var(--separator-color);
+}
+
+/* ==================== BLOCKQUOTES ==================== */
+blockquote {
+    border-left-color: var(--accent-color);
+    background-color: var(--code-bg);
+    color: var(--text-secondary);
+    padding: 16px;
+    border-left-width: 4px;
+    border-left-style: solid;
+    margin: 20px 0;
+    font-style: italic;
+}
+
+blockquote p {
+    color: var(--text-primary);
+}
+
+/* ==================== THEME TOGGLE - BOTTOM RIGHT FLOATING ==================== */
+.theme-toggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 56px;
+    height: 56px;
+    border-radius: 4px;
+    background-color: var(--toggle-bg);
+    border: 2px solid var(--toggle-border);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: var(--toggle-text);
+    box-shadow: var(--shadow);
+    transition: all 0.2s ease;
+    z-index: 1000;
+    font-family: var(--font-heading);
+    -webkit-text-fill-color: var(--toggle-text);
+}
+
+.theme-toggle:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--toggle-border);
+    background-color: var(--toggle-hover);
+    color: var(--bg-primary);
+}
+
+.theme-toggle:focus {
+    outline: 2px solid var(--toggle-border);
+    outline-offset: 2px;
+}
+
+/* ==================== ENTER BUTTON (Table Links) ==================== */
+.theme-enter {
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--accent-color);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 2px 0 var(--border-color);
+    transition: all 0.1s ease;
+}
+
+.theme-enter:hover {
+    transform: translateY(2px);
+    box-shadow: 0 0 0 var(--border-color);
+    background-color: var(--accent-color);
+    color: var(--bg-primary);
+}
+
 /* ==================== HEADER & NAV ==================== */
 .site-header {
     background-color: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 2px solid var(--accent-color);
     padding: 20px 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .site-title {
-    color: var(--text-accent);
+    color: var(--accent-color);
     font-family: var(--font-heading);
     font-size: 2rem;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
 }
 
 .site-nav a {
@@ -206,37 +333,48 @@ hr::before {
     font-family: var(--font-heading);
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-size: 1.1rem;
-    margin: 0 10px;
+    font-size: 1.2rem;
 }
 
 .site-nav a:hover {
-    color: var(--text-accent);
+    color: var(--accent-color);
     background-color: transparent;
-    border-bottom: 1px solid var(--text-accent);
+    border-bottom: 2px solid var(--accent-color);
 }
 
-/* ==================== FOOTER ==================== */
+/* ==================== FOOTER - NO DUPLICATES ==================== */
+.site-footer .site-title {
+    display: none !important;
+}
+
+.site-footer .site-description {
+    display: none !important;
+}
+
 .site-footer {
     text-align: center;
-    padding: 30px 0;
+    padding: 20px 0;
     border-top: 1px solid var(--border-color);
     margin-top: 60px;
-    background-color: var(--bg-secondary);
-    color: var(--text-secondary);
 }
 
-/* ==================== BLOCKQUOTES ==================== */
-blockquote {
-    border-left-color: var(--text-accent);
-    background-color: var(--bg-tertiary);
+.site-footer p {
+    margin: 0;
     color: var(--text-secondary);
-    padding: 16px 20px;
-    border-left-width: 4px;
-    border-left-style: solid;
-    margin: 20px 0;
-    border-radius: 0 4px 4px 0;
-    font-style: italic;
+    font-size: 0.9rem;
+}
+
+/* ==================== HOME PAGE - NO DUPLICATE HEADERS ==================== */
+.home .page-heading {
+    display: none !important;
+}
+
+.home .post-title {
+    display: none !important;
+}
+
+.home article > h1:first-child {
+    display: none !important;
 }
 
 /* ==================== BLINKING CURSOR ==================== */
@@ -247,35 +385,59 @@ blockquote {
 
 .cursor-blink::after {
     content: '█';
-    animation: blink 1.5s step-end infinite;
+    animation: blink 1s step-end infinite;
     margin-left: 5px;
-    color: var(--text-accent);
-    text-shadow: 0 0 5px var(--accent-glow);
+    color: var(--accent-color);
 }
 
-/* ==================== MOBILE ==================== */
+/* ==================== SCROLLBAR (Dark Mode) ==================== */
+[data-theme="dark"] ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 5px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--link-color);
+}
+
+/* ==================== MOBILE RESPONSIVE ==================== */
 @media (max-width: 768px) {
+    .theme-toggle {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+    }
+
+    hr {
+        margin: 40px auto;
+        width: 80%;
+    }
+
+    hr::before {
+        letter-spacing: 2px;
+        font-size: 10px;
+    }
+
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+
     body::before {
         background-size: 100% 2px;
     }
-    
-    h1 { font-size: 1.8rem; }
-    h2 { font-size: 1.5rem; }
-    
-    .site-nav a {
-        display: block;
-        margin: 5px 0;
-    }
-}
 
-/* ==================== ACCESSIBILITY (Reduce Motion) ==================== */
-@media (prefers-reduced-motion: reduce) {
-    body::before,
-    body::after {
-        animation: none;
-    }
-    .cursor-blink::after {
-        animation: none;
-        opacity: 1;
+    .theme-enter {
+        padding: 3px 8px;
+        font-size: 0.75rem;
     }
 }
