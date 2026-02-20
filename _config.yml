@@ -9,3 +9,6 @@ header_pages:
   - about/
   - specs/
   - deep-dives/
+  
+highlighter: rouge
+rouge_theme: monokai # Or 'base16.solarized.dark'
