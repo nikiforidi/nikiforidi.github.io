@@ -111,3 +111,58 @@ table tr:hover {
         padding: 8px 10px;
     }
 }
+/* ==================== TABLES - FALLOUT TERMINAL STYLE ==================== */
+table,
+.markdown-body table {
+    border-color: var(--fallout-border) !important;
+    background-color: var(--fallout-bg) !important;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+    box-shadow: 0 0 10px var(--fallout-shadow);
+}
+
+table td,
+table th,
+.markdown-body table td,
+.markdown-body table th {
+    border-color: var(--fallout-border) !important;
+    background-color: var(--fallout-bg) !important; /* Force dark background */
+    color: var(--fallout-green) !important; /* Force green text, no grey */
+    padding: 12px 16px;
+    border: 1px solid var(--fallout-border) !important;
+    font-family: var(--font-body);
+}
+
+table th,
+.markdown-body table th {
+    background-color: var(--fallout-bg-light) !important; /* Slightly lighter for header */
+    color: var(--fallout-green) !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 2px var(--fallout-green);
+}
+
+table tr:nth-child(even) td,
+table tr:nth-child(even) th,
+.markdown-body table tr:nth-child(even) td,
+.markdown-body table tr:nth-child(even) th {
+    background-color: var(--fallout-bg) !important;
+}
+
+table tr:nth-child(odd) td,
+table tr:nth-child(odd) th,
+.markdown-body table tr:nth-child(odd) td,
+.markdown-body table tr:nth-child(odd) th {
+    background-color: var(--fallout-bg-light) !important;
+}
+
+/* Ensure no inline styles override us */
+table * {
+    background-color: transparent !important;
+}
+table td *,
+table th * {
+    color: var(--fallout-green) !important;
+}
