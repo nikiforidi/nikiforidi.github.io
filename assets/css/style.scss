@@ -1,0 +1,44 @@
+@import "minima";
+
+// Hide duplicate name in footer (keeps header + about page)
+.site-footer {
+  .site-title,
+  .author,
+  h2:first-child {
+    display: none !important;
+  }
+  
+  // Keep copyright year if present
+  .copyright {
+    display: block;
+  }
+}
+
+/* =============================================================================
+   HIDE DUPLICATE HEADERS
+   Keeps name in about/index.md, hides from site-wide header & index.md
+   ============================================================================= */
+
+/* Hide site-wide title in header (appears on all pages) */
+.site-header .site-title,
+.site-header h1.site-title {
+  display: none !important;
+}
+
+/* Hide duplicate "Technical Portfolio" on home page */
+.home .post-title,
+.home h1:first-child,
+.home .page-heading {
+  display: none !important;
+}
+
+/* Hide author line in specs footer */
+.specs-section .author,
+.page-content > p:last-child:has-text("Author:") {
+  display: none !important;
+}
+
+/* Keep navigation visible */
+.site-header nav {
+  display: block !important;
+}
