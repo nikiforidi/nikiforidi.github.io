@@ -1,6 +1,7 @@
 /* =====================================================
    COZY RETRO TERMINAL THEME
-   Inspired by: VT100, Amber Monitors, Old Paper Docs
+   Inspired by: VT100, Amber Phosphor Monitors, Old Paper
+   Portfolio: nikiforidi.github.io
    ===================================================== */
 
 /* ==================== LIGHT MODE (Old Paper) ==================== */
@@ -32,6 +33,7 @@
 }
 
 /* ==================== DARK MODE (Amber Phosphor) ==================== */
+/* CHANGED: Added !important for Minima override */
 [data-theme="dark"] {
     --bg-primary: #1a1816 !important;
     --bg-secondary: #252220 !important;
@@ -388,6 +390,7 @@ blockquote p {
 }
 
 /* ==================== BLINKING CURSOR ANIMATION ==================== */
+/* CHANGED: Thicker, retro-styled cursor */
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
@@ -396,9 +399,17 @@ blockquote p {
 /* ONLY target the FIRST h2 on home page */
 .home h2:first-of-type {
     display: inline-block !important;
-    border-right: 2px solid var(--accent-color) !important;
+    /* CHANGED: Thicker cursor (4px instead of 2px) */
+    border-right: 4px solid var(--accent-color) !important;
+    /* CHANGED: Added padding for cursor spacing */
+    padding-right: 4px !important;
+    /* CHANGED: Added text shadow for retro glow */
+    text-shadow: 0 0 5px var(--accent-color);
+}
+
+/* Cursor blink animation - only after typing completes */
+.home h2:first-of-type.typing-complete {
     animation: blink 1s step-end infinite !important;
-    padding-right: 2px !important;
 }
 
 /* Remove cursor from other h2 elements */
@@ -463,7 +474,9 @@ blockquote p {
         font-size: 0.75rem !important;
     }
 
+    /* CHANGED: Thicker cursor on mobile too */
     .home h2:first-of-type {
-        font-size: 1.5rem !important;
+        border-right: 4px solid var(--accent-color) !important;
+        padding-right: 4px !important;
     }
 }

@@ -88,8 +88,11 @@
                 header.textContent += originalText.charAt(i);
                 i++;
                 setTimeout(type, speed);
+            } else {
+                // CHANGED: Add class to start cursor blink after typing completes
+                header.classList.add('typing-complete');
+                console.log('[TYPING] Complete');
             }
-            // Cursor blink continues via CSS animation on .home h2:first-of-type
         }
 
         // Start typing after delay
