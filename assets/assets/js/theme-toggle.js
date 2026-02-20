@@ -52,6 +52,7 @@
     function createToggleButton() {
         // Check if button already exists
         if (document.querySelector('.theme-toggle')) {
+            console.log('Toggle button already exists');
             return;
         }
 
@@ -61,6 +62,7 @@
         toggleBtn.setAttribute('type', 'button');
         toggleBtn.addEventListener('click', toggleTheme);
         document.body.appendChild(toggleBtn);
+        console.log('Toggle button created');
         return toggleBtn;
     }
 
@@ -79,7 +81,7 @@
         }
 
         // Get the original text (without the cursor span)
-        const originalText = welcomeHeader.textContent.replace('█', '').trim();
+        const originalText = welcomeHeader.textContent.trim();
         
         // Clear the header
         welcomeHeader.textContent = '';
@@ -87,7 +89,6 @@
         // Create cursor span
         const cursorSpan = document.createElement('span');
         cursorSpan.className = 'cursor-blink';
-        cursorSpan.textContent = '█';
         
         // Add cursor to header
         welcomeHeader.appendChild(cursorSpan);
