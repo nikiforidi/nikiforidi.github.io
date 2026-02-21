@@ -46,6 +46,8 @@ This pattern applies to **unlimited possibilities**:
 
 ### Component Model
 
+The Appd class inherits from multiprocessing.connection.Listener and runs the server loop. API methods are registered via the @api decorator and stored in the _api dictionary. The server accepts client connections and processes requests in a request/response loop. Sessions terminate cleanly via the SIGENDS byte signal protocol.
+
 ```text
 ┌───────────────────────────────────────────────────────────────┐
 │                       anyd Framework                          │
@@ -60,6 +62,8 @@ This pattern applies to **unlimited possibilities**:
 ```
 
 ### Communication Flow
+
+The Client wraps multiprocessing.connection.Client and forms requests as tuples. The commit() method sends the request and receives the response from the server. Server exceptions propagate to the client without crashing the daemon. The ClientSession context manager ensures automatic cleanup via end_session() on exit.
 
 ```text
 ┌───────────────┐                         ┌───────────────┐
@@ -111,6 +115,73 @@ with ClientSession(address=("localhost", 3000), authkey=b"secret") as client:
 
 [See full implementation](/deep-dives/vpn-tunneling-architecture/)
 
+### Example 2: Secure Secrets Vault (Conceptual)
+
+**Context:** Store encryption keys in memory (root-protected), allow CLI to request decryption without exposing keys.
+
+**Benefit:** Keys never leave the daemon process. Client only sees decrypted data.
+
+```python
+# Server: VaultD (Root privileges, holds secrets in memory)
+class VaultD(Appd):
+    _secrets = {"api_key": "super_secret_123"}
+    
+    @Appd.api
+    def decrypt(self, resource: str) -> str:
+        # Privileged: Access protected memory
+        if resource not in self._secrets:
+            raise ValueError("Resource not found")
+        return self._secrets[resource]
+    
+    @Appd.api
+    def rotate(self, resource: str, new_value: str) -> dict:
+        # Privileged: Update secrets securely
+        self._secrets[resource] = new_value
+        return {"status": "rotated"}
+
+# Client: CLI (User privileges, never sees raw keys)
+with ClientSession(address=("localhost", 3000), authkey=b"vault_key") as client:
+    # Request decryption without accessing key directly
+    api_key = client.commit("decrypt", "api_key")
+    print(f"Using key: {api_key[:4]}...")  # Only use, don't store
+    
+    # Request rotation
+    client.commit("rotate", "api_key", "new_secret_456")
+```
+
+**Security Model:**
+- Keys stored only in daemon memory (not on disk)
+- Client authenticates via `authkey`
+- Client cannot dump daemon memory (process isolation)
+- All operations logged by daemon
+
+### Example 3: System Administration Toolkit (Conceptual)
+
+**Context:** Allow developers to restart services without giving them full `sudo` access.
+
+**Benefit:** Granular control over privileged operations.
+
+```python
+# Server: SysAdminD (Root privileges)
+class SysAdminD(Appd):
+    @Appd.api
+    def restart_service(self, service_name: str) -> dict:
+        # Privileged: systemctl restart
+        allowed = ["nginx", "postgresql", "redis"]
+        if service_name not in allowed:
+            raise PermissionError(f"{service_name} not allowed")
+        # subprocess.run(["systemctl", "restart", service_name])
+        return {"status": "restarted"}
+
+# Client: Dev CLI (User privileges)
+with ClientSession(address=("localhost", 3000), authkey=b"admin_key") as client:
+    # Safe: Only allowed services can be restarted
+    client.commit("restart_service", "nginx")
+    
+    # Blocked: Raises PermissionError from server
+    client.commit("restart_service", "ssh")
+```
+
 ---
 
 ## Key Design Decisions
@@ -126,6 +197,43 @@ with ClientSession(address=("localhost", 3000), authkey=b"secret") as client:
 
 ---
 
+## Core Components
+
+### Appd (Server)
+
+| Feature | Description |
+|---------|-------------|
+| **Inheritance** | multiprocessing.connection.Listener |
+| **API Registry** | _api dictionary stores decorated methods |
+| **Request Format** | (endpoint, args, kwargs) tuple |
+| **Response** | Any Python object or Exception |
+| **Session Close** | SIGENDS byte signal |
+| **Logging** | Connection, request, response events |
+
+### Client (via ClientSession)
+
+| Feature | Description |
+|---------|-------------|
+| **Wrapper** | multiprocessing.connection.Client |
+| **Method** | commit(endpoint, *args, **kwargs) |
+| **Exception Handling** | Re-raises server exceptions locally |
+| **Session Management** | Context manager (with statement) |
+| **Cleanup** | Automatic end_session() on exit |
+
+---
+
+## Security Model
+
+| Layer | Mechanism | Purpose |
+|-------|-----------|---------|
+| **Authentication** | authkey (bytes) | Prevent unauthorized connections |
+| **Transport** | TCP/Unix sockets | Local IPC only (localhost) |
+| **Serialization** | Pickle | Python-native, but trusted environment only |
+| **Session** | SIGENDS signal | Clean connection termination |
+| **Isolation** | Process boundary | Memory separation between client/server |
+
+---
+
 ## Metrics
 
 | Metric | Value |
@@ -136,6 +244,31 @@ with ClientSession(address=("localhost", 3000), authkey=b"secret") as client:
 | **Upload Tool** | poetry/1.1.8 |
 | **Dependencies** | Python stdlib only |
 | **Lines of Code** | ~200 (core.py) |
+
+---
+
+## Trade-offs
+
+| Trade-off | Impact |
+|-----------|--------|
+| **Pickle serialization** | Fast, but security risk if exposed to untrusted clients |
+| **multiprocessing.connection** | Simple, but limited to local IPC |
+| **Exception propagation** | Debugging friendly, but leaks implementation details |
+| **Single-threaded server** | Simple, but blocks on long-running operations |
+
+---
+
+## Why anyd? Universal Possibilities
+
+The beauty of anyd lies in its agnosticism:
+
+- **Logic-Agnostic:** The framework doesn't care what your daemon does. VPN, secrets, hardware, databases — any privileged operation works.
+- **Security-First:** Built-in authentication (`authkey`) and process isolation ensure clients can't escalate privileges beyond the API surface.
+- **Developer-Friendly:** Pythonic decorators (`@api`), context managers (`with ClientSession`), and exception propagation make it intuitive.
+- **Zero Dependencies:** Uses Python stdlib only (`multiprocessing.connection`), making it portable and easy to audit.
+- **Extensible:** Add logging, monitoring, rate-limiting — the framework doesn't constrain your architecture.
+
+anyd proves that privilege separation doesn't have to be complex. With ~200 lines of code, you can build secure, isolated daemons for unlimited use cases.
 
 ---
 

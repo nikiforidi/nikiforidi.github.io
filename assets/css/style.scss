@@ -49,7 +49,11 @@ html, body {
 
 /* --- Warm Background Gradient --- */
 body {
-  background: linear-gradient(180deg, var(--background-color) 0%, var(--background-alt) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--background-color) 0%,
+    var(--background-alt) 100%
+  );
   min-height: 100vh;
 }
 
@@ -100,49 +104,340 @@ h3 {
   color: #ff9966;
 }
 
-/* --- Site Header --- */
+/* =============================================================================
+   SITE HEADER - TWO ROW LAYOUT
+   Row 1: Site Title (left) + Mr. House TV (right)
+   Row 2: Tagline (left) + Mr. House Quote (right)
+   ============================================================================= */
+
 .site-header {
   background: var(--background-alt);
   border-bottom: var(--border);
   padding: 1.5em 0;
   box-shadow: 0 2px 20px rgba(255, 176, 0, 0.1);
+  position: relative;
 }
 
-.site-header .site-title {
-  font-size: 1.8em;
+.site-header .wrapper {
+  display: flex;
+  flex-direction: column;
+  // gap: 1em;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5em;
+}
+
+/* Header Rows */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.header-row-1 {
+  padding-bottom: -0.75em;
+  // border-bottom: var(--border-dashed);
+}
+
+.header-row-2 {
+  padding-bottom: 0.5em;
+}
+
+/* Left Side (Title & Tagline) */
+.header-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25em;
+}
+
+.site-title {
+  font-size: 2em;
   color: var(--base-color);
   letter-spacing: 2px;
+  text-decoration: none;
+  text-shadow: 0 0 15px rgba(255, 176, 0, 0.3);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    text-shadow: 0 0 25px rgba(255, 176, 0, 0.6);
+  }
 }
 
-.site-header .site-title:hover {
-  text-shadow: 0 0 20px var(--base-color);
+.site-tagline {
+  font-size: 0.9em;
+  color: var(--text-muted);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-style: italic;
 }
 
-.site-header .site-nav {
-  margin-top: 1em;
+/* Right Side (TV & Quote) */
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5em;
 }
 
-.site-header .nav-link {
+/* Navigation (below both rows) */
+.site-nav {
+  // margin-top: 0.5em;
+  // padding-top: 1em;
+  // border-top: var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  // gap: 0.5em;
+}
+
+.site-nav .nav-link {
   color: var(--text-color);
-  margin-right: 1.5em;
+  text-decoration: none;
   border: var(--border);
   padding: 0.4em 1em;
   border-radius: 3px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: var(--base-color);
+    color: var(--background-color);
+    box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
+  }
 }
 
-.site-header .nav-link:hover {
+/* =============================================================================
+   MR. HOUSE TV DISPLAY - Quote UNDER TV
+   Fits into site header (top-right)
+   ============================================================================= */
+
+/* Container for TV + Quote (vertical stack) */
+.mr-house-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+  margin-left: auto;
+  padding-left: 2em;
+}
+
+/* TV Display (square) */
+.mr-house-tv {
+  position: relative;
+  right: 32px;
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px rgba(255, 176, 0, 0.6);
+  }
+}
+
+.crt-block {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 2px solid var(--base-color);
+  box-shadow:
+    0 0 15px rgba(255, 176, 0, 0.4),
+    inset 0 0 20px rgba(0, 0, 0, 0.5);
+  background: var(--background-color);
+}
+
+.mr-house-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#mr-house-noise {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: var(--crt-noise-opacity);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.mr-house-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.mr-house-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 2px;
+  filter:
+    sepia(0.5)
+    contrast(1.2)
+    brightness(0.9)
+    drop-shadow(0 0 8px rgba(255, 176, 0, 0.3));
+  animation: mr-house-img-flicker 3s infinite;
+  z-index: 3;
+}
+
+@keyframes mr-house-img-flicker {
+  0%, 100% {
+    opacity: 1;
+    filter: sepia(0.5) contrast(1.2) brightness(0.9);
+  }
+  50% {
+    opacity: 0.9;
+    filter: sepia(0.6) contrast(1.3) brightness(0.85);
+  }
+  52% {
+    opacity: 1;
+    filter: sepia(0.5) contrast(1.2) brightness(0.9);
+  }
+}
+
+.mr-house-scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    transparent 50%,
+    rgba(0, 0, 0, 0.3) 50%
+  );
+  background-size: 100% 2px;
+  pointer-events: none;
+  z-index: 4;
+  animation: scanline-scroll 6s linear infinite;
+}
+
+@keyframes scanline-scroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+/* Quote UNDER TV */
+.mr-house-quote {
+  text-align: center;
+  max-width: 120px;
+  flex-shrink: 0;
+  margin: 0;
+  font-size: 0.65em;
+  font-style: italic;
+  color: var(--text-color);
+  text-shadow: 0 0 5px rgba(255, 176, 0, 0.4);
+  line-height: 1.3;
+}
+
+.mr-house-quote p {
+  margin: 0;
+  font-size: 0.65em;
+  font-style: italic;
+  color: var(--text-color);
+  text-shadow: 0 0 5px rgba(255, 176, 0, 0.4);
+  line-height: 1.3;
+  animation: mr-house-quote-flicker 4s infinite;
+}
+
+@keyframes mr-house-quote-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+/* Quote Modal (for click interaction) */
+.mr-house-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: var(--background-alt);
+  border: 2px solid var(--base-color);
+  border-radius: 4px;
+  padding: 2em;
+  max-width: 500px;
+  z-index: 10000;
+  box-shadow: 0 0 50px rgba(255, 176, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+  
+  &.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.mr-house-modal-quote {
+  font-size: 1.1em;
+  color: var(--text-color);
+  font-style: italic;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 1em;
+  text-shadow: 0 0 10px rgba(255, 176, 0, 0.3);
+}
+
+.mr-house-modal-close {
+  text-align: center;
+  margin-top: 1em;
+}
+
+.mr-house-btn {
   background: var(--base-color);
   color: var(--background-color);
-  box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
+  border: none;
+  padding: 0.5em 1.5em;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: var(--text-color);
+    box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
+  }
 }
 
-/* --- Main Content --- */
-.page-content {
-  max-width: 850px;
-  margin: 0 auto;
-  padding: 3em 1.5em;
-  background: rgba(255, 248, 231, 0.02);
-  border-radius: 8px;
+.mr-house-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 /* =============================================================================
@@ -249,14 +544,14 @@ pre {
   .pi  { color: var(--code-keyword); }
   
   .ge  { font-style: italic; }
-  .gr  { color: var(--red); }
+  .gr  { color: #ff6b6b; }
   .gh  { color: var(--base-color); font-weight: bold; }
-  .gi  { color: var(--green); }
+  .gi  { color: #51d88a; }
   .go  { color: var(--text-muted); }
   .gp  { color: var(--text-muted); }
   .gs  { font-weight: bold; }
   .gu  { color: var(--base-color); font-weight: bold; }
-  .gt  { color: var(--red); }
+  .gt  { color: #ff6b6b; }
   
   .w   { color: var(--text-muted); }
 }
@@ -338,11 +633,6 @@ pre.language-plaintext {
   );
   background-size: 100% 3px;
   animation: scanline-scroll 8s linear infinite;
-}
-
-@keyframes scanline-scroll {
-  0% { background-position: 0 0; }
-  100% { background-position: 0 100%; }
 }
 
 /* --- RGB Shift / Chromatic Aberration --- */
@@ -434,6 +724,19 @@ pre.language-plaintext {
   }
 }
 
+/* =============================================================================
+   MAIN CONTENT & LAYOUT
+   ============================================================================= */
+
+/* --- Main Content --- */
+.page-content {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 3em 1.5em;
+  background: rgba(255, 248, 231, 0.02);
+  border-radius: 8px;
+}
+
 /* --- Tables --- */
 table {
   width: 100%;
@@ -505,7 +808,10 @@ hr {
   display: none;
 }
 
-/* --- Custom Classes --- */
+/* =============================================================================
+   CUSTOM CLASSES
+   ============================================================================= */
+
 .coffee-break {
   text-align: center;
   margin: 3em 0;
@@ -572,7 +878,10 @@ hr {
   box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
 }
 
-/* --- Scrollbar --- */
+/* =============================================================================
+   SCROLLBAR
+   ============================================================================= */
+
 ::-webkit-scrollbar {
   width: 12px;
   height: 12px;
@@ -592,7 +901,51 @@ hr {
   background: var(--base-color);
 }
 
-/* --- Responsive --- */
+/* =============================================================================
+   RESPONSIVE
+   ============================================================================= */
+
+@media (max-width: 900px) {
+  .header-row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5em;
+  }
+  
+  .header-left,
+  .header-right {
+    align-items: center;
+    width: 100%;
+  }
+  
+  .mr-house-container {
+    order: -1;
+    width: 100%;
+    justify-content: center;
+    padding: 0.5em 0;
+    margin: 0;
+  }
+  
+  .mr-house-tv {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .mr-house-img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .mr-house-quote p {
+    font-size: 0.6em;
+  }
+  
+  .site-nav {
+    justify-content: center;
+  }
+}
+
 @media (max-width: 600px) {
   html, body {
     font-size: 15px;
@@ -602,13 +955,29 @@ hr {
     padding: 1.5em 1em;
   }
   
+  .site-header .wrapper {
+    padding: 0 1em;
+  }
+  
   .site-header .site-nav .nav-link {
     display: block;
     margin: 0.5em 0;
   }
 }
 
-/* Terminal Animation Styles */
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .mr-house-quote p,
+  .mr-house-img,
+  .mr-house-scanlines {
+    animation: none;
+  }
+}
+
+/* =============================================================================
+   TERMINAL ANIMATION STYLES
+   ============================================================================= */
+
 .terminal-container {
   background: var(--background-alt, #251e17);
   border: var(--border, solid 1px rgba(255, 176, 0, 0.3));
