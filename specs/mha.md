@@ -22,8 +22,6 @@ permalink: /specs/mha/
 
 ### Nested Hashing Model
 
-Each VM component (CPU, RAM, Disks, OS/ID) is hashed independently using only vendor-agnostic fields. Component hashes are then combined into a single VM hash for efficient comparison. This nested approach enables granular change detection at the component level rather than treating the VM as a monolithic blob.
-
 ```text
 ┌───────────────────────────────────────────────────────────────┐
 │                      Virtual Machine                          │
@@ -39,8 +37,6 @@ Each VM component (CPU, RAM, Disks, OS/ID) is hashed independently using only ve
 ```
 
 ### Bidirectional Comparison
-
-The Unified Model (database record) and Facts (cloud API response) are processed through identical MHA Hash Calc pipelines. Both directions produce comparable hashes because only common components are used. The Hash Compare step detects any divergence between stored state and actual infrastructure state.
 
 ```text
 ┌──────────────────┐              ┌──────────────────┐
@@ -78,16 +74,6 @@ The Unified Model (database record) and Facts (cloud API response) are processed
 | **Change Detection Accuracy** | 100% |
 | **Supported CIR Types** | VM, Network, Storage |
 | **Cloud Providers** | VMware, OpenStack, oVirt, SpaceVM |
-
----
-
-## Trade-offs
-
-| Trade-off | Impact |
-|-----------|--------|
-| Vendor-specific fields excluded | Some details not tracked |
-| Hash collisions possible | Mitigated by nested structure |
-| Additional computation overhead | Acceptable for accuracy gain |
 
 ---
 

@@ -8,3 +8,12 @@ header_pages:
   - about/
   - specs/
   - deep-dives/
+highlighter: rouge
+markdown: kramdown
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+    span:
+      line_numbers: false

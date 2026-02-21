@@ -1,5 +1,5 @@
 title: Portfolio Context Export
-generated: 2026-02-20 22:32:58
+generated: 2026-02-21 06:30:00
 format: Markdown
 scope: .md files only
 Portfolio Context Export
@@ -390,8 +390,6 @@ This pattern applies to **unlimited possibilities**:
 
 ### Component Model
 
-The Appd class inherits from multiprocessing.connection.Listener and runs the server loop. API methods are registered via the @api decorator and stored in the _api dictionary. The server accepts client connections and processes requests in a request/response loop. Sessions terminate cleanly via the SIGENDS byte signal protocol.
-
 ```text
 ┌───────────────────────────────────────────────────────────────┐
 │                       anyd Framework                          │
@@ -406,8 +404,6 @@ The Appd class inherits from multiprocessing.connection.Listener and runs the se
 ```
 
 ### Communication Flow
-
-The Client wraps multiprocessing.connection.Client and forms requests as tuples. The commit() method sends the request and receives the response from the server. Server exceptions propagate to the client without crashing the daemon. The ClientSession context manager ensures automatic cleanup via end_session() on exit.
 
 ```text
 ┌───────────────┐                         ┌───────────────┐
@@ -459,73 +455,6 @@ with ClientSession(address=("localhost", 3000), authkey=b"secret") as client:
 
 [See full implementation](/deep-dives/vpn-tunneling-architecture/)
 
-### Example 2: Secure Secrets Vault (Conceptual)
-
-**Context:** Store encryption keys in memory (root-protected), allow CLI to request decryption without exposing keys.
-
-**Benefit:** Keys never leave the daemon process. Client only sees decrypted data.
-
-```python
-# Server: VaultD (Root privileges, holds secrets in memory)
-class VaultD(Appd):
-    _secrets = {"api_key": "super_secret_123"}
-    
-    @Appd.api
-    def decrypt(self, resource: str) -> str:
-        # Privileged: Access protected memory
-        if resource not in self._secrets:
-            raise ValueError("Resource not found")
-        return self._secrets[resource]
-    
-    @Appd.api
-    def rotate(self, resource: str, new_value: str) -> dict:
-        # Privileged: Update secrets securely
-        self._secrets[resource] = new_value
-        return {"status": "rotated"}
-
-# Client: CLI (User privileges, never sees raw keys)
-with ClientSession(address=("localhost", 3000), authkey=b"vault_key") as client:
-    # Request decryption without accessing key directly
-    api_key = client.commit("decrypt", "api_key")
-    print(f"Using key: {api_key[:4]}...")  # Only use, don't store
-    
-    # Request rotation
-    client.commit("rotate", "api_key", "new_secret_456")
-```
-
-**Security Model:**
-- Keys stored only in daemon memory (not on disk)
-- Client authenticates via `authkey`
-- Client cannot dump daemon memory (process isolation)
-- All operations logged by daemon
-
-### Example 3: System Administration Toolkit (Conceptual)
-
-**Context:** Allow developers to restart services without giving them full `sudo` access.
-
-**Benefit:** Granular control over privileged operations.
-
-```python
-# Server: SysAdminD (Root privileges)
-class SysAdminD(Appd):
-    @Appd.api
-    def restart_service(self, service_name: str) -> dict:
-        # Privileged: systemctl restart
-        allowed = ["nginx", "postgresql", "redis"]
-        if service_name not in allowed:
-            raise PermissionError(f"{service_name} not allowed")
-        # subprocess.run(["systemctl", "restart", service_name])
-        return {"status": "restarted"}
-
-# Client: Dev CLI (User privileges)
-with ClientSession(address=("localhost", 3000), authkey=b"admin_key") as client:
-    # Safe: Only allowed services can be restarted
-    client.commit("restart_service", "nginx")
-    
-    # Blocked: Raises PermissionError from server
-    client.commit("restart_service", "ssh")
-```
-
 ---
 
 ## Key Design Decisions
@@ -538,43 +467,6 @@ with ClientSession(address=("localhost", 3000), authkey=b"admin_key") as client:
 | **Exception propagation** | Error codes | Client sees actual exceptions, daemon stays up |
 | **Context manager** | Manual connect/close | Automatic cleanup, prevents resource leaks |
 | **SIGENDS protocol** | TCP FIN | Explicit session termination signal |
-
----
-
-## Core Components
-
-### Appd (Server)
-
-| Feature | Description |
-|---------|-------------|
-| **Inheritance** | multiprocessing.connection.Listener |
-| **API Registry** | _api dictionary stores decorated methods |
-| **Request Format** | (endpoint, args, kwargs) tuple |
-| **Response** | Any Python object or Exception |
-| **Session Close** | SIGENDS byte signal |
-| **Logging** | Connection, request, response events |
-
-### Client (via ClientSession)
-
-| Feature | Description |
-|---------|-------------|
-| **Wrapper** | multiprocessing.connection.Client |
-| **Method** | commit(endpoint, *args, **kwargs) |
-| **Exception Handling** | Re-raises server exceptions locally |
-| **Session Management** | Context manager (with statement) |
-| **Cleanup** | Automatic end_session() on exit |
-
----
-
-## Security Model
-
-| Layer | Mechanism | Purpose |
-|-------|-----------|---------|
-| **Authentication** | authkey (bytes) | Prevent unauthorized connections |
-| **Transport** | TCP/Unix sockets | Local IPC only (localhost) |
-| **Serialization** | Pickle | Python-native, but trusted environment only |
-| **Session** | SIGENDS signal | Clean connection termination |
-| **Isolation** | Process boundary | Memory separation between client/server |
 
 ---
 
@@ -591,31 +483,6 @@ with ClientSession(address=("localhost", 3000), authkey=b"admin_key") as client:
 
 ---
 
-## Trade-offs
-
-| Trade-off | Impact |
-|-----------|--------|
-| **Pickle serialization** | Fast, but security risk if exposed to untrusted clients |
-| **multiprocessing.connection** | Simple, but limited to local IPC |
-| **Exception propagation** | Debugging friendly, but leaks implementation details |
-| **Single-threaded server** | Simple, but blocks on long-running operations |
-
----
-
-## Why anyd? Universal Possibilities
-
-The beauty of anyd lies in its agnosticism:
-
-- **Logic-Agnostic:** The framework doesn't care what your daemon does. VPN, secrets, hardware, databases — any privileged operation works.
-- **Security-First:** Built-in authentication (`authkey`) and process isolation ensure clients can't escalate privileges beyond the API surface.
-- **Developer-Friendly:** Pythonic decorators (`@api`), context managers (`with ClientSession`), and exception propagation make it intuitive.
-- **Zero Dependencies:** Uses Python stdlib only (`multiprocessing.connection`), making it portable and easy to audit.
-- **Extensible:** Add logging, monitoring, rate-limiting — the framework doesn't constrain your architecture.
-
-anyd proves that privilege separation doesn't have to be complex. With ~200 lines of code, you can build secure, isolated daemons for unlimited use cases.
-
----
-
 ## See Also
 
 - [Full source code](https://github.com/anatolio-deb/anyd)
@@ -625,600 +492,6 @@ anyd proves that privilege separation doesn't have to be complex. With ~200 line
 ---
 
 [← Back to Deep Dives](/deep-dives/)
-
-File: `deep-dives/forestvpn-cli.md`
----
-layout: page
-title: "ForestVPN CLI"
-permalink: /deep-dives/forestvpn-cli/
----
-
-## Overview
-
-Cross-platform VPN CLI client for Linux, OpenWRT, macOS, and Windows.
-
-**External Resources:**
-- [Repository](https://github.com/forestvpn/cli) — 792 commits, 116 releases
-- **Period:** May 2022 — April 2023
-- **Role:** Go Technical Lead
-
----
-
-## Repository Statistics
-
-| Metric | Value |
-|--------|-------|
-| **Commits** | 792 |
-| **Releases** | 116 (Latest: v0.3.5, Jun 27, 2023) |
-| **Stars** | 8 |
-| **Forks** | 1 |
-| **Contributors** | 5 |
-| **Languages** | Go 82.8%, Shell 17.2% |
-| **License** | MIT |
-
----
-
-## Architecture
-
-### Package Structure
-
-| Package | Purpose |
-|---------|---------|
-| [actions](https://github.com/forestvpn/cli/tree/main/src/actions) | High-level Actions (urfave/cli v2) |
-| [api](https://github.com/forestvpn/cli/tree/main/src/api) | API client (wgrest) |
-| [auth](https://github.com/forestvpn/cli/tree/main/src/auth) | Authentication (Firebase REST API) |
-| [cmd](https://github.com/forestvpn/cli/tree/main/src/cmd) | Entry point |
-| [utils](https://github.com/forestvpn/cli/tree/main/src/utils) | Helper functions |
-
----
-
-## Distribution Channels
-
-| Platform | Package Type | Delivery |
-|----------|--------------|----------|
-| **macOS** | Homebrew | [stable](https://github.com/forestvpn/homebrew-stable), [beta](https://github.com/forestvpn/homebrew-beta) |
-| **Debian/Ubuntu** | .deb | GitHub Releases |
-| **Fedora** | .rpm | GitHub Releases |
-| **Alpine** | .apk | GitHub Releases |
-| **Windows** | Chocolatey | [community.chocolatey.org/packages/fvpn](https://community.chocolatey.org/packages/fvpn) |
-| **OpenWRT** | .ipk | GitHub Releases |
-
----
-
-## CI/CD Pipeline
-
-| Tool | Purpose |
-|------|---------|
-| [Drone CI](https://www.drone.io/) | Automated builds |
-| [GoReleaser](https://goreleaser.com/) | Stable & beta releases |
-| [Sentry](https://sentry.io/welcome/) | Error tracking |
-| GitHub Releases | Continuous delivery |
-
----
-
-## See Also
-
-- [Full source code](https://github.com/forestvpn/cli)
-
----
-
-[← Back to Deep Dives](/deep-dives/)
-
-File: `deep-dives/index.md`
----
-layout: page
-title: Deep Dives
-permalink: /deep-dives/
----
-
-## Technical Deep Dives
-
-Detailed architectural breakdowns of key projects with links to source code and external resources.
-
----
-
-## Available Deep Dives
-
-| Project | Description | Links |
-|---------|-------------|-------|
-| [anyd Daemon Framework](anyd-daemon-framework/) | Unix daemon IPC framework | [PyPI](https://pypi.org/project/anyd/), [GitHub](https://github.com/anatolio-deb/anyd) |
-| [VPN Tunneling Architecture](vpn-tunneling-architecture/) | Linux VPN client with TUN/TAP | [vpnm](https://github.com/nikiforidi/vpnm), [vpnmd](https://github.com/nikiforidi/vpnmd) |
-| [ForestVPN CLI](forestvpn-cli/) | Cross-platform VPN client | [GitHub](https://github.com/forestvpn/cli) |
-| [JetBrains Academy](jetbrains-academy/) | Python educational project | [Hyperskill](https://hyperskill.org/projects/99) |
-| [MIND Universe](mind-universe/) | Cloud infrastructure management | [Specs](/specs/) |
-
----
-
-[← Back to Home](/)
-
-File: `deep-dives/jetbrains-academy.md`
----
-layout: page
-title: "JetBrains Academy: Multilingual Translator"
-permalink: /deep-dives/jetbrains-academy/
----
-
-## Overview
-
-Educational Python project developed for JetBrains Academy Hyperskill track.
-
-- **Period:** October 2019 — March 2020
-- **Role:** Python Software Engineer
-- **Project:** [Multilingual Online Translator](https://github.com/anatolio-deb/Multilingual-online-translator)
-- **Platform:** [Hyperskill Project #99](https://hyperskill.org/projects/99)
-- **Track:** Python Core
-
----
-
-## Architecture
-
-The translate_word() function handles both interactive mode and command-line arguments. The Reverso Context API is queried via requests.get() with custom User-Agent headers. BeautifulSoup parses the HTML response to extract translations and examples. Results are saved to file ({word}-translation.txt) and printed to console.
-
-```text
-┌───────────────┐     ┌───────────────┐     ┌───────────────┐
-│   User CLI    │────▶│  Translator   │────▶│   Reverso     │
-│   Input       │     │   Logic       │     │   Context     │
-└───────────────┘     └───────┬───────┘     └───────────────┘
-                              │
-                              ▼
-                      ┌───────────────┐
-                      │    hs-test    │
-                      │  (Testing)    │
-                      └───────────────┘
-```
-
-### Input Modes
-
-| Mode | Trigger | Behavior |
-|------|---------|----------|
-| **Interactive** | No arguments | Prompts for source language, target language, word |
-| **CLI** | 3 arguments | Direct translation: `python translator.py english french word` |
-| **All Languages** | `all` as target | Translates to all 12 supported languages |
-
-### Supported Languages
-
-Arabic, German, English, Spanish, French, Hebrew, Japanese, Dutch, Polish, Portuguese, Romanian, Russian, Turkish (13 total).
-
----
-
-## Key Features
-
-- Translate text between multiple languages
-- Built on Reverso Context API
-- Covered with `hs-test` framework tests
-- English documentation included
-
----
-
-## Teaching Impact
-
-| Metric | Value |
-|--------|-------|
-| **Project Page** | [hyperskill.org/projects/99](https://hyperskill.org/projects/99) |
-| **GitHub** | [github.com/anatolio-deb/Multilingual-online-translator](https://github.com/anatolio-deb/Multilingual-online-translator) |
-| **Purpose** | Educational resource for Python learners |
-| **Track** | Python Core |
-
----
-
-## Skills Applied
-
-- Python
-- Git
-- Software Testing (hs-test framework)
-- API Integration (Reverso Context)
-- Technical Documentation (English)
-
----
-
-[← Back to Deep Dives](/deep-dives/)
-
-File: `deep-dives/mind-universe.md`
----
-layout: page
-title: "MIND Universe"
-permalink: /deep-dives/mind-universe/
----
-
-## Overview
-
-Cloud infrastructure management platform developed at MIND Software (2023-2025).
-
-**Period:** February 2023 — February 2025
-
-**Role:** Lead Backend Developer / Chief Developer
-
----
-
-## DRUID API
-
-CRUD-like operations for cloud infrastructure resources (CIR):
-
-| Acronym | Action | Description |
-|---------|--------|-------------|
-| **D** | Deploy | Create new CIR |
-| **R** | Refresh | Sync CIR state from provider |
-| **U** | Update | Modify CIR configuration |
-| **I** | Import | Import existing CIR into Universe |
-| **D** | Destroy | Delete CIR |
-
----
-
-## Architecture Specifications
-
-| Specification | Purpose | Link |
-|--------------|---------|------|
-| [MHA](/specs/mha/) | Model Hashing Algorithm — CIR change detection | Nested hashing, bidirectional comparison |
-| [SSA](/specs/ssa/) | Sequence Sorting Algorithm — Go map ordering | Zero-last semantics, 116ms benchmark |
-| [JEMP](/specs/jemp/) | Job Event Messaging Protocol — Concurrency model | Heartbeat events, Job Collector |
-| [Validation Stack](/specs/validation-stack/) | Unified Model validation layer | FILO execution, strict/tolerant modes |
-| [Transactional Models](/specs/transactional-models/) | VM deployment transaction process | Prototype → Base → Complete states |
-
----
-
-## Supported Providers
-
-| Provider | Status |
-|----------|--------|
-| VMware | [✓] Implemented |
-| OpenStack | [✓] Implemented |
-| oVirt | [✓] Implemented |
-| SpaceVM | [✓] Implemented |
-
----
-
-## Technologies
-
-- **Languages:** Go
-- **Message Queue:** RabbitMQ
-- **Database:** PostgreSQL
-- **APIs:** REST, SOAP
-- **OS:** Linux
-
----
-
-## See Also
-
-- [Full Specifications](/specs/)
-
----
-
-[← Back to Deep Dives](/deep-dives/)
-
-File: `deep-dives/vpn-tunneling-architecture.md`
----
-layout: page
-title: "VPN Tunneling Architecture"
-permalink: /deep-dives/vpn-tunneling-architecture/
----
-
-## Overview
-
-Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
-
-**External Resources:**
-- [vpnm CLI](https://github.com/nikiforidi/vpnm) — 154 commits, 12 releases
-- [vpnmd Daemon](https://github.com/nikiforidi/vpnmd) — 62 commits, 3 releases
-- [anyd Framework](https://pypi.org/project/anyd/) — PyPI published
-
----
-
-## Architecture Diagram
-
-The vpnm CLI runs as user and sends commands to vpnmd daemon via anyd IPC. The vpnmd daemon runs with root privileges and controls tunneling components. Traffic flows through cloudflared for DoH, tun2socks for TUN device, and v2ray-core for proxy encryption.
-
-```text
-┌───────────────┐     ┌───────────────┐     ┌───────────────┐
-│   vpnm CLI    │────▶│   vpnmd       │────▶│  anyd IPC     │
-│   (User)      │     │   (Root)      │     │  (Sockets)    │
-└───────┬───────┘     └───────┬───────┘     └───────┬───────┘
-        │                     │                     │
-        ▼                     ▼                     ▼
-┌───────────────┐     ┌───────────────┐     ┌───────────────┐
-│  cloudflared  │     │  tun2socks    │     │  v2ray-core   │
-│    (DoH)      │     │   (TUN)       │     │   (Proxy)     │
-└───────────────┘     └───────────────┘     └───────────────┘
-```
-
----
-
-## Key Design Decisions
-
-| Decision | Alternative | Rationale |
-|----------|-------------|-----------|
-| **TUN/TAP** | Proxy per-app | System-wide tunneling, no per-app config |
-| **DoH via v2ray** | Direct DNS | DNS queries also encrypted through tunnel |
-| **Root daemon (vpnmd)** | sudo per-call | Single privilege escalation point |
-| **IPC via anyd** | Direct syscalls | Clean API, authentication, validation |
-
----
-
-## Repository Statistics
-
-| Repository | Commits | Releases | Stars | Status |
-|------------|---------|----------|-------|--------|
-| [vpnm](https://github.com/nikiforidi/vpnm) | 154 | 12 | 1 | [✓] Stable Reference |
-| [vpnmd](https://github.com/nikiforidi/vpnmd) | 62 | 3 | 0 | [✓] Stable Reference |
-
----
-
-## Trade-offs
-
-| Trade-off | Impact |
-|-----------|--------|
-| Python vs Go | Faster development, slower execution |
-| Single binary (pyinstaller) | Easy distribution, larger size |
-| Project Status | Stable reference implementation |
-
----
-
-## See Also
-
-- [vpnm source code](https://github.com/nikiforidi/vpnm)
-- [vpnmd source code](https://github.com/nikiforidi/vpnmd)
-- [anyd PyPI page](https://pypi.org/project/anyd/)
-- [anyd Deep Dive](/deep-dives/anyd-daemon-framework/)
-
----
-
-[← Back to Deep Dives](/deep-dives/)
-
-File: `index.md`
----
-layout: home
-title: Technical Portfolio
-tagline: Architecture, Algorithms, System Design
-permalink: /
----
-
-## Welcome, Traveler ☕
-
-```bash
-$ whoami
-> Anatoly Nikiforov
-$ status
-> Ready for remote work
-$ location
-> Moscow, Russia
-$ echo "Grab a coffee, make yourself comfortable"
-```
-
-Pull up a chair. This portfolio is designed for cozy reading about engineering craft—the kind of late-night coding sessions where the only company is your terminal, a warm cup of coffee, and the satisfaction of solving hard problems.
-
-Whether you're here to review architecture, reminisce about the old days, or just enjoy well-documented systems, make yourself at home.
-
----
-
-## System Modules
-
-| Module | Content | Access |
-|--------|---------|--------|
-| [`[specs/]`](/specs/) | 5 architectural specs (MHA, SSA, JEMP) | [`[ENTER]`](/specs/){: .theme-enter} |
-| [`[deep-dives/]`](/deep-dives/) | Technical breakdowns of key projects | [`[ENTER]`](/deep-dives/){: .theme-enter} |
-| [`[about/]`](/about/) | Engineering philosophy, career timeline | [`[ENTER]`](/about/){: .theme-enter} |
-
----
-
-## Featured Processes
-
-### ▶ Model Hashing Algorithm (MHA)
-
-Bidirectional hashing for cloud infrastructure resource comparison.
-
-- **Problem:** Detect CIR changes across different cloud providers
-- **Solution:** Nested hashing with unified model abstraction
-- **Metrics:** <100ms hash calculation, 100% change detection
-- **Execute:** [`/specs/mha/`](/specs/mha/)
-
-### ▶ Sequence Sorting Algorithm (SSA)
-
-Custom Go algorithm for ordered map iteration with zero-last semantics.
-
-- **Problem:** Go maps are unordered, but we need `[1, 2, 4, 7, 0]`
-- **Solution:** O(n*2) lookup with mismatch counter
-- **Benchmark:** 1,000,000 keys in 116.9 ms
-- **Execute:** [`/specs/ssa/`](/specs/ssa/)
-
-### ▶ Job Event Messaging Protocol (JEMP)
-
-Event-driven concurrency model for distributed job execution.
-
-- **Problem:** Track concurrent jobs without MQ overhead
-- **Solution:** Heartbeat events + Job Collector + Checkpointer
-- **Execute:** [`/specs/jemp/`](/specs/jemp/)
-
-> "What I cannot create, I do not understand."
-> — Richard Feynman
-
----
-
-## Featured Deep Dives
-
-### ▶ anyd Daemon Framework
-
-Unix daemon IPC framework published on PyPI.
-
-- **PyPI:** [`anyd 0.4.1`](https://pypi.org/project/anyd/)
-- **GitHub:** [`anatolio-deb/anyd`](https://github.com/anatolio-deb/anyd)
-- **Tech:** POSIX sockets, IPC, authentication, validation
-- **Execute:** [`/deep-dives/anyd-daemon-framework/`](/deep-dives/anyd-daemon-framework/)
-
-### ▶ VPN Tunneling Architecture
-
-Linux VPN client with TUN/TAP, Netfilter, and DNS redirection.
-
-- **Repositories:** [`vpnm`](https://github.com/nikiforidi/vpnm) (154 commits), [`vpnmd`](https://github.com/nikiforidi/vpnmd) (62 commits)
-- **Tech:** TUN/TAP, Netfilter, cloudflared DoH, tun2socks
-- **Execute:** [`/deep-dives/vpn-tunneling-architecture/`](/deep-dives/vpn-tunneling-architecture/)
-
-### ▶ ForestVPN CLI
-
-Cross-platform VPN client (Linux, macOS, Windows, OpenWRT).
-
-- **Repository:** [`forestvpn/cli`](https://github.com/forestvpn/cli)
-- **Stats:** 792 commits, 116 releases, 8 stars
-- **Tech:** Go 82.8%, Shell 17.2%, Homebrew, Chocolatey
-- **Execute:** [`/deep-dives/forestvpn-cli/`](/deep-dives/forestvpn-cli/)
-
----
-
-## System Status
-
-| Metric | Value |
-|--------|-------|
-| Uptime | 5+ years (2019–2026) |
-| Commits | 1,756+ contributions |
-| Packages | 1 published (anyd 0.4.1) |
-| Docs | 5 architectural specifications |
-| Last Build | February 2026 |
-| Coffee Consumed | ∞ cups |
-
-> **Note:** All links are verified. All claims are backed by public evidence.
-
-The terminal is warm, the coffee is fresh, and the code is documented.
-
-Stay a while. 🖥️
-
-File: `specs/index.md`
----
-layout: page
-title: Specifications
-permalink: /specs/
----
-
-## MIND Universe Specifications
-
-Technical specifications developed during tenure at MIND Software (2023-2025). Each spec includes architecture sketches, benchmarks, and metrics with links to full Notion documentation.
-
----
-
-## Available Specifications
-
-| Specification | Purpose | Status |
-|--------------|---------|--------|
-| [MHA](mha/) | Model Hashing Algorithm — CIR change detection | [✓] Documented |
-| [SSA](ssa/) | Sequence Sorting Algorithm — Go map ordering | [✓] Documented |
-| [JEMP](jemp/) | Job Event Messaging Protocol — Concurrency model | [✓] Documented |
-| [Validation Stack](validation-stack/) | Unified Model validation layer | [✓] Documented |
-| [Transactional Models](transactional-models/) | VM deployment transaction process | [✓] Documented |
-
----
-
-## Related Concepts
-
-- [DRUID API](/deep-dives/mind-universe/) — Deploy, Refresh, Update, Import, Destroy (see MIND Universe)
-
----
-
-[← Back to Home](/)
-
-File: `specs/jemp.md`
----
-layout: page
-title: Job Event Messaging Protocol (JEMP)
-permalink: /specs/jemp/
----
-
-## Full Specification
-
-📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Universe-concurrency-model-4ea53fe313bb47eeaf8711db26828c39)
-
----
-
-## Overview
-
-**Purpose:** Track concurrent job execution state without MQ overhead.
-
-**Context:** MIND Universe Job Pool concurrency model.
-
-**Problem:** Need to track job state (running, lost, finished) without constant MQ polling.
-
----
-
-## Architecture
-
-### Event-Driven Model
-
-The Job Pool maintains all active jobs and communicates with them through the Event Bus. Three event types flow from jobs back to the pool: Heartbeat indicates the job is alive, Finished signals successful completion, and Internal is reserved for system services like the Job Collector. This event-driven approach eliminates the need for constant polling while maintaining full visibility into job state.
-
-```text
-┌─────────────────┐         ┌─────────────────┐
-│    Job Pool     │◀───────▶│    Event Bus    │
-└────────┬────────┘         └─────────────────┘
-         │
-         ├───────────────────┼───────────────────┐
-         ▼                   ▼                   ▼
-┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
-│   Heartbeat     │ │   Finished      │ │   Internal      │
-│   Event         │ │   Event         │ │   Event         │
-└─────────────────┘ └─────────────────┘ └─────────────────┘
-```
-
-### Job Lifecycle
-
-Jobs transition through four states from Queued to Running to Finished. The Lost state is reached when no Heartbeat is received within the configurable timeout threshold. This lifecycle allows the Job Collector to identify and unregister stalled jobs without blocking the execution of healthy ones.
-
-```text
-┌───────────┐     ┌───────────┐     ┌───────────┐     ┌───────────┐
-│  Queued   │────▶│  Running  │────▶│  Finished │     │   Lost    │
-└───────────┘     └─────┬─────┘     └───────────┘     └─────▲─────┘
-                        │                                   │
-                        └───────── Heartbeat ───────────────┘
-                          (Timeout → Lost)
-```
-
----
-
-## Event Types
-
-| Event Type | Description | Frequency |
-|------------|-------------|-----------|
-| **Heartbeat** | Job alive indicator | Every N seconds |
-| **Finished** | Job completed successfully | Once per job |
-| **Internal** | System events (JC, Checkpointer) | As needed |
-
----
-
-## Components
-
-### Job Collector (JC)
-
-| Metric | Value |
-|--------|-------|
-| **Timeout Threshold** | Configurable (default: 5 min) |
-| **Check Interval** | Every 30 seconds |
-| **Action** | Unregister lost jobs from pool |
-
-### Checkpointer
-
-| Metric | Value |
-|--------|-------|
-| **Checkpoint Interval** | Configurable (default: 1 min) |
-| **Persistence** | Local disk snapshot |
-| **Recovery** | Restore queued jobs after restart |
-
----
-
-## Trade-offs
-
-| Trade-off | Impact |
-|-----------|--------|
-| Event bus overhead | Minimal (in-process) |
-| Heartbeat frequency | Network traffic vs. detection speed |
-| Checkpoint frequency | Disk I/O vs. recovery point |
-
----
-
-## Related Specifications
-
-- [MHA](/specs/mha/) — Model hashing
-- [SSA](/specs/ssa/) — Sequence ordering
-- [Validation Stack](/specs/validation-stack/) — Model validation
-- [Transactional Models](/specs/transactional-models/) — Deployment states
-
----
-
-[← Back to Specifications](/specs/)
 
 File: `specs/mha.md`
 ---
@@ -1245,8 +518,6 @@ permalink: /specs/mha/
 
 ### Nested Hashing Model
 
-Each VM component (CPU, RAM, Disks, OS/ID) is hashed independently using only vendor-agnostic fields. Component hashes are then combined into a single VM hash for efficient comparison. This nested approach enables granular change detection at the component level rather than treating the VM as a monolithic blob.
-
 ```text
 ┌───────────────────────────────────────────────────────────────┐
 │                      Virtual Machine                          │
@@ -1262,8 +533,6 @@ Each VM component (CPU, RAM, Disks, OS/ID) is hashed independently using only ve
 ```
 
 ### Bidirectional Comparison
-
-The Unified Model (database record) and Facts (cloud API response) are processed through identical MHA Hash Calc pipelines. Both directions produce comparable hashes because only common components are used. The Hash Compare step detects any divergence between stored state and actual infrastructure state.
 
 ```text
 ┌──────────────────┐              ┌──────────────────┐
@@ -1304,16 +573,6 @@ The Unified Model (database record) and Facts (cloud API response) are processed
 
 ---
 
-## Trade-offs
-
-| Trade-off | Impact |
-|-----------|--------|
-| Vendor-specific fields excluded | Some details not tracked |
-| Hash collisions possible | Mitigated by nested structure |
-| Additional computation overhead | Acceptable for accuracy gain |
-
----
-
 ## Related Specifications
 
 - [SSA](/specs/ssa/) — Sequence ordering for model processing
@@ -1351,8 +610,6 @@ permalink: /specs/ssa/
 ## Architecture
 
 ### Algorithm Flow
-
-The Input Map contains integer keys that need sorting with zero positioned last. The Extract Keys step pulls all keys into a slice for processing. The Sort + Zero Logic sorts keys in ascending order then moves zero to the end. The Output Slice contains the final ordered sequence ready for model iteration.
 
 ```text
 ┌───────────────────┐
@@ -1418,28 +675,18 @@ func SequenceSorting(m map[int]int) (order []int) {
 
 ### Benchmark Results
 
-```
+```text
 Keys processed: 1000000
 2023/05/26 15:17:32 Sort took 116.915073ms
 ```
 
 ### Mutations
 
-```
+```text
 Input:  {0: 1, 2: 3, 4: 5, 6: 7, 8: 9}
 Keys:   [0, 2, 4, 6, 8]
 Output: [2, 4, 6, 8, 0]
 ```
-
----
-
-## Trade-offs
-
-| Trade-off | Impact |
-|-----------|--------|
-| O(n*2) iterations | Acceptable for n <1M |
-| Extra slice allocation | Memory overhead ~2x |
-| Zero-last semantics | Required for SMP ordering |
 
 ---
 
@@ -1460,214 +707,870 @@ Output: [2, 4, 6, 8, 0]
 
 [← Back to Specifications](/specs/)
 
-File: `specs/transactional-models.md`
----
-layout: page
-title: Transactional Models
-permalink: /specs/transactional-models/
----
-
-## Full Specification
-
-📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Unified-model-transactions-in-the-Universe-Deploy-1561ff431c37452bb1e2645b27586b75)
-
----
-
-## Overview
-
-**Purpose:** Describe the multi-stage process of building Unified Models for VM deployment.
-
-**Context:** MIND Universe VM deployment backend.
-
-**Problem:** VM deployment requires multi-source, multi-stage model construction.
-
----
-
-## Architecture
-
-### Model States
-
-The Prototype state is built from Source Unit and Placement data sources, tightly coupling the model to infrastructure specifics. User customization transforms the prototype into the Base state, allowing overrides of default values. The Complete state is reached after Universe validation and enrichment with platform-specific default arguments, making the model ready for deployment.
-
-```text
-┌───────────────┐      ┌───────────────┐      ┌───────────────┐
-│   Prototype   │─────▶│     Base      │─────▶│   Complete    │
-│    Model      │      │    Model      │      │    Model      │
-└───────┬───────┘      └───────┬───────┘      └───────┬───────┘
-        │                      │                      │
-        ▼                      ▼                      ▼
-┌───────────────┐      ┌───────────────┐      ┌───────────────┐
-│ Source Unit + │      │  User Input   │      │  Validation + │
-│  Placement    │      │ Customization │      │ Default Values│
-└───────────────┘      └───────────────┘      └───────────────┘
-```
-
----
-
-## Model States
-
-| State | Source | Purpose |
-|-------|--------|---------|
-| **Prototype** | Source Unit + Placement | Initial model tied to data sources |
-| **Base** | User customization | User overrides prototype values |
-| **Complete** | Universe validation + defaults | Ready for deployment |
-
----
-
-## Key Design Decisions
-
-| Decision | Alternative | Rationale |
-|----------|-------------|-----------|
-| **Three-state model** | Single-state | Clear separation of concerns |
-| **User customization step** | Direct deploy | User control over final config |
-| **Validation before deploy** | Validate on target | Catch errors early |
-
----
-
-## Rollback Mechanism ⚠️
-
-> **Note:** A rollback mechanism was implemented through DRUID API calls to remove redundant CIRs during deployment. This feature exists in the codebase but cannot be publicly documented due to NDA restrictions.
-
----
-
-## Trade-offs
-
-| Trade-off | Impact |
-|-----------|--------|
-| Multi-stage process | Increased complexity |
-| User customization | More flexibility, more validation |
-| Default values | Consistency across platforms |
-
----
-
-## Related Specifications
-
-- [MHA](/specs/mha/) — Model hashing
-- [SSA](/specs/ssa/) — Sequence ordering
-- [JEMP](/specs/jemp/) — Job messaging
-- [Validation Stack](/specs/validation-stack/) — Model validation
-
----
-
-[← Back to Specifications](/specs/)
-
-File: `specs/validation-stack.md`
----
-layout: page
-title: Universe Validation Stack
-permalink: /specs/validation-stack/
----
-
-## Full Specification
-
-📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Universe-Models-Validation-479bb17669ea446d8ea67e74f3be475f)
-
----
-
-## Overview
-
-**Purpose:** Centralized validation layer for Unified Models before infrastructure interaction.
-
-**Context:** MIND Universe Job execution pipeline.
-
-**Problem:** Handle user input errors locally before sending requests to cloud infrastructure.
-
----
-
-## Architecture
-
-### Stack Structure
-
-Validators are pushed onto the stack as pluggable entities, each validating a single field or implementing complex logic. The stack executes validators in FILO (First-In-Last-Out) order and collects results for analysis. After execution completes, the stack empties unless validators are marked as reusable for future validation chains.
-
-```text
-┌───────────────────────────────────────────┐
-│           Validation Stack                │
-├───────────────────────────────────────────┤
-│  Validator N (Top)                        │
-│  Validator N-1                            │
-│  ...                                      │
-│  Validator 1 (Bottom)                     │
-└───────────────────────────────────────────┘
-                    │
-                    ▼
-              FILO Execution
-```
-
-### Execution Flow
-
-```
-Push Validators → Run Chain (FILO) → Collect Results → Empty Stack
-```
-
----
-
-## Scopes of Usage
-
-| Scope | Name | Purpose |
-|-------|------|---------|
-| **Global** | Site Worker | Validate across the Job (e.g., look for duplicates) |
-| **Models** | Site Driver | Check specific fields of Unified Models |
-
----
-
-## Modes
-
-### Strict Mode
-
-Validation stops immediately after the first negative result, preventing further processing of invalid models. This mode is suitable when any validation failure should block deployment entirely.
-
-```
-Validator 1 [✓] → Validator 2 [✗] → STOP
-```
-
-### Fault-Tolerant Mode
-
-All validators run to completion regardless of intermediate failures, collecting both positive and negative results. This mode enables comprehensive error reporting before blocking deployment.
-
-```
-Validator 1 [✓] → Validator 2 [✗] → Validator 3 [✓] → Collect All
-```
-
----
-
-## Reusable Validators
-
-| Type | Behavior |
-|------|----------|
-| **Reusable** | Kept after chain execution |
-| **Non-Reusable** | Removed after chain execution |
-
----
-
-## Trade-offs
-
-| Trade-off | Impact |
-|-----------|--------|
-| Additional validation layer | Slight latency increase |
-| Local error handling | Reduced infrastructure errors |
-| Pluggable validators | Flexible validation logic |
-
----
-
-## Related Specifications
-
-- [MHA](/specs/mha/) — Model hashing
-- [SSA](/specs/ssa/) — Sequence ordering
-- [JEMP](/specs/jemp/) — Job messaging
-- [Transactional Models](/specs/transactional-models/) — Deployment states
-
----
-
-[← Back to Specifications](/specs/)
-
 Export Summary
 | Metric | Value |
 |--------|-------|
 | Total Files | 18 |
-| Generated | 2026-02-20 22:32:58 |
+| Generated | 2026-02-21 06:30:00 |
 | Format | Markdown (.md) |
 | Scope | .md files only |
 | Total Size | 95KB |
 
 Auto-generated by generate_context.py
+```
+
+---
+
+## `portfolio_assets.md` (Updated with CRT Effect + Syntax Highlighting)
+
+```markdown
+title: Portfolio Assets Export
+generated: 2026-02-21 06:30:00
+format: Markdown
+scope: CSS, HTML, JavaScript
+Portfolio Assets Export
+Export of stylesheets, layouts, and scripts with CRT TV effect.
+
+File: `assets/css/style.scss`
+```scss
+---
+---
+
+/* =============================================================================
+   WARM & COZY NOSTALGIA THEME + CRT TV EFFECT
+   For veteran computer scientists
+   ============================================================================= */
+
+/* --- Warm Color Palette --- */
+:root {
+  --base-color: #ffb000;
+  --base-color-dim: #cc8c00;
+  --background-color: #1a1510;
+  --background-alt: #251e17;
+  --text-color: #ffcc80;
+  --text-muted: #997755;
+  --border: solid 1px rgba(255, 176, 0, 0.3);
+  --border-dashed: dashed 1px rgba(255, 176, 0, 0.2);
+  --selection-background: rgba(255, 176, 0, 0.4);
+  --selection-text: #1a1510;
+  --link-color: #ffb000;
+  --link-hover: #ffcc80;
+  
+  /* Code Colors (warm palette) */
+  --code-comment: #887766;
+  --code-string: #ffcc80;
+  --code-keyword: #ffb000;
+  --code-function: #ffaa66;
+  --code-number: #ff9966;
+  --code-type: #ffcc99;
+  
+  /* CRT Effect Variables */
+  --crt-noise-opacity: 0.12;
+  --crt-scanline-opacity: 0.25;
+  --crt-rgb-intensity: 0.03;
+  --crt-power-duration: 400ms;
+}
+
+/* --- Global Base --- */
+html, body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+  font-size: 17px;
+  line-height: 1.7;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Warm Background Gradient --- */
+body {
+  background: linear-gradient(180deg, var(--background-color) 0%, var(--background-alt) 100%);
+  min-height: 100vh;
+}
+
+/* --- Selection --- */
+::selection {
+  background: var(--selection-background);
+  color: var(--selection-text);
+}
+
+/* --- Links --- */
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  border-bottom: var(--border-dashed);
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: var(--link-hover);
+  text-shadow: 0 0 8px rgba(255, 176, 0, 0.5);
+  border-bottom-color: var(--link-hover);
+}
+
+/* --- Headers --- */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--base-color);
+  font-weight: bold;
+  margin-top: 2.5em;
+  margin-bottom: 1em;
+  letter-spacing: 1px;
+  text-shadow: 0 0 15px rgba(255, 176, 0, 0.3);
+}
+
+h1 {
+  font-size: 2.2em;
+  border-bottom: var(--border);
+  padding-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.6em;
+  border-left: 4px solid var(--base-color);
+  padding-left: 1em;
+}
+
+h3 {
+  font-size: 1.3em;
+  color: #ff9966;
+}
+
+/* --- Site Header --- */
+.site-header {
+  background: var(--background-alt);
+  border-bottom: var(--border);
+  padding: 1.5em 0;
+  box-shadow: 0 2px 20px rgba(255, 176, 0, 0.1);
+}
+
+.site-header .site-title {
+  font-size: 1.8em;
+  color: var(--base-color);
+  letter-spacing: 2px;
+}
+
+.site-header .site-title:hover {
+  text-shadow: 0 0 20px var(--base-color);
+}
+
+.site-header .site-nav {
+  margin-top: 1em;
+}
+
+.site-header .nav-link {
+  color: var(--text-color);
+  margin-right: 1.5em;
+  border: var(--border);
+  padding: 0.4em 1em;
+  border-radius: 3px;
+}
+
+.site-header .nav-link:hover {
+  background: var(--base-color);
+  color: var(--background-color);
+  box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
+}
+
+/* --- Main Content --- */
+.page-content {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 3em 1.5em;
+  background: rgba(255, 248, 231, 0.02);
+  border-radius: 8px;
+}
+
+/* =============================================================================
+   SYNTAX HIGHLIGHTING (Rouge-compatible)
+   Warm Nostalgia Theme
+   ============================================================================= */
+
+/* --- Code Block Base --- */
+pre, code {
+  background: var(--background-alt);
+  border: var(--border);
+  font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+  border-radius: 4px;
+}
+
+pre {
+  padding: 1.5em;
+  overflow-x: auto;
+  margin: 2em 0;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.highlight {
+  background: var(--background-alt);
+  border-radius: 4px;
+  margin: 1.5em 0;
+  
+  pre {
+    margin: 0;
+    padding: 1.5em;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  
+  code {
+    background: transparent;
+    padding: 0;
+    font-size: 0.9em;
+    line-height: 1.6;
+  }
+}
+
+/* Rouge token classes */
+.highlight {
+  .c   { color: var(--code-comment); font-style: italic; }
+  .cm  { color: var(--code-comment); font-style: italic; }
+  .cp  { color: var(--code-keyword); font-weight: bold; }
+  .c1  { color: var(--code-comment); font-style: italic; }
+  .cs  { color: var(--code-comment); font-style: italic; }
+  
+  .k   { color: var(--code-keyword); font-weight: bold; }
+  .kc  { color: var(--code-keyword); font-weight: bold; }
+  .kd  { color: var(--code-keyword); font-weight: bold; }
+  .kn  { color: var(--code-keyword); font-weight: bold; }
+  .kp  { color: var(--code-keyword); font-weight: bold; }
+  .kr  { color: var(--code-keyword); font-weight: bold; }
+  .kt  { color: var(--code-type); }
+  
+  .n   { color: var(--text-color); }
+  .na  { color: var(--code-function); }
+  .nb  { color: var(--code-function); }
+  .bp  { color: var(--code-function); }
+  .nc  { color: var(--code-type); font-weight: bold; }
+  .no  { color: var(--accent-warm); }
+  .nd  { color: var(--code-function); }
+  .ni  { color: var(--text-color); }
+  .ne  { color: var(--code-keyword); font-weight: bold; }
+  .nf  { color: var(--code-function); font-weight: bold; }
+  .nl  { color: var(--code-function); }
+  .nn  { color: var(--code-type); font-weight: bold; }
+  .nx  { color: var(--text-color); }
+  .py  { color: var(--text-color); }
+  .nt  { color: var(--code-keyword); font-weight: bold; }
+  .nv  { color: var(--text-color); }
+  
+  .l   { color: var(--code-number); }
+  .ld  { color: var(--code-string); }
+  .s   { color: var(--code-string); }
+  .sa  { color: var(--code-string); }
+  .sb  { color: var(--code-string); }
+  .sc  { color: var(--code-string); }
+  .dl  { color: var(--code-string); }
+  .sd  { color: var(--code-comment); font-style: italic; }
+  .s2  { color: var(--code-string); }
+  .se  { color: var(--accent-warm); font-weight: bold; }
+  .sh  { color: var(--code-string); }
+  .si  { color: var(--code-string); }
+  .sx  { color: var(--code-string); }
+  .sr  { color: var(--code-string); }
+  .s1  { color: var(--code-string); }
+  .ss  { color: var(--code-string); }
+  
+  .m   { color: var(--code-number); }
+  .mb  { color: var(--code-number); }
+  .mf  { color: var(--code-number); }
+  .mh  { color: var(--code-number); }
+  .mi  { color: var(--code-number); }
+  .mo  { color: var(--code-number); }
+  
+  .o   { color: var(--code-keyword); font-weight: bold; }
+  .ow  { color: var(--code-keyword); font-weight: bold; }
+  
+  .p   { color: var(--text-muted); }
+  .pi  { color: var(--code-keyword); }
+  
+  .ge  { font-style: italic; }
+  .gr  { color: var(--red); }
+  .gh  { color: var(--base-color); font-weight: bold; }
+  .gi  { color: var(--green); }
+  .go  { color: var(--text-muted); }
+  .gp  { color: var(--text-muted); }
+  .gs  { font-weight: bold; }
+  .gu  { color: var(--base-color); font-weight: bold; }
+  .gt  { color: var(--red); }
+  
+  .w   { color: var(--text-muted); }
+}
+
+/* --- Inline Code --- */
+:not(pre) > code {
+  background: var(--background-alt);
+  color: var(--code-string);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+/* --- Language Labels --- */
+.highlight::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0.5em;
+  right: 1em;
+  font-size: 0.75em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+/* --- ASCII Art / Diagrams - No Highlighting --- */
+pre.language-ascii,
+pre.language-text,
+pre.language-plaintext {
+  .highlight {
+    code {
+      color: var(--base-color) !important;
+      .c, .cm, .c1, .cs { color: var(--text-muted) !important; }
+    }
+  }
+}
+
+/* =============================================================================
+   CRT TV EFFECT FOR CODE BLOCKS & ASCII ART
+   Adapted from: https://codepen.io/Mobius1/pen/zZpoXj
+   ============================================================================= */
+
+/* --- CRT Container for code/ascii blocks --- */
+.crt-block {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--background-alt, #251e17);
+  border: var(--border, solid 1px rgba(255, 176, 0, 0.3));
+  margin: 2em 0;
+}
+
+/* --- CRT Canvas (Noise) --- */
+.crt-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: var(--crt-noise-opacity);
+  mix-blend-mode: overlay;
+  z-index: 1;
+}
+
+/* --- Scanlines Overlay --- */
+.crt-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    transparent 50%,
+    rgba(0, 0, 0, var(--crt-scanline-opacity)) 50%
+  );
+  background-size: 100% 3px;
+  animation: scanline-scroll 8s linear infinite;
+}
+
+@keyframes scanline-scroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+/* --- RGB Shift / Chromatic Aberration --- */
+.crt-rgb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, var(--crt-rgb-intensity)),
+    rgba(0, 255, 0, calc(var(--crt-rgb-intensity) * 0.33)),
+    rgba(0, 0, 255, var(--crt-rgb-intensity))
+  );
+  background-size: 4px 100%;
+  animation: crt-shift 0.08s infinite steps(1);
+  opacity: 0.7;
+}
+
+@keyframes crt-shift {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(1px); }
+  50% { transform: translateX(-1px); }
+  75% { transform: translateX(0); }
+}
+
+/* --- Content Layer (above effects) --- */
+.crt-block pre,
+.crt-block code,
+.crt-block .ascii-art {
+  position: relative;
+  z-index: 4;
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-color);
+}
+
+/* --- ASCII Art Specific Styling --- */
+.ascii-art {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre;
+  color: var(--base-color);
+  text-shadow: 0 0 5px rgba(255, 176, 0, 0.3);
+}
+
+/* --- Optional: Glitch on Hover --- */
+.crt-block:hover .crt-rgb {
+  animation-duration: 0.04s;
+  opacity: 1;
+}
+
+/* --- Power-On Animation --- */
+.crt-power-on {
+  animation: crt-power var(--crt-power-duration) ease-out forwards;
+}
+
+@keyframes crt-power {
+  0% {
+    opacity: 0;
+    filter: brightness(0) contrast(0) saturate(0);
+  }
+  30% {
+    opacity: 1;
+    filter: brightness(3) contrast(2) saturate(1.5);
+  }
+  60% {
+    filter: brightness(1.5) contrast(1.2) saturate(1.1);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1.1) contrast(1) saturate(1);
+  }
+}
+
+/* --- Disable on Mobile (performance) --- */
+@media (max-width: 768px), (prefers-reduced-motion: reduce) {
+  .crt-canvas,
+  .crt-rgb {
+    display: none;
+  }
+  .crt-overlay {
+    opacity: 0.4;
+    animation: none;
+  }
+}
+
+/* --- Tables --- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2em 0;
+  border: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+table th, table td {
+  border: var(--border);
+  padding: 1em;
+  text-align: left;
+}
+
+table th {
+  background: var(--background-alt);
+  color: var(--base-color);
+  letter-spacing: 1px;
+}
+
+table tr:hover {
+  background: rgba(255, 176, 0, 0.05);
+}
+
+/* --- Blockquotes --- */
+blockquote {
+  border-left: 4px solid var(--base-color);
+  margin: 2em 0;
+  padding: 1.5em 2em;
+  background: var(--background-alt);
+  color: var(--text-muted);
+  font-style: italic;
+  border-radius: 0 4px 4px 0;
+}
+
+blockquote p {
+  margin: 0;
+}
+
+/* --- Horizontal Rule --- */
+hr {
+  border: none;
+  border-top: var(--border-dashed);
+  margin: 3em 0;
+  opacity: 0.5;
+}
+
+/* --- Site Footer --- */
+.site-footer {
+  border-top: var(--border);
+  padding: 3em 0;
+  margin-top: 4em;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9em;
+  background: var(--background-alt);
+}
+
+.site-footer a {
+  color: var(--base-color);
+}
+
+/* --- Hide Duplicate Footer Elements --- */
+.site-footer .site-title,
+.site-footer h2,
+.site-footer .author {
+  display: none;
+}
+
+/* --- Custom Classes --- */
+.coffee-break {
+  text-align: center;
+  margin: 3em 0;
+  padding: 2em;
+  background: var(--background-alt);
+  border: var(--border);
+  border-radius: 8px;
+}
+
+.coffee-break::before {
+  content: "☕ ";
+  font-size: 2em;
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+.nostalgia-note {
+  background: rgba(255, 176, 0, 0.05);
+  border: var(--border-dashed);
+  padding: 1.5em;
+  border-radius: 4px;
+  margin: 2em 0;
+  font-size: 0.95em;
+}
+
+.nostalgia-note::before {
+  content: "📼  ";
+}
+
+.terminal-prompt::before {
+  content: "$  ";
+  color: var(--base-color);
+  font-weight: bold;
+}
+
+.welcome-box {
+  background: var(--background-alt);
+  border: var(--border);
+  padding: 2em;
+  border-radius: 8px;
+  margin: 2em 0;
+  text-align: center;
+}
+
+.welcome-box h2 {
+  border: none;
+  padding: 0;
+  margin-top: 0;
+}
+
+.theme-enter {
+  display: inline-block;
+  border: var(--border);
+  padding: 0.5em 1em;
+  margin: 0.5em 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.9em;
+}
+
+.theme-enter:hover {
+  background: var(--base-color);
+  color: var(--background-color);
+  box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--base-color-dim);
+  border: 2px solid var(--background-color);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--base-color);
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  html, body {
+    font-size: 15px;
+  }
+  
+  .page-content {
+    padding: 1.5em 1em;
+  }
+  
+  .site-header .site-nav .nav-link {
+    display: block;
+    margin: 0.5em 0;
+  }
+}
+
+/* Terminal Animation Styles */
+.terminal-container {
+  background: var(--background-alt, #251e17);
+  border: var(--border, solid 1px rgba(255, 176, 0, 0.3));
+  border-radius: 4px;
+  padding: 1.5em;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95em;
+  margin: 2em 0;
+  min-height: 150px;
+}
+
+.terminal-line {
+  display: block;
+  margin: 0.5em 0;
+  line-height: 1.5;
+  color: var(--text-color, #ffcc80);
+}
+
+.terminal-prompt {
+  color: var(--base-color, #ffb000);
+  font-weight: bold;
+}
+
+.terminal-output {
+  color: var(--text-color, #ffcc80);
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.2em;
+  background-color: var(--base-color, #ffb000);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+```
+
+File: `assets/js/crt-effect.js`
+```javascript
+/**
+ * CRT TV Effect for Code Blocks & ASCII Art
+ * Adds animated noise and scanlines to elements with class "crt-block"
+ * Progressive enhancement: degrades gracefully if canvas unsupported
+ */
+(function() {
+  'use strict';
+
+  // Skip if canvas not supported or reduced motion preferred
+  if (!document.createElement('canvas').getContext || 
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return;
+  }
+
+  // Initialize CRT effect on matching blocks
+  function initCRTBlocks() {
+    const blocks = document.querySelectorAll('.crt-block');
+    
+    blocks.forEach(block => {
+      // Skip if already initialized
+      if (block.dataset.crtInitialized) return;
+      block.dataset.crtInitialized = 'true';
+
+      // Create canvas for noise
+      const canvas = document.createElement('canvas');
+      canvas.className = 'crt-canvas';
+      block.insertBefore(canvas, block.firstChild);
+
+      const ctx = canvas.getContext('2d');
+      
+      // Low-res canvas for performance
+      const scale = 0.2;
+      let width, height;
+
+      function resize() {
+        width = block.offsetWidth;
+        height = block.offsetHeight;
+        canvas.width = width * scale;
+        canvas.height = height * scale;
+      }
+
+      // Generate noise frame
+      function generateNoise() {
+        const w = canvas.width;
+        const h = canvas.height;
+        const imageData = ctx.createImageData(w, h);
+        const data = imageData.data;
+        
+        // Random grayscale noise
+        for (let i = 0; i < data.length; i += 4) {
+          const val = Math.random() * 255;
+          data[i] = val;     // R
+          data[i+1] = val;   // G
+          data[i+2] = val;   // B
+          data[i+3] = 255;   // A
+        }
+        ctx.putImageData(imageData, 0, 0);
+      }
+
+      // Animation loop (throttled)
+      let animationFrame;
+      const fps = 12;
+      const frameDuration = 1000 / fps;
+      let lastTime = 0;
+
+      function animate(timestamp) {
+        if (timestamp - lastTime >= frameDuration) {
+          generateNoise();
+          lastTime = timestamp;
+        }
+        animationFrame = requestAnimationFrame(animate);
+      }
+
+      // Initialize
+      resize();
+      animationFrame = requestAnimationFrame(animate);
+
+      // Handle resize
+      const resizeObserver = new ResizeObserver(resize);
+      resizeObserver.observe(block);
+
+      // Optional: power-on animation
+      setTimeout(() => block.classList.add('crt-power-on'), 100);
+    });
+  }
+
+  // Auto-wrap code blocks and ASCII art with CRT container
+  function wrapCodeBlocks() {
+    // Wrap pre > code blocks
+    document.querySelectorAll('pre code').forEach(code => {
+      const pre = code.parentElement;
+      if (!pre.closest('.crt-block')) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'crt-block';
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+      }
+    });
+
+    // Wrap ASCII art (detect by monospace + box-drawing chars)
+    document.querySelectorAll('pre').forEach(pre => {
+      const text = pre.textContent;
+      // Simple heuristic: contains box-drawing characters
+      if (/[\u2500-\u257F\u2580-\u259F]/.test(text) && !pre.closest('.crt-block')) {
+        pre.classList.add('ascii-art');
+        const wrapper = document.createElement('div');
+        wrapper.className = 'crt-block';
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+      }
+    });
+  }
+
+  // Initialize on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      wrapCodeBlocks();
+      initCRTBlocks();
+    });
+  } else {
+    wrapCodeBlocks();
+    initCRTBlocks();
+  }
+
+  // Reinitialize after Jekyll navigation (if using AJAX)
+  document.addEventListener('jekyll:loaded', () => {
+    wrapCodeBlocks();
+    initCRTBlocks();
+  });
+})();
+```
+
+File: `_layouts/default.html`
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrapper">
+      <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+      <nav class="site-nav">
+        {% for path in site.header_pages %}
+          {% assign page = site.pages | where: "path", path | first %}
+          {% if page.title %}
+            <a class="nav-link" href="{{ page.url | relative_url }}">{{ page.title }}</a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-content" aria-label="Content">
+    <div class="wrapper">
+      {{ content }}
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper">
+      <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}</p>
+    </div>
+  </footer>
+
+  <!-- CRT Effect JS (deferred, non-blocking) -->
+  <script src="{{ '/assets/js/crt-effect.js' | relative_url }}" defer></script>
+</body>
+</html>
+```
+
+Export Summary
+| Metric | Value |
+|--------|-------|
+| Total Files | 3 |
+| Generated | 2026-02-21 06:30:00 |
+| Format | Markdown (.md) |
+| Scope | CSS, HTML, JavaScript with CRT effect |
+| Total Size | 18KB |
+
+Auto-generated by generate_assets.py

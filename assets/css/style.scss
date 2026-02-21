@@ -2,7 +2,7 @@
 ---
 
 /* =============================================================================
-   WARM & COZY NOSTALGIA THEME
+   WARM & COZY NOSTALGIA THEME + CRT TV EFFECT
    For veteran computer scientists
    ============================================================================= */
 
@@ -20,6 +20,20 @@
   --selection-text: #1a1510;
   --link-color: #ffb000;
   --link-hover: #ffcc80;
+  
+  /* Code Colors (warm palette) */
+  --code-comment: #887766;
+  --code-string: #ffcc80;
+  --code-keyword: #ffb000;
+  --code-function: #ffaa66;
+  --code-number: #ff9966;
+  --code-type: #ffcc99;
+  
+  /* CRT Effect Variables */
+  --crt-noise-opacity: 0.12;
+  --crt-scanline-opacity: 0.25;
+  --crt-rgb-intensity: 0.03;
+  --crt-power-duration: 400ms;
 }
 
 /* --- Global Base --- */
@@ -35,11 +49,7 @@ html, body {
 
 /* --- Warm Background Gradient --- */
 body {
-  background: linear-gradient(
-    180deg,
-    var(--background-color) 0%,
-    var(--background-alt) 100%
-  );
+  background: linear-gradient(180deg, var(--background-color) 0%, var(--background-alt) 100%);
   min-height: 100vh;
 }
 
@@ -135,12 +145,15 @@ h3 {
   border-radius: 8px;
 }
 
-/* --- Code Blocks --- */
+/* =============================================================================
+   SYNTAX HIGHLIGHTING (Rouge-compatible)
+   Warm Nostalgia Theme
+   ============================================================================= */
+
+/* --- Code Block Base --- */
 pre, code {
   background: var(--background-alt);
-  border: var(--border);
   font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
-  border-radius: 4px;
 }
 
 pre {
@@ -148,18 +161,277 @@ pre {
   overflow-x: auto;
   margin: 2em 0;
   box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.3);
+  position: relative;
 }
 
-pre code {
-  background: transparent;
-  border: none;
-  padding: 0;
+.highlight {
+  background: var(--background-alt);
+  border-radius: 4px;
+  margin: 1.5em 0;
+  
+  pre {
+    margin: 0;
+    padding: 1.5em;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  
+  code {
+    background: transparent;
+    padding: 0;
+    font-size: 0.9em;
+    line-height: 1.6;
+  }
 }
 
-code {
-  padding: 0.3em 0.6em;
-  color: #ffcc80;
+/* Rouge token classes */
+.highlight {
+  .c   { color: var(--code-comment); font-style: italic; }
+  .cm  { color: var(--code-comment); font-style: italic; }
+  .cp  { color: var(--code-keyword); font-weight: bold; }
+  .c1  { color: var(--code-comment); font-style: italic; }
+  .cs  { color: var(--code-comment); font-style: italic; }
+  
+  .k   { color: var(--code-keyword); font-weight: bold; }
+  .kc  { color: var(--code-keyword); font-weight: bold; }
+  .kd  { color: var(--code-keyword); font-weight: bold; }
+  .kn  { color: var(--code-keyword); font-weight: bold; }
+  .kp  { color: var(--code-keyword); font-weight: bold; }
+  .kr  { color: var(--code-keyword); font-weight: bold; }
+  .kt  { color: var(--code-type); }
+  
+  .n   { color: var(--text-color); }
+  .na  { color: var(--code-function); }
+  .nb  { color: var(--code-function); }
+  .bp  { color: var(--code-function); }
+  .nc  { color: var(--code-type); font-weight: bold; }
+  .no  { color: var(--accent-warm); }
+  .nd  { color: var(--code-function); }
+  .ni  { color: var(--text-color); }
+  .ne  { color: var(--code-keyword); font-weight: bold; }
+  .nf  { color: var(--code-function); font-weight: bold; }
+  .nl  { color: var(--code-function); }
+  .nn  { color: var(--code-type); font-weight: bold; }
+  .nx  { color: var(--text-color); }
+  .py  { color: var(--text-color); }
+  .nt  { color: var(--code-keyword); font-weight: bold; }
+  .nv  { color: var(--text-color); }
+  
+  .l   { color: var(--code-number); }
+  .ld  { color: var(--code-string); }
+  .s   { color: var(--code-string); }
+  .sa  { color: var(--code-string); }
+  .sb  { color: var(--code-string); }
+  .sc  { color: var(--code-string); }
+  .dl  { color: var(--code-string); }
+  .sd  { color: var(--code-comment); font-style: italic; }
+  .s2  { color: var(--code-string); }
+  .se  { color: var(--accent-warm); font-weight: bold; }
+  .sh  { color: var(--code-string); }
+  .si  { color: var(--code-string); }
+  .sx  { color: var(--code-string); }
+  .sr  { color: var(--code-string); }
+  .s1  { color: var(--code-string); }
+  .ss  { color: var(--code-string); }
+  
+  .m   { color: var(--code-number); }
+  .mb  { color: var(--code-number); }
+  .mf  { color: var(--code-number); }
+  .mh  { color: var(--code-number); }
+  .mi  { color: var(--code-number); }
+  .mo  { color: var(--code-number); }
+  
+  .o   { color: var(--code-keyword); font-weight: bold; }
+  .ow  { color: var(--code-keyword); font-weight: bold; }
+  
+  .p   { color: var(--text-muted); }
+  .pi  { color: var(--code-keyword); }
+  
+  .ge  { font-style: italic; }
+  .gr  { color: var(--red); }
+  .gh  { color: var(--base-color); font-weight: bold; }
+  .gi  { color: var(--green); }
+  .go  { color: var(--text-muted); }
+  .gp  { color: var(--text-muted); }
+  .gs  { font-weight: bold; }
+  .gu  { color: var(--base-color); font-weight: bold; }
+  .gt  { color: var(--red); }
+  
+  .w   { color: var(--text-muted); }
+}
+
+/* --- Inline Code --- */
+:not(pre) > code {
+  background: var(--background-alt);
+  color: var(--code-string);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
   font-size: 0.9em;
+}
+
+/* --- Language Labels --- */
+.highlight::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0.5em;
+  right: 1em;
+  font-size: 0.75em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+/* --- ASCII Art / Diagrams - No Highlighting --- */
+pre.language-ascii,
+pre.language-text,
+pre.language-plaintext {
+  .highlight {
+    code {
+      color: var(--base-color) !important;
+      .c, .cm, .c1, .cs { color: var(--text-muted) !important; }
+    }
+  }
+}
+
+/* =============================================================================
+   CRT TV EFFECT FOR CODE BLOCKS & ASCII ART
+   Adapted from: https://codepen.io/Mobius1/pen/zZpoXj
+   ============================================================================= */
+
+/* --- CRT Container for code/ascii blocks --- */
+.crt-block {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--background-alt, #251e17);
+  border: var(--border, solid 1px rgba(255, 176, 0, 0.3));
+  margin: 2em 0;
+}
+
+/* --- CRT Canvas (Noise) --- */
+.crt-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: var(--crt-noise-opacity);
+  mix-blend-mode: overlay;
+  z-index: 1;
+}
+
+/* --- Scanlines Overlay --- */
+.crt-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(
+    transparent 50%,
+    rgba(0, 0, 0, var(--crt-scanline-opacity)) 50%
+  );
+  background-size: 100% 3px;
+  animation: scanline-scroll 8s linear infinite;
+}
+
+@keyframes scanline-scroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+/* --- RGB Shift / Chromatic Aberration --- */
+.crt-rgb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, var(--crt-rgb-intensity)),
+    rgba(0, 255, 0, calc(var(--crt-rgb-intensity) * 0.33)),
+    rgba(0, 0, 255, var(--crt-rgb-intensity))
+  );
+  background-size: 4px 100%;
+  animation: crt-shift 0.08s infinite steps(1);
+  opacity: 0.7;
+}
+
+@keyframes crt-shift {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(1px); }
+  50% { transform: translateX(-1px); }
+  75% { transform: translateX(0); }
+}
+
+/* --- Content Layer (above effects) --- */
+.crt-block pre,
+.crt-block code,
+.crt-block .ascii-art {
+  position: relative;
+  z-index: 4;
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-color);
+}
+
+/* --- ASCII Art Specific Styling --- */
+.ascii-art {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre;
+  color: var(--base-color);
+  text-shadow: 0 0 5px rgba(255, 176, 0, 0.3);
+}
+
+/* --- Optional: Glitch on Hover --- */
+.crt-block:hover .crt-rgb {
+  animation-duration: 0.04s;
+  opacity: 1;
+}
+
+/* --- Power-On Animation --- */
+.crt-power-on {
+  animation: crt-power var(--crt-power-duration) ease-out forwards;
+}
+
+@keyframes crt-power {
+  0% {
+    opacity: 0;
+    filter: brightness(0) contrast(0) saturate(0);
+  }
+  30% {
+    opacity: 1;
+    filter: brightness(3) contrast(2) saturate(1.5);
+  }
+  60% {
+    filter: brightness(1.5) contrast(1.2) saturate(1.1);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1.1) contrast(1) saturate(1);
+  }
+}
+
+/* --- Disable on Mobile (performance) --- */
+@media (max-width: 768px), (prefers-reduced-motion: reduce) {
+  .crt-canvas,
+  .crt-rgb {
+    display: none;
+  }
+  .crt-overlay {
+    opacity: 0.4;
+    animation: none;
+  }
 }
 
 /* --- Tables --- */
@@ -244,7 +516,7 @@ hr {
 }
 
 .coffee-break::before {
-  content: "☕";
+  content: "☕ ";
   font-size: 2em;
   display: block;
   margin-bottom: 0.5em;
@@ -260,11 +532,11 @@ hr {
 }
 
 .nostalgia-note::before {
-  content: "📼 ";
+  content: "📼  ";
 }
 
 .terminal-prompt::before {
-  content: "$ ";
+  content: "$  ";
   color: var(--base-color);
   font-weight: bold;
 }
@@ -335,6 +607,7 @@ hr {
     margin: 0.5em 0;
   }
 }
+
 /* Terminal Animation Styles */
 .terminal-container {
   background: var(--background-alt, #251e17);
