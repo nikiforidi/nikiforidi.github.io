@@ -17,17 +17,19 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 
 ## Architecture Diagram
 
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   vpnm CLI  │────▶│   vpnmd     │────▶│  anyd IPC   │
-│   (User)    │     │   (Root)    │     │  (Sockets)  │
-└─────────────┘     └─────────────┘     └─────────────┘
-│                   │                   │
-▼                   ▼                   ▼
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│  cloudflared│     │  tun2socks  │     │  v2ray-core │
-│    (DoH)    │     │   (TUN)     │     │   (Proxy)   │
-└─────────────┘     └─────────────┘     └─────────────┘
+The vpnm CLI runs as user and sends commands to vpnmd daemon via anyd IPC. The vpnmd daemon runs with root privileges and controls tunneling components. Traffic flows through cloudflared for DoH, tun2socks for TUN device, and v2ray-core for proxy encryption.
+
+```text
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│   vpnm CLI    │────▶│   vpnmd       │────▶│  anyd IPC     │
+│   (User)      │     │   (Root)      │     │  (Sockets)    │
+└───────┬───────┘     └───────┬───────┘     └───────┬───────┘
+        │                     │                     │
+        ▼                     ▼                     ▼
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│  cloudflared  │     │  tun2socks    │     │  v2ray-core   │
+│    (DoH)      │     │   (TUN)       │     │   (Proxy)     │
+└───────────────┘     └───────────────┘     └───────────────┘
 ```
 
 ---
@@ -47,8 +49,8 @@ Linux VPN client architecture developed during VPN Manager tenure (2020-2021).
 
 | Repository | Commits | Releases | Stars | Status |
 |------------|---------|----------|-------|--------|
-| [vpnm](https://github.com/nikiforidi/vpnm) | 154 | 12 | 1 | ✅ Stable Reference |
-| [vpnmd](https://github.com/nikiforidi/vpnmd) | 62 | 3 | 0 | ✅ Stable Reference |
+| [vpnm](https://github.com/nikiforidi/vpnm) | 154 | 12 | 1 | [✓] Stable Reference |
+| [vpnmd](https://github.com/nikiforidi/vpnmd) | 62 | 3 | 0 | [✓] Stable Reference |
 
 ---
 

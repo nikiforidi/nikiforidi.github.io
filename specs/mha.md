@@ -22,36 +22,40 @@ permalink: /specs/mha/
 
 ### Nested Hashing Model
 
-```
-┌────────────────────────────────────────────────────────┐
-│                    Virtual Machine                     │
-├─────────────┬─────────────┬─────────────┬──────────────┤
-│     CPU     │     RAM     │    Disks    │  OS / ID     │
-│   (hash)    │   (hash)    │   (hash)    │   (hash)     │
-└─────────────┴─────────────┴─────────────┴──────────────┘
-│
-▼
-┌───────────────────────┐
-│   Combined VM Hash    │
-└───────────────────────┘
+Each VM component (CPU, RAM, Disks, OS/ID) is hashed independently using only vendor-agnostic fields. Component hashes are then combined into a single VM hash for efficient comparison. This nested approach enables granular change detection at the component level rather than treating the VM as a monolithic blob.
+
+```text
+┌───────────────────────────────────────────────────────────────┐
+│                      Virtual Machine                          │
+├───────────────┬───────────────┬───────────────┬───────────────┤
+│     CPU       │     RAM       │    Disks      │   OS / ID     │
+│    (hash)     │    (hash)     │    (hash)     │    (hash)     │
+└───────────────┴───────────────┴───────────────┴───────────────┘
+                              │
+                              ▼
+                     ┌───────────────────────┐
+                     │   Combined VM Hash    │
+                     └───────────────────────┘
 ```
 
 ### Bidirectional Comparison
 
-```
+The Unified Model (database record) and Facts (cloud API response) are processed through identical MHA Hash Calc pipelines. Both directions produce comparable hashes because only common components are used. The Hash Compare step detects any divergence between stored state and actual infrastructure state.
+
+```text
 ┌──────────────────┐              ┌──────────────────┐
 │  Unified Model   │              │      Facts       │
 │   (DB Record)    │              │  (Cloud API)     │
 ├──────────────────┤              ├──────────────────┤
 │  MHA Hash Calc   │              │  MHA Hash Calc   │
 └────────┬─────────┘              └────────┬─────────┘
-│                                 │
-└─────────────┬───────────────────┘
-▼
-┌─────────────────┐
-│   Hash Compare  │
-│  (Change Detect)│
-└─────────────────┘
+         │                                 │
+         └───────────────┬─────────────────┘
+                         ▼
+                 ┌─────────────────┐
+                 │   Hash Compare  │
+                 │  (Change Detect)│
+                 └─────────────────┘
 ```
 
 ---

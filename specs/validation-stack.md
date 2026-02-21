@@ -24,18 +24,20 @@ permalink: /specs/validation-stack/
 
 ### Stack Structure
 
-```
-┌─────────────────────────────────────────┐
-│           Validation Stack              │
-├─────────────────────────────────────────┤
-│  Validator N (Top)                      │
-│  Validator N-1                          │
-│  ...                                    │
-│  Validator 1 (Bottom)                   │
-└─────────────────────────────────────────┘
-│
-▼
-FILO Execution
+Validators are pushed onto the stack as pluggable entities, each validating a single field or implementing complex logic. The stack executes validators in FILO (First-In-Last-Out) order and collects results for analysis. After execution completes, the stack empties unless validators are marked as reusable for future validation chains.
+
+```text
+┌───────────────────────────────────────────┐
+│           Validation Stack                │
+├───────────────────────────────────────────┤
+│  Validator N (Top)                        │
+│  Validator N-1                            │
+│  ...                                      │
+│  Validator 1 (Bottom)                     │
+└───────────────────────────────────────────┘
+                    │
+                    ▼
+              FILO Execution
 ```
 
 ### Execution Flow
@@ -59,14 +61,18 @@ Push Validators → Run Chain (FILO) → Collect Results → Empty Stack
 
 ### Strict Mode
 
+Validation stops immediately after the first negative result, preventing further processing of invalid models. This mode is suitable when any validation failure should block deployment entirely.
+
 ```
-Validator 1 ✓ → Validator 2 ✗ → STOP
+Validator 1 [✓] → Validator 2 [✗] → STOP
 ```
 
 ### Fault-Tolerant Mode
 
+All validators run to completion regardless of intermediate failures, collecting both positive and negative results. This mode enables comprehensive error reporting before blocking deployment.
+
 ```
-Validator 1 ✓ → Validator 2 ✗ → Validator 3 ✓ → Collect All
+Validator 1 [✓] → Validator 2 [✗] → Validator 3 [✓] → Collect All
 ```
 
 ---

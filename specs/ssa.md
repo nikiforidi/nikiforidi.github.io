@@ -24,29 +24,31 @@ permalink: /specs/ssa/
 
 ### Algorithm Flow
 
-```
-┌─────────────────┐
-│   Input Map     │
-│ {0:1, 2:3, 4:5} │
-└────────┬────────┘
-│
-▼
-┌─────────────────┐
-│  Extract Keys   │
-│   [0, 2, 4]     │
-└────────┬────────┘
-│
-▼
-┌─────────────────┐
-│  Sort + Zero    │
-│   Last Logic    │
-└────────┬────────┘
-│
-▼
-┌─────────────────┐
-│  Output Slice   │
-│   [2, 4, 0]     │
-└─────────────────┘
+The Input Map contains integer keys that need sorting with zero positioned last. The Extract Keys step pulls all keys into a slice for processing. The Sort + Zero Logic sorts keys in ascending order then moves zero to the end. The Output Slice contains the final ordered sequence ready for model iteration.
+
+```text
+┌───────────────────┐
+│   Input Map       │
+│ {0:1, 2:3, 4:5}   │
+└─────────┬─────────┘
+          │
+          ▼
+┌───────────────────┐
+│  Extract Keys     │
+│   [0, 2, 4]       │
+└─────────┬─────────┘
+          │
+          ▼
+┌───────────────────┐
+│  Sort + Zero      │
+│   Last Logic      │
+└─────────┬─────────┘
+          │
+          ▼
+┌───────────────────┐
+│  Output Slice     │
+│   [2, 4, 0]       │
+└───────────────────┘
 ```
 
 ---
@@ -93,9 +95,7 @@ Keys processed: 1000000
 2023/05/26 15:17:32 Sort took 116.915073ms
 ```
 
----
-
-## Mutations
+### Mutations
 
 ```
 Input:  {0: 1, 2: 3, 4: 5, 6: 7, 8: 9}
@@ -109,7 +109,7 @@ Output: [2, 4, 6, 8, 0]
 
 | Trade-off | Impact |
 |-----------|--------|
-| O(n*2) iterations | Acceptable for n<1M |
+| O(n*2) iterations | Acceptable for n <1M |
 | Extra slice allocation | Memory overhead ~2x |
 | Zero-last semantics | Required for SMP ordering |
 
@@ -117,7 +117,7 @@ Output: [2, 4, 6, 8, 0]
 
 ## Proof of Concept
 
-🔗 [**Go Playground: SSA PoC →**](https://go.dev/play/p/gXdgi47OGDO)
+🔗 [Go Playground: SSA PoC →](https://go.dev/play/p/gXdgi47OGDO)
 
 ---
 

@@ -44,10 +44,10 @@ CRUD-like operations for cloud infrastructure resources (CIR):
 
 | Provider | Status |
 |----------|--------|
-| VMware | ✅ Implemented |
-| OpenStack | ✅ Implemented |
-| oVirt | ✅ Implemented |
-| SpaceVM | ✅ Implemented |
+| VMware | [✓] Implemented |
+| OpenStack | [✓] Implemented |
+| oVirt | [✓] Implemented |
+| SpaceVM | [✓] Implemented |
 
 ---
 

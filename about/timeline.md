@@ -6,11 +6,11 @@ permalink: /about/timeline/
 
 ## Visual Timeline
 
-```
+```text
 2017 ──── 2018 ──── 2019 ──── 2020 ──── 2021 ──── 2022 ──── 2023 ──── 2024 ──── 2025 ──── 2026
 │         │         │         │         │         │         │         │         │         │
 ▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼
-Habr      DNSCrypt  JetBrains VPN       Carrier   Forest    MIPT      MIND      MIND      1C
+Habr      DNSCrypt  JetBrains  VPN      Carrier   Forest    MIPT      MIND      MIND      1C
 Articles  (58K)     Academy   Manager   proxy     VPN       Course    Software  Software  Cloud
 │         │
 ▼         ▼

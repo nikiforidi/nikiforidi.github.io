@@ -10,17 +10,17 @@ permalink: /about/philosophy/
 
 I work comfortably across all layers of the stack:
 
-```
-┌─────────────────────────────────────────┐
-│  Application (Go, Python, Vue.js)       │
-│  - REST APIs, CLI clients, Web UI       │
-├─────────────────────────────────────────┤
-│  System (Linux, Docker, systemd)        │
-│  - Daemons, IPC, network tunneling      │
-├─────────────────────────────────────────┤
-│  Kernel (Netfilter, TUN/TAP, POSIX)     │
-│  - Kernel modules, sockets, syscalls    │
-└─────────────────────────────────────────┘
+```text
+┌───────────────────────────────────────────┐
+│  Application (Go, Python, Vue.js)         │
+│  - REST APIs, CLI clients, Web UI         │
+├───────────────────────────────────────────┤
+│  System (Linux, Docker, systemd)          │
+│  - Daemons, IPC, network tunneling        │
+├───────────────────────────────────────────┤
+│  Kernel (Netfilter, TUN/TAP, POSIX)       │
+│  - Kernel modules, sockets, syscalls      │
+└───────────────────────────────────────────┘
 ```
 
 **Example:** VPN Manager project required all three layers:
@@ -70,7 +70,7 @@ I solidify understanding by teaching:
 
 ### 5. Iterate Publicly
 
-```
+```text
 Share Early → Accept Feedback → Improve → Repeat
 ↓              ↓              ↓
 GitHub        Issues, PRs    Real-world usage

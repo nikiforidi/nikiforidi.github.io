@@ -24,28 +24,32 @@ permalink: /specs/jemp/
 
 ### Event-Driven Model
 
-```
-┌─────────────┐         ┌─────────────┐
-│  Job Pool   │◄───────►│  Event Bus  │
-└─────────────┘         └─────────────┘
-│
-┌────────────────────┼────────────────────┐
-▼                    ▼                    ▼
-┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
-│   Heartbeat     │  │   Finished      │  │   Internal      │
-│   Event         │  │   Event         │  │   Event         │
-└─────────────────┘  └─────────────────┘  └─────────────────┘
+The Job Pool maintains all active jobs and communicates with them through the Event Bus. Three event types flow from jobs back to the pool: Heartbeat indicates the job is alive, Finished signals successful completion, and Internal is reserved for system services like the Job Collector. This event-driven approach eliminates the need for constant polling while maintaining full visibility into job state.
+
+```text
+┌─────────────────┐         ┌─────────────────┐
+│    Job Pool     │◀───────▶│    Event Bus    │
+└────────┬────────┘         └─────────────────┘
+         │
+         ├───────────────────┼───────────────────┐
+         ▼                   ▼                   ▼
+┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+│   Heartbeat     │ │   Finished      │ │   Internal      │
+│   Event         │ │   Event         │ │   Event         │
+└─────────────────┘ └─────────────────┘ └─────────────────┘
 ```
 
 ### Job Lifecycle
 
-```
-┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐
-│  Queued │───▶│ Running │───▶│Finished │    │  Lost   │
-└─────────┘    └────┬────┘    └─────────┘    └────▲────┘
-│                              │
-└────── Heartbeat ─────────────┘
-(Timeout → Lost)
+Jobs transition through four states from Queued to Running to Finished. The Lost state is reached when no Heartbeat is received within the configurable timeout threshold. This lifecycle allows the Job Collector to identify and unregister stalled jobs without blocking the execution of healthy ones.
+
+```text
+┌───────────┐     ┌───────────┐     ┌───────────┐     ┌───────────┐
+│  Queued   │────▶│  Running  │────▶│  Finished │     │   Lost    │
+└───────────┘     └─────┬─────┘     └───────────┘     └─────▲─────┘
+                        │                                   │
+                        └───────── Heartbeat ───────────────┘
+                          (Timeout → Lost)
 ```
 
 ---

@@ -24,15 +24,19 @@ permalink: /specs/transactional-models/
 
 ### Model States
 
-```
-┌─────────────┐      ┌─────────────┐      ┌─────────────┐
-│  Prototype  │─────▶│    Base     │─────▶│  Complete   │
-│   Model     │      │   Model     │      │   Model     │
-└─────────────┘      └─────────────┘      └─────────────┘
-│                    │                    │
-▼                    ▼                    ▼
-Source Unit +        User Input          Validation +
-Placement          Customization        Default Values
+The Prototype state is built from Source Unit and Placement data sources, tightly coupling the model to infrastructure specifics. User customization transforms the prototype into the Base state, allowing overrides of default values. The Complete state is reached after Universe validation and enrichment with platform-specific default arguments, making the model ready for deployment.
+
+```text
+┌───────────────┐      ┌───────────────┐      ┌───────────────┐
+│   Prototype   │─────▶│     Base      │─────▶│   Complete    │
+│    Model      │      │    Model      │      │    Model      │
+└───────┬───────┘      └───────┬───────┘      └───────┬───────┘
+        │                      │                      │
+        ▼                      ▼                      ▼
+┌───────────────┐      ┌───────────────┐      ┌───────────────┐
+│ Source Unit + │      │  User Input   │      │  Validation + │
+│  Placement    │      │ Customization │      │ Default Values│
+└───────────────┘      └───────────────┘      └───────────────┘
 ```
 
 ---

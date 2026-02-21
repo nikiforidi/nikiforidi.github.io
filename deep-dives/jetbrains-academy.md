@@ -18,18 +18,32 @@ Educational Python project developed for JetBrains Academy Hyperskill track.
 
 ## Architecture
 
+The translate_word() function handles both interactive mode and command-line arguments. The Reverso Context API is queried via requests.get() with custom User-Agent headers. BeautifulSoup parses the HTML response to extract translations and examples. Results are saved to file ({word}-translation.txt) and printed to console.
+
+```text
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│   User CLI    │────▶│  Translator   │────▶│   Reverso     │
+│   Input       │     │   Logic       │     │   Context     │
+└───────────────┘     └───────┬───────┘     └───────────────┘
+                              │
+                              ▼
+                      ┌───────────────┐
+                      │    hs-test    │
+                      │  (Testing)    │
+                      └───────────────┘
 ```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   User CLI  │────▶│  Translator │────▶│  Reverso    │
-│   Input     │     │   Logic     │     │   Context   │
-└─────────────┘     └─────────────┘     └─────────────┘
-│
-▼
-┌─────────────┐
-│   hs-test   │
-│  (Testing)  │
-└─────────────┘
-```
+
+### Input Modes
+
+| Mode | Trigger | Behavior |
+|------|---------|----------|
+| **Interactive** | No arguments | Prompts for source language, target language, word |
+| **CLI** | 3 arguments | Direct translation: `python translator.py english french word` |
+| **All Languages** | `all` as target | Translates to all 12 supported languages |
+
+### Supported Languages
+
+Arabic, German, English, Spanish, French, Hebrew, Japanese, Dutch, Polish, Portuguese, Romanian, Russian, Turkish (13 total).
 
 ---
 
