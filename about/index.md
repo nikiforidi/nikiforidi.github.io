@@ -8,7 +8,7 @@ permalink: /about/
 
 **Staff Software Engineer / Software Architect**
 
-📍 Moscow, Russia • ✈️ Open to Remote Work
+o Moscow, Russia • ✈ Open to Remote Work
 
 ---
 
