@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,43 +8,49 @@
 </head>
 <body>
   <header class="site-header">
-  <div class="wrapper">
-    
-    <!-- Row 1: Site Title + Mr. House TV -->
-    <div class="header-row ">
-      <div class="header-left">
-        <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-      </div>
-      <div class="header-right">
-        <div class="mr-house-tv crt-block">
-          <canvas id="mr-house-noise"></canvas>
-          <div class="mr-house-overlay"></div>
-          <div class="mr-house-screen">
-            <img src="{{ '/assets/images/mr-house.png' | relative_url }}" alt="Mr. House" class="mr-house-img">
+    <div class="wrapper">
+      <!-- Row 1: Title + TV -->
+      <div class="header-row header-row-1">
+        <div class="header-left">
+          <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+        </div>
+        <div class="header-right">
+          <div class="mr-house-container">
+            <div class="mr-house-tv">
+              <div class="crt-block">
+                <div class="mr-house-screen">
+                  <canvas id="mr-house-noise"></canvas>
+                  <div class="mr-house-overlay"></div>
+                  <img src="{{ '/assets/images/mr-house.png' | relative_url }}" alt="Mr. House" class="mr-house-img">
+                  <div class="mr-house-scanlines"></div>
+                </div>
+              </div>
+            </div>
+            <div class="mr-house-quote">
+              <p id="mr-house-quote-text">"The House always wins."</p>
+            </div>
           </div>
-          <div class="mr-house-scanlines"></div>
         </div>
       </div>
-    </div>
-    
-    <!-- Row 2: Tagline + Mr. House Quote -->
-    <div class="header-row header-row-2">
-      <div class="header-left">
-<nav class="site-nav">
-      {% for path in site.header_pages %}
-        {% assign page = site.pages | where: "path", path | first %}
-        {% if page.title %}
-          <a class="nav-link" href="{{ page.url | relative_url }}">{{ page.title }}</a>
-        {% endif %}
-      {% endfor %}
-    </nav>
+      
+      <!-- Row 2: Tagline + Quote -->
+      <div class="header-row header-row-2">
+        <div class="header-left">
+          <span class="site-tagline">{{ site.description }}</span>
+        </div>
       </div>
-      <div class="header-right">
-        <p class="mr-house-quote" id="mr-house-quote-text">"The House always wins."</p>
-      </div>
+      
+      <!-- Navigation -->
+      <nav class="site-nav">
+        {% for path in site.header_pages %}
+          {% assign page = site.pages | where: "path", path | first %}
+          {% if page.title %}
+            <a class="nav-link" href="{{ page.url | relative_url }}">{{ page.title }}</a>
+          {% endif %}
+        {% endfor %}
+      </nav>
     </div>
-  </div>
-</header>
+  </header>
 
   <main class="page-content" aria-label="Content">
     <div class="wrapper">
@@ -54,11 +60,11 @@
 
   <footer class="site-footer">
     <div class="wrapper">
-      <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}</p>
+      <p>© {{ site.time | date: '%Y' }} {{ site.title }}</p>
     </div>
   </footer>
 
-  <script src="{{ '/assets/js/crt-effect.js' | relative_url }}" defer></script>
-  <script src="{{ '/assets/js/mr-house.js' | relative_url }}" defer></script>
+  <!-- Mr. House TV Script -->
+  <script src="{{ '/assets/js/mr-house.js' | relative_url }}"></script>
 </body>
 </html>
