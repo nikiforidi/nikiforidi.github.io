@@ -1226,3 +1226,277 @@ hr {
     opacity: 0;
   }
 }
+
+/* =============================================================================
+TERMINAL TYPING ANIMATION
+============================================================================= */
+.terminal-container {
+  background: var(--background-alt);
+  border: var(--border);
+  border-radius: 4px;
+  padding: 1.5em;
+  font-family: "Courier New", monospace;
+  font-size: 0.95em;
+  margin: 2em 0;
+  min-height: 150px;
+  max-height: 400px;
+  overflow-y: auto;
+  position: relative;
+
+  // CRT effect overlay
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.15) 50%);
+    background-size: 100% 3px;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+.terminal-line {
+  display: block;
+  margin: 0.5em 0;
+  line-height: 1.6;
+  color: var(--text-color);
+  position: relative;
+  z-index: 2;
+}
+
+.terminal-prompt {
+  color: var(--base-color);
+  font-weight: bold;
+  margin-right: 0.5em;
+
+  &::before {
+    content: "$ ";
+  }
+}
+
+.terminal-output {
+  color: var(--text-color);
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.2em;
+  background-color: var(--base-color);
+  animation: terminal-blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+}
+
+@keyframes terminal-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+// Typing indicator
+.terminal-typing {
+  .terminal-cursor {
+    animation-duration: 0.8s;
+  }
+}
+
+// Command highlights
+.terminal-command {
+  color: var(--code-keyword);
+  font-weight: bold;
+}
+
+.terminal-success {
+  color: #51d88a;
+}
+
+.terminal-error {
+  color: #ff6b6b;
+}
+
+.terminal-info {
+  color: var(--code-function);
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .terminal-container {
+    font-size: 0.85em;
+    padding: 1em;
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .terminal-cursor {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* =============================================================================
+CRT POWER-ON ANIMATION
+============================================================================= */
+.crt-power-on {
+  animation: crt-power-on 1.5s ease-out forwards;
+  position: relative;
+}
+
+@keyframes crt-power-on {
+  0% {
+    opacity: 0;
+    filter: brightness(0) contrast(0) saturate(0) blur(10px);
+    transform: scale(1.1);
+  }
+
+  10% {
+    opacity: 0.3;
+    filter: brightness(3) contrast(2) saturate(1.5) blur(5px);
+  }
+
+  20% {
+    opacity: 0.8;
+    filter: brightness(1.5) contrast(1.3) saturate(1.2) blur(2px);
+  }
+
+  40% {
+    opacity: 1;
+    filter: brightness(1.2) contrast(1.1) saturate(1.1) blur(0);
+    transform: scale(0.98);
+  }
+
+  60% {
+    filter: brightness(1.05) contrast(1.02) saturate(1.02);
+    transform: scale(1.01);
+  }
+
+  80% {
+    filter: brightness(1.02) contrast(1.01) saturate(1.01);
+    transform: scale(0.995);
+  }
+
+  100% {
+    opacity: 1;
+    filter: brightness(1) contrast(1) saturate(1);
+    transform: scale(1);
+  }
+}
+
+/* Subtle power-on for header */
+.crt-power-on-subtle {
+  animation: header-power-on 2s ease-out forwards;
+}
+
+@keyframes header-power-on {
+  0% {
+    opacity: 0;
+    filter: brightness(0) blur(10px);
+    transform: translateY(-10px);
+  }
+
+  50% {
+    opacity: 0.7;
+    filter: brightness(1.2) blur(2px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: brightness(1) blur(0);
+    transform: translateY(0);
+  }
+}
+
+/* Power-on flicker effect for screen content */
+.crt-power-on-flicker {
+  animation: crt-flicker-initial 0.5s ease-out;
+}
+
+@keyframes crt-flicker-initial {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  30% {
+    opacity: 0.4;
+  }
+  40% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  60% {
+    opacity: 1;
+  }
+}
+
+/* Audio visualizer effect (optional - for extra authenticity) */
+@keyframes crt-hum {
+  0%,
+  100% {
+    filter: brightness(1) contrast(1);
+  }
+  50% {
+    filter: brightness(1.02) contrast(1.01);
+  }
+}
+
+.crt-powered-on {
+  animation: crt-hum 4s ease-in-out infinite;
+}
+
+/* Full page boot sequence */
+body.crt-boot-sequence {
+  .page-content {
+    animation: content-power-on 2.5s ease-out forwards;
+    opacity: 0;
+  }
+}
+
+@keyframes content-power-on {
+  0% {
+    opacity: 0;
+    filter: brightness(0) blur(20px);
+    transform: scale(0.95);
+  }
+
+  60% {
+    opacity: 0.8;
+    filter: brightness(1.1) blur(2px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: brightness(1) blur(0);
+    transform: scale(1);
+  }
+}
+
+/* Stagger the content appearance */
+body.crt-boot-sequence {
+  .site-header {
+    animation-delay: 0s;
+  }
+
+  .page-content {
+    animation-delay: 0.5s;
+  }
+
+  .site-footer {
+    animation-delay: 1s;
+  }
+}

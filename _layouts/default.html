@@ -6,7 +6,7 @@
   <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
-<body>
+<body class="crt-boot-sequence">
   <header class="site-header">
     <div class="wrapper">
       <!-- Row 1: Title + TV -->
@@ -66,5 +66,7 @@
 
   <!-- Mr. House TV Script -->
   <script src="{{ '/assets/js/mr-house.js' | relative_url }}"></script>
+  <!-- Terminal Typing Animation -->
+<script src="{{ '/assets/js/terminal.js' | relative_url }}"></script>
 </body>
 </html>
