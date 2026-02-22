@@ -1,6 +1,8 @@
+---
 layout: page
 title: "ForestVPN CLI"
 permalink: /deep-dives/forestvpn-cli/
+---
 
 ## Overview
 
