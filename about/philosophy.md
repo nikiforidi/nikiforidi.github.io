@@ -81,26 +81,6 @@ PyPI          Downloads      anyd 0.4.1
 
 ---
 
-## A Letter to Veteran Engineers
-
-If you're reading this and you remember:
-
-- Editing code in `vi` without syntax highlighting
-- Compiling code overnight and hoping it worked
-- Debugging via print statements and log files
-- Deploying via FTP and holding your breath
-- Reading physical man pages because Stack Overflow didn't exist
-
-...then you understand why **documentation matters**.
-
-This portfolio is my small contribution to keeping that spirit alive—the belief that **engineering is a craft**, not just a job. That systems should be **understandable**, not just functional. That we should **leave things better than we found them**.
-
-Welcome to my corner of the internet. The terminal is always warm, and there's always coffee. ☕
-
-— Anatoly
-
----
-
 ## Related Pages
 
 - [Career Timeline](timeline.md) — See how these principles evolved
