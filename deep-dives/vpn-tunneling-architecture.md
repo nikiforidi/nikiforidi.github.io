@@ -120,17 +120,14 @@ The `vpnmd` daemon exposed privileged network functions via the `anyd` framework
 | **TUN/TAP**         | Proxy per-app        | System-wide tunneling ensures all traffic is protected without per-app config. |
 | **Python**          | Go/C++               | Faster development cycle, rich ecosystem for API/CLI tooling.                  |
 
-## Evolution & Legacy
-
-This architecture served as the proof-of-concept for the subsequent **ForestVPN CLI** (Go-based). Key lessons learned influenced the next generation:
-
-1.  **Daemon Complexity**: The IPC overhead and daemon management proved fragile. The Go version moved to a **single binary** model.
-2.  **Protocol Shift**: Moved from `v2ray` + `tun2socks` to native **WireGuard** for better performance and kernel integration.
-3.  **Language Migration**: Transitioned from Python to **Go** for static binary distribution and improved concurrency.
-
 ---
 
-[vpnm source code](https://github.com/nikiforidi/vpnm)  
-[vpnmd source code](https://github.com/nikiforidi/vpnmd)  
-[anyd PyPI page](https://pypi.org/project/anyd/)  
+## Key Technical Solutions
+
+- **Split-Privilege Architecture:** Isolated privileged network operations (root) from user interaction (user-space) via `anyd` IPC sockets, minimizing the attack surface.
+- **Enforced DNS Encryption:** Redirected all UDP port 53 traffic via `iptables` NAT rules to a local `cloudflared` instance, preventing ISP DNS leakage.
+- **TUN-Based Forwarding:** Captured system-wide traffic using a virtual TUN interface and `tun2socks`, routing it through `v2ray-core` for encryption without per-app configuration.
+- **Idempotent Network Rules:** Implemented safety checks (e.g., `iptables_rule_exists`) to prevent duplicate rule insertion during reconnection attempts.
+
+[vpnm source code](https://github.com/nikiforidi/vpnm) | [vpnmd source code](https://github.com/nikiforidi/vpnmd) | [anyd PyPI page](https://pypi.org/project/anyd/)  
 [← Back to Deep Dives](/deep-dives/)
