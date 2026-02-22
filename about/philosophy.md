@@ -85,7 +85,7 @@ PyPI          Downloads      anyd 0.4.1
 
 If you're reading this and you remember:
 
-- ⌨Editing code in `vi` without syntax highlighting
+- Editing code in `vi` without syntax highlighting
 - Compiling code overnight and hoping it worked
 - Debugging via print statements and log files
 - Deploying via FTP and holding your breath
