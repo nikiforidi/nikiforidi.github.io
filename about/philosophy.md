@@ -24,6 +24,7 @@ I work comfortably across all layers of the stack:
 ```
 
 **Example:** VPN Manager project required all three layers:
+
 - **Kernel:** TUN/TAP interface, Netfilter hooks
 - **System:** vpnmd daemon (root privileges), systemd service
 - **Application:** vpnm CLI (Python), anyd IPC framework
@@ -34,11 +35,11 @@ I work comfortably across all layers of the stack:
 
 Before writing code, I define:
 
-| Question | Example (MHA) |
-|----------|---------------|
-| **Problem** | Detect CIR changes across cloud providers |
-| **Constraints** | Different APIs, vendor-specific fields |
-| **Trade-offs** | Hash collisions vs. comparison speed |
+| Question            | Example (MHA)                                  |
+| ------------------- | ---------------------------------------------- |
+| **Problem**         | Detect CIR changes across cloud providers      |
+| **Constraints**     | Different APIs, vendor-specific fields         |
+| **Trade-offs**      | Hash collisions vs. comparison speed           |
 | **Success Metrics** | 100% change detection, <100ms hash calculation |
 
 **Result:** 5 documented specifications before implementation.
@@ -47,11 +48,11 @@ Before writing code, I define:
 
 ### 3. Verification Over Assumption
 
-| Layer | Tool | Purpose |
-|-------|------|---------|
-| **Input** | Universe Validation Stack | Validate Unified Models |
-| **Output** | Prometheus, Grafana | Monitor system behavior |
-| **Behavior** | Notion specs, Habr articles | Document decisions |
+| Layer        | Tool                        | Purpose                 |
+| ------------ | --------------------------- | ----------------------- |
+| **Input**    | Universe Validation Stack   | Validate Unified Models |
+| **Output**   | Prometheus, Grafana         | Monitor system behavior |
+| **Behavior** | Notion specs, Habr articles | Document decisions      |
 
 ---
 
@@ -59,12 +60,12 @@ Before writing code, I define:
 
 I solidify understanding by teaching:
 
-| Platform | Output | Impact |
-|----------|--------|--------|
-| **MIPT** | 11 Go lectures | 100+ students |
+| Platform              | Output                                        | Impact                                    |
+| --------------------- | --------------------------------------------- | ----------------------------------------- |
+| **MIPT**              | 11 Go lectures                                | 100+ students                             |
 | **JetBrains Academy** | Python Core project (Multilingual Translator) | Educational resource for Hyperskill track |
-| **Habr** | 9 articles | 237K views, 13K karma |
-| **Open Source** | 6 projects | 1,756 GitHub contributions |
+| **Habr**              | 9 articles                                    | 237K views, 13K karma                     |
+| **Open Source**       | 6 projects                                    | 1,756 GitHub contributions                |
 
 ---
 
@@ -84,11 +85,11 @@ PyPI          Downloads      anyd 0.4.1
 
 If you're reading this and you remember:
 
-- ⌨️ Editing code in `vi` without syntax highlighting
-- 💾 Compiling code overnight and hoping it worked
-- 📠 Debugging via print statements and log files
-- 🌐 Deploying via FTP and holding your breath
-- 📚 Reading physical man pages because Stack Overflow didn't exist
+- ⌨Editing code in `vi` without syntax highlighting
+- Compiling code overnight and hoping it worked
+- Debugging via print statements and log files
+- Deploying via FTP and holding your breath
+- Reading physical man pages because Stack Overflow didn't exist
 
 ...then you understand why **documentation matters**.
 
