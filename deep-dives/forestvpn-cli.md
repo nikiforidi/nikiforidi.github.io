@@ -20,50 +20,115 @@ A cross-platform VPN CLI client engineered for Linux, OpenWRT, macOS, and Window
 
 ## Architecture & Design
 
-The CLI is structured around a modular package design that separates high-level actions from low-level system interactions. The core logic resides in the `actions` package, which orchestrates WireGuard connections through a unified `State` structure.
+The CLI is structured around a modular package design that separates high-level actions from low-level system interactions.
 
-### Core Package Structure
+### Package Structure
 
-- **`actions`**: Contains high-level command implementations using `urfave/cli v2`. This package manages the connection lifecycle.
-- **`api`**: Wraps the `wgrest` API client for server communication.
-- **`auth`**: Handles Firebase REST API authentication and profile management.
-- **`cmd`**: The application entry point.
-- **`utils`**: Provides cross-platform helper functions for OS detection and system commands.
+```text
+┌────────────────────────────────────────────────────────────┐
+│                         cmd (Entry Point)                  │
+│                         main.go                            │
+└─────────────────────────┬──────────────────────────────────┘
+                          │
+                          ▼
+┌────────────────────────────────────────────────────────────┐
+│                      actions (Core Logic)                  │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   State      │  │   Connect    │  │  Disconnect  │      │
+│  │  Structure   │  │   Command    │  │   Command    │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────┬────────────────────┬────────────────┬────────────┘
+          │                    │                │
+          ▼                    ▼                ▼
+┌─────────────┐      ┌─────────────┐  ┌─────────────────────┐
+│    auth     │      │     api     │  │       utils         │
+│  (Firebase) │      │   (wgrest)  │  │  (OS Detection)     │
+└─────────────┘      └─────────────┘  └─────────────────────┘
+```
 
-### Connection State Management
+### State Management Logic (`state.go`)
 
-The heart of the CLI is the `State` struct within the `actions` package. It abstracts the complexities of managing WireGuard interfaces across disparate operating systems.
+The `State` struct abstracts WireGuard interface management. It employs runtime OS detection to branch logic into three distinct execution paths.
 
-**Platform Abstraction Strategy**
-The `State` struct employs runtime OS detection to branch logic into three distinct execution paths:
+**Struct Definition**
 
-1.  **Windows**: Interacts directly with the WireGuard NT service using `wireguard.exe` commands (`/installtunnelservice`, `/uninstalltunnelservice`).
-2.  **OpenWRT**: Utilizes `uci` commands for network configuration. It includes specialized logic for firewall management, SSH client exclusion, and persistent routing rules tailored for embedded environments.
-3.  **Linux/macOS**: Leverages standard `wg-quick` utilities for interface management, IP assignment, and routing.
+```text
+┌─────────────────────────────────────────────────────────────────┐
+│                      actions.State                              │
+├─────────────────────────────────────────────────────────────────┤
+│  Fields:                                                        │
+│  • status              (bool)                                   │
+│  • WireGuardInterface  (string)                                 │
+├─────────────────────────────────────────────────────────────────┤
+│  Methods:                                                       │
+│  • GetStatus()         → Checks wg show / uci show              │
+│  • SetUp()             → Establishes connection (See Flow)      │
+│  • SetDown()           → Terminates connection                  │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-**Key Implementation Details (`state.go`)**
+**Connection Flow (SetUp Method)**
 
-- **Status Polling**: The `GetStatus` method deprecated direct shell parsing in favor of API-driven status checks, though legacy support remains via `wg show` or `uci show` depending on the platform.
-- **Connection Setup**: The `SetUp` method handles profile loading from the `auth` package. It dynamically constructs IP routes and assigns IPv4/IPv6 addresses. On OpenWRT, it specifically manages peer endpoints and allowed IPs based on active SSH clients to prevent lockouts.
-- **Teardown**: The `SetDown` method ensures clean removal of interfaces and routes, committing UCI changes on OpenWRT or uninstalling services on Windows.
+```text
+      ┌──────────────┐
+      │  User Input  │ (Profile ID, Persist Flag)
+      └──────┬───────┘
+             ▼
+      ┌──────────────┐
+      │ Load Profile │ (auth.LoadDevice)
+      └──────┬───────┘
+             ▼
+      ┌───────────────┐
+      │ OS Detection  │ (utils.Os / IsOpenWRT)
+      └───────┬───────┘
+              │
+     ┌────────┼───────┬────────────────────────┐
+     ▼        │       ▼                        ▼
+┌──────────┐  │  ┌────────────────┐      ┌──────────────┐
+│ Windows  │  │  │   OpenWRT      │      │ Linux/macOS  │
+│          │  │  │                │      │              │
+│ wireguard│  │  │ persist?       │      │ wg-quick     │
+│ .exe     │  │  │                │      │ up           │
+│ install  │  │  │ Yes → uci      │      │              │
+│ service  │  │  │       utils    │      └──────────────┘
+└──────────┘  │  │       .Network │
+              │  │                │
+              │  │ No  → ip link. │
+              │  │       wg set   │
+              │  │       conf     │
+              │  └────────────────┘
+              │
+      ┌───────┴───────┬────────────────────────┐
+      ▼               ▼                        ▼
+┌──────────┐  ┌──────────────┐      ┌──────────────┐
+│ Windows  │  │   OpenWRT    │      │ Linux/macOS  │
+│          │  │              │      │              │
+│ wireguard│  │ uci delete   │      │ wg-quick     │
+│ .exe     │  │ network.wg   │      │ down         │
+│ uninstall│  │ commit       │      │              │
+│ service  │  │              │      │              │
+└──────────┘  └──────────────┘      └──────────────┘
+```
+
+**Key Implementation Details**
+
+- **Status Polling**: `GetStatus` originally parsed shell output (`wg show`), deprecated in favor of API-driven checks.
+- **OpenWRT Persistence**: The `persist` flag determines whether to use UCI for permanent configuration (including firewall rules) or transient `ip` commands.
+- **SSH Safety**: On OpenWRT, active SSH client IPs are excluded from the VPN tunnel to prevent lockouts.
 
 ## Distribution Strategy
 
-The project supports a wide matrix of package managers to ensure seamless installation across target environments:
-
-- **macOS**: Distributed via Homebrew (stable and beta taps).
-- **Windows**: Available through Chocolatey community repositories.
-- **Linux**: Provided as `.deb` (Debian/Ubuntu), `.rpm` (Fedora), and `.apk` (Alpine) packages via GitHub Releases.
-- **Embedded**: OpenWRT targets receive `.ipk` packages directly from releases.
+- **macOS**: Homebrew (stable and beta taps).
+- **Windows**: Chocolatey community repositories.
+- **Linux**: `.deb` (Debian/Ubuntu), `.rpm` (Fedora), `.apk` (Alpine).
+- **Embedded**: OpenWRT `.ipk` packages.
 
 ## CI/CD Pipeline
 
-Automation was built to support high-frequency release cycles (116 releases in ~1 year).
-
-- **Build Automation**: Drone CI handles automated building across multiple architectures.
-- **Release Management**: GoReleaser manages versioning, changelog generation, and artifact packaging for both stable and beta channels.
-- **Observability**: Sentry is integrated for real-time error tracking and crash reporting.
-- **Delivery**: Artifacts are continuously delivered to GitHub Releases and associated package repositories.
+- **Build Automation**: Drone CI (multi-architecture).
+- **Release Management**: GoReleaser (versioning, changelogs, artifacts).
+- **Observability**: Sentry (error tracking).
+- **Delivery**: GitHub Releases & Package Repositories.
 
 ---
 

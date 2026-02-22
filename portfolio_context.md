@@ -1,5 +1,5 @@
 title: Portfolio Context Export
-generated: 2026-02-21 06:30:00
+generated: 2026-02-22 02:21:23
 format: Markdown
 scope: .md files only
 Portfolio Context Export
@@ -61,7 +61,6 @@ permalink: /about/communities/
 ---
 
 [← Back to About](/about/)
-
 File: `about/contact.md`
 ---
 layout: page
@@ -100,7 +99,6 @@ permalink: /about/contact/
 ---
 
 [← Back to About](/about/)
-
 File: `about/index.md`
 ---
 layout: page
@@ -112,7 +110,7 @@ permalink: /about/
 
 **Staff Software Engineer / Software Architect**
 
-📍 Moscow, Russia • ✈️ Open to Remote Work
+o Moscow, Russia • ✈ Open to Remote Work
 
 ---
 
@@ -168,7 +166,6 @@ Staff Software Engineer / Software Architect with **5+ years** of professional e
 ---
 
 **Last Updated:** February 2026
-
 File: `about/philosophy.md`
 ---
 layout: page
@@ -281,7 +278,6 @@ Welcome to my corner of the internet. The terminal is always warm, and there's a
 ---
 
 [← Back to About](/about/)
-
 File: `about/timeline.md`
 ---
 layout: page
@@ -340,7 +336,6 @@ Course      Validation Stack
 ---
 
 [← Back to About](/about/)
-
 File: `deep-dives/anyd-daemon-framework.md`
 ---
 layout: page
@@ -390,6 +385,8 @@ This pattern applies to **unlimited possibilities**:
 
 ### Component Model
 
+The Appd class inherits from multiprocessing.connection.Listener and runs the server loop. API methods are registered via the @api decorator and stored in the _api dictionary. The server accepts client connections and processes requests in a request/response loop. Sessions terminate cleanly via the SIGENDS byte signal protocol.
+
 ```text
 ┌───────────────────────────────────────────────────────────────┐
 │                       anyd Framework                          │
@@ -404,6 +401,8 @@ This pattern applies to **unlimited possibilities**:
 ```
 
 ### Communication Flow
+
+The Client wraps multiprocessing.connection.Client and forms requests as tuples. The commit() method sends the request and receives the response from the server. Server exceptions propagate to the client without crashing the daemon. The ClientSession context manager ensures automatic cleanup via end_session() on exit.
 
 ```text
 ┌───────────────┐                         ┌───────────────┐
@@ -455,6 +454,73 @@ with ClientSession(address=("localhost", 3000), authkey=b"secret") as client:
 
 [See full implementation](/deep-dives/vpn-tunneling-architecture/)
 
+### Example 2: Secure Secrets Vault (Conceptual)
+
+**Context:** Store encryption keys in memory (root-protected), allow CLI to request decryption without exposing keys.
+
+**Benefit:** Keys never leave the daemon process. Client only sees decrypted data.
+
+```python
+# Server: VaultD (Root privileges, holds secrets in memory)
+class VaultD(Appd):
+    _secrets = {"api_key": "super_secret_123"}
+    
+    @Appd.api
+    def decrypt(self, resource: str) -> str:
+        # Privileged: Access protected memory
+        if resource not in self._secrets:
+            raise ValueError("Resource not found")
+        return self._secrets[resource]
+    
+    @Appd.api
+    def rotate(self, resource: str, new_value: str) -> dict:
+        # Privileged: Update secrets securely
+        self._secrets[resource] = new_value
+        return {"status": "rotated"}
+
+# Client: CLI (User privileges, never sees raw keys)
+with ClientSession(address=("localhost", 3000), authkey=b"vault_key") as client:
+    # Request decryption without accessing key directly
+    api_key = client.commit("decrypt", "api_key")
+    print(f"Using key: {api_key[:4]}...")  # Only use, don't store
+    
+    # Request rotation
+    client.commit("rotate", "api_key", "new_secret_456")
+```
+
+**Security Model:**
+- Keys stored only in daemon memory (not on disk)
+- Client authenticates via `authkey`
+- Client cannot dump daemon memory (process isolation)
+- All operations logged by daemon
+
+### Example 3: System Administration Toolkit (Conceptual)
+
+**Context:** Allow developers to restart services without giving them full `sudo` access.
+
+**Benefit:** Granular control over privileged operations.
+
+```python
+# Server: SysAdminD (Root privileges)
+class SysAdminD(Appd):
+    @Appd.api
+    def restart_service(self, service_name: str) -> dict:
+        # Privileged: systemctl restart
+        allowed = ["nginx", "postgresql", "redis"]
+        if service_name not in allowed:
+            raise PermissionError(f"{service_name} not allowed")
+        # subprocess.run(["systemctl", "restart", service_name])
+        return {"status": "restarted"}
+
+# Client: Dev CLI (User privileges)
+with ClientSession(address=("localhost", 3000), authkey=b"admin_key") as client:
+    # Safe: Only allowed services can be restarted
+    client.commit("restart_service", "nginx")
+    
+    # Blocked: Raises PermissionError from server
+    client.commit("restart_service", "ssh")
+```
+
 ---
 
 ## Key Design Decisions
@@ -467,6 +533,43 @@ with ClientSession(address=("localhost", 3000), authkey=b"secret") as client:
 | **Exception propagation** | Error codes | Client sees actual exceptions, daemon stays up |
 | **Context manager** | Manual connect/close | Automatic cleanup, prevents resource leaks |
 | **SIGENDS protocol** | TCP FIN | Explicit session termination signal |
+
+---
+
+## Core Components
+
+### Appd (Server)
+
+| Feature | Description |
+|---------|-------------|
+| **Inheritance** | multiprocessing.connection.Listener |
+| **API Registry** | _api dictionary stores decorated methods |
+| **Request Format** | (endpoint, args, kwargs) tuple |
+| **Response** | Any Python object or Exception |
+| **Session Close** | SIGENDS byte signal |
+| **Logging** | Connection, request, response events |
+
+### Client (via ClientSession)
+
+| Feature | Description |
+|---------|-------------|
+| **Wrapper** | multiprocessing.connection.Client |
+| **Method** | commit(endpoint, *args, **kwargs) |
+| **Exception Handling** | Re-raises server exceptions locally |
+| **Session Management** | Context manager (with statement) |
+| **Cleanup** | Automatic end_session() on exit |
+
+---
+
+## Security Model
+
+| Layer | Mechanism | Purpose |
+|-------|-----------|---------|
+| **Authentication** | authkey (bytes) | Prevent unauthorized connections |
+| **Transport** | TCP/Unix sockets | Local IPC only (localhost) |
+| **Serialization** | Pickle | Python-native, but trusted environment only |
+| **Session** | SIGENDS signal | Clean connection termination |
+| **Isolation** | Process boundary | Memory separation between client/server |
 
 ---
 
@@ -483,6 +586,31 @@ with ClientSession(address=("localhost", 3000), authkey=b"secret") as client:
 
 ---
 
+## Trade-offs
+
+| Trade-off | Impact |
+|-----------|--------|
+| **Pickle serialization** | Fast, but security risk if exposed to untrusted clients |
+| **multiprocessing.connection** | Simple, but limited to local IPC |
+| **Exception propagation** | Debugging friendly, but leaks implementation details |
+| **Single-threaded server** | Simple, but blocks on long-running operations |
+
+---
+
+## Why anyd? Universal Possibilities
+
+The beauty of anyd lies in its agnosticism:
+
+- **Logic-Agnostic:** The framework doesn't care what your daemon does. VPN, secrets, hardware, databases — any privileged operation works.
+- **Security-First:** Built-in authentication (`authkey`) and process isolation ensure clients can't escalate privileges beyond the API surface.
+- **Developer-Friendly:** Pythonic decorators (`@api`), context managers (`with ClientSession`), and exception propagation make it intuitive.
+- **Zero Dependencies:** Uses Python stdlib only (`multiprocessing.connection`), making it portable and easy to audit.
+- **Extensible:** Add logging, monitoring, rate-limiting — the framework doesn't constrain your architecture.
+
+anyd proves that privilege separation doesn't have to be complex. With ~200 lines of code, you can build secure, isolated daemons for unlimited use cases.
+
+---
+
 ## See Also
 
 - [Full source code](https://github.com/anatolio-deb/anyd)
@@ -492,246 +620,914 @@ with ClientSession(address=("localhost", 3000), authkey=b"secret") as client:
 ---
 
 [← Back to Deep Dives](/deep-dives/)
-
-File: `specs/mha.md`
+File: `deep-dives/forestvpn-cli.md`
 ---
 layout: page
-title: Model Hashing Algorithm (MHA)
-permalink: /specs/mha/
----
-
-## Full Specification
-
-📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Model-Hashing-Algorithm-MHA-e725fd99f9d74481965cb542c1727d0e)
-
+title: "ForestVPN CLI"
+permalink: /deep-dives/forestvpn-cli/
 ---
 
 ## Overview
 
-**Purpose:** Detect changes between cloud infrastructure resource (CIR) database records and actual state on cloud provider sites.
+A cross-platform VPN CLI client engineered for Linux, OpenWRT, macOS, and Windows. As the Go Technical Lead, I drove the architecture and release cycle from May 2022 to April 2023.
 
-**Context:** MIND Universe DRUID action stack (Refresh, Update actions).
+**Project Metrics**
+
+- **Commits:** 792
+- **Releases:** 116 (Latest: v0.3.5)
+- **Contributors:** 5
+- **Primary Language:** Go (82.8%)
+- **License:** MIT
+
+[Repository](https://github.com/forestvpn/cli) | [Homebrew Stable](https://github.com/forestvpn/homebrew-stable) | [Chocolatey](https://community.chocolatey.org/packages/fvpn)
+
+## Architecture & Design
+
+The CLI is structured around a modular package design that separates high-level actions from low-level system interactions.
+
+### Package Structure
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│                         cmd (Entry Point)                  │
+│                         main.go                            │
+└─────────────────────────┬──────────────────────────────────┘
+                          │
+                          ▼
+┌────────────────────────────────────────────────────────────┐
+│                      actions (Core Logic)                  │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   State      │  │   Connect    │  │  Disconnect  │      │
+│  │  Structure   │  │   Command    │  │   Command    │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└─────────┬────────────────────┬────────────────┬────────────┘
+          │                    │                │
+          ▼                    ▼                ▼
+┌─────────────┐      ┌─────────────┐  ┌─────────────────────┐
+│    auth     │      │     api     │  │       utils         │
+│  (Firebase) │      │   (wgrest)  │  │  (OS Detection)     │
+└─────────────┘      └─────────────┘  └─────────────────────┘
+```
+
+### State Management Logic (`state.go`)
+
+The `State` struct abstracts WireGuard interface management. It employs runtime OS detection to branch logic into three distinct execution paths.
+
+**Struct Definition**
+
+```text
+┌─────────────────────────────────────────────────────────────────┐
+│                      actions.State                              │
+├─────────────────────────────────────────────────────────────────┤
+│  Fields:                                                        │
+│  • status              (bool)                                   │
+│  • WireGuardInterface  (string)                                 │
+├─────────────────────────────────────────────────────────────────┤
+│  Methods:                                                       │
+│  • GetStatus()         → Checks wg show / uci show              │
+│  • SetUp()             → Establishes connection (See Flow)      │
+│  • SetDown()           → Terminates connection                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Connection Flow (SetUp Method)**
+
+```text
+      ┌──────────────┐
+      │  User Input  │ (Profile ID, Persist Flag)
+      └──────┬───────┘
+             ▼
+      ┌──────────────┐
+      │ Load Profile │ (auth.LoadDevice)
+      └──────┬───────┘
+             ▼
+      ┌───────────────┐
+      │ OS Detection  │ (utils.Os / IsOpenWRT)
+      └───────┬───────┘
+              │
+     ┌────────┼───────┬────────────────────────┐
+     ▼        │       ▼                        ▼
+┌──────────┐  │  ┌────────────────┐      ┌──────────────┐
+│ Windows  │  │  │   OpenWRT      │      │ Linux/macOS  │
+│          │  │  │                │      │              │
+│ wireguard│  │  │ persist?       │      │ wg-quick     │
+│ .exe     │  │  │                │      │ up           │
+│ install  │  │  │ Yes → uci      │      │              │
+│ service  │  │  │       utils    │      └──────────────┘
+└──────────┘  │  │       .Network │
+              │  │                │
+              │  │ No  → ip link. │
+              │  │       wg set   │
+              │  │       conf     │
+              │  └────────────────┘
+              │
+      ┌───────┴───────┬────────────────────────┐
+      ▼               ▼                        ▼
+┌──────────┐  ┌──────────────┐      ┌──────────────┐
+│ Windows  │  │   OpenWRT    │      │ Linux/macOS  │
+│          │  │              │      │              │
+│ wireguard│  │ uci delete   │      │ wg-quick     │
+│ .exe     │  │ network.wg   │      │ down         │
+│ uninstall│  │ commit       │      │              │
+│ service  │  │              │      │              │
+└──────────┘  └──────────────┘      └──────────────┘
+```
+
+**Key Implementation Details**
+
+- **Status Polling**: `GetStatus` originally parsed shell output (`wg show`), deprecated in favor of API-driven checks.
+- **OpenWRT Persistence**: The `persist` flag determines whether to use UCI for permanent configuration (including firewall rules) or transient `ip` commands.
+- **SSH Safety**: On OpenWRT, active SSH client IPs are excluded from the VPN tunnel to prevent lockouts.
+
+## Distribution Strategy
+
+- **macOS**: Homebrew (stable and beta taps).
+- **Windows**: Chocolatey community repositories.
+- **Linux**: `.deb` (Debian/Ubuntu), `.rpm` (Fedora), `.apk` (Alpine).
+- **Embedded**: OpenWRT `.ipk` packages.
+
+## CI/CD Pipeline
+
+- **Build Automation**: Drone CI (multi-architecture).
+- **Release Management**: GoReleaser (versioning, changelogs, artifacts).
+- **Observability**: Sentry (error tracking).
+- **Delivery**: GitHub Releases & Package Repositories.
+
+---
+
+[Full source code](https://github.com/forestvpn/cli)  
+[← Back to Deep Dives](/deep-dives/)
+
+File: `deep-dives/index.md`
+---
+layout: page
+title: Deep Dives
+permalink: /deep-dives/
+---
+
+## Technical Deep Dives
+
+Detailed architectural breakdowns of key projects with links to source code and external resources.
+
+---
+
+## Available Deep Dives
+
+| Project | Description | Links |
+|---------|-------------|-------|
+| [anyd Daemon Framework](anyd-daemon-framework/) | Unix daemon IPC framework | [PyPI](https://pypi.org/project/anyd/), [GitHub](https://github.com/anatolio-deb/anyd) |
+| [VPN Tunneling Architecture](vpn-tunneling-architecture/) | Linux VPN client with TUN/TAP | [vpnm](https://github.com/nikiforidi/vpnm), [vpnmd](https://github.com/nikiforidi/vpnmd) |
+| [ForestVPN CLI](forestvpn-cli/) | Cross-platform VPN client | [GitHub](https://github.com/forestvpn/cli) |
+| [JetBrains Academy](jetbrains-academy/) | Python educational project | [Hyperskill](https://hyperskill.org/projects/99) |
+| [MIND Universe](mind-universe/) | Cloud infrastructure management | [Specs](/specs/) |
+
+---
+
+[← Back to Home](/)
+File: `deep-dives/jetbrains-academy.md`
+---
+layout: page
+title: "JetBrains Academy: Multilingual Translator"
+permalink: /deep-dives/jetbrains-academy/
+---
+
+## Overview
+
+Educational Python project developed for JetBrains Academy Hyperskill track.
+
+- **Period:** October 2019 — March 2020
+- **Role:** Python Software Engineer
+- **Project:** [Multilingual Online Translator](https://github.com/anatolio-deb/Multilingual-online-translator)
+- **Platform:** [Hyperskill Project #99](https://hyperskill.org/projects/99)
+- **Track:** Python Core
 
 ---
 
 ## Architecture
 
-### Nested Hashing Model
+The translate_word() function handles both interactive mode and command-line arguments. The Reverso Context API is queried via requests.get() with custom User-Agent headers. BeautifulSoup parses the HTML response to extract translations and examples. Results are saved to file ({word}-translation.txt) and printed to console.
 
 ```text
-┌───────────────────────────────────────────────────────────────┐
-│                      Virtual Machine                          │
-├───────────────┬───────────────┬───────────────┬───────────────┤
-│     CPU       │     RAM       │    Disks      │   OS / ID     │
-│    (hash)     │    (hash)     │    (hash)     │    (hash)     │
-└───────────────┴───────────────┴───────────────┴───────────────┘
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│   User CLI    │────▶│  Translator   │────▶│   Reverso     │
+│   Input       │     │   Logic       │     │   Context     │
+└───────────────┘     └───────┬───────┘     └───────────────┘
                               │
                               ▼
-                     ┌───────────────────────┐
-                     │   Combined VM Hash    │
-                     └───────────────────────┘
+                      ┌───────────────┐
+                      │    hs-test    │
+                      │  (Testing)    │
+                      └───────────────┘
 ```
 
-### Bidirectional Comparison
+### Input Modes
 
-```text
-┌──────────────────┐              ┌──────────────────┐
-│  Unified Model   │              │      Facts       │
-│   (DB Record)    │              │  (Cloud API)     │
-├──────────────────┤              ├──────────────────┤
-│  MHA Hash Calc   │              │  MHA Hash Calc   │
-└────────┬─────────┘              └────────┬─────────┘
-         │                                 │
-         └───────────────┬─────────────────┘
-                         ▼
-                 ┌─────────────────┐
-                 │   Hash Compare  │
-                 │  (Change Detect)│
-                 └─────────────────┘
-```
+| Mode | Trigger | Behavior |
+|------|---------|----------|
+| **Interactive** | No arguments | Prompts for source language, target language, word |
+| **CLI** | 3 arguments | Direct translation: `python translator.py english french word` |
+| **All Languages** | `all` as target | Translates to all 12 supported languages |
+
+### Supported Languages
+
+Arabic, German, English, Spanish, French, Hebrew, Japanese, Dutch, Polish, Portuguese, Romanian, Russian, Turkish (13 total).
 
 ---
 
-## Key Design Decisions
+## Key Features
 
-| Decision | Alternative | Rationale |
-|----------|-------------|-----------|
-| **Nested Hashing** | Flat hash | Component-level change detection |
-| **Bidirectional** | One-way comparison | Same algorithm for DB + API |
-| **Common Components Only** | All fields | Cross-cloud compatibility |
+- Translate text between multiple languages
+- Built on Reverso Context API
+- Covered with `hs-test` framework tests
+- English documentation included
 
 ---
 
-## Metrics
+## Teaching Impact
 
 | Metric | Value |
 |--------|-------|
-| **Hash Calculation Time** | <100ms per CIR |
-| **Change Detection Accuracy** | 100% |
-| **Supported CIR Types** | VM, Network, Storage |
-| **Cloud Providers** | VMware, OpenStack, oVirt, SpaceVM |
+| **Project Page** | [hyperskill.org/projects/99](https://hyperskill.org/projects/99) |
+| **GitHub** | [github.com/anatolio-deb/Multilingual-online-translator](https://github.com/anatolio-deb/Multilingual-online-translator) |
+| **Purpose** | Educational resource for Python learners |
+| **Track** | Python Core |
 
 ---
 
-## Related Specifications
+## Skills Applied
 
-- [SSA](/specs/ssa/) — Sequence ordering for model processing
-- [JEMP](/specs/jemp/) — Job concurrency model
-- [Validation Stack](/specs/validation-stack/) — Input validation
-- [Transactional Models](/specs/transactional-models/) — VM deployment states
+- Python
+- Git
+- Software Testing (hs-test framework)
+- API Integration (Reverso Context)
+- Technical Documentation (English)
 
 ---
 
-[← Back to Specifications](/specs/)
-
-File: `specs/ssa.md`
+[← Back to Deep Dives](/deep-dives/)
+File: `deep-dives/mind-universe.md`
 ---
 layout: page
-title: Sequence Sorting Algorithm (SSA)
-permalink: /specs/ssa/
----
-
-## Full Specification
-
-📎 [**View on Notion →**](https://www.notion.so/Sequence-Sorting-Algorithm-SSA-44f828765101456d9ed1a3b6898088a1)
-
+title: "MIND Universe"
+permalink: /deep-dives/mind-universe/
 ---
 
 ## Overview
 
-**Purpose:** Sort Go map integer keys in ascending order with zero key last: `[1, 2, 4, 7, 0]`
+Cloud infrastructure management platform developed at MIND Software (2023-2025).
 
-**Context:** Sequential Model Processing (SMP) in MIND Universe DRUID API.
+**Period:** February 2023 — February 2025
 
-**Problem:** Go maps are unordered; we need deterministic iteration with zero-last semantics.
+**Role:** Lead Backend Developer / Chief Developer
 
 ---
 
-## Architecture
+## DRUID API
 
-### Algorithm Flow
+CRUD-like operations for cloud infrastructure resources (CIR):
+
+| Acronym | Action | Description |
+|---------|--------|-------------|
+| **D** | Deploy | Create new CIR |
+| **R** | Refresh | Sync CIR state from provider |
+| **U** | Update | Modify CIR configuration |
+| **I** | Import | Import existing CIR into Universe |
+| **D** | Destroy | Delete CIR |
+
+---
+
+## Architecture Specifications
+
+| Specification | Purpose | Link |
+|--------------|---------|------|
+| [MHA](/specs/mha/) | Model Hashing Algorithm — CIR change detection | Nested hashing, bidirectional comparison |
+| [SSA](/specs/ssa/) | Sequence Sorting Algorithm — Go map ordering | Zero-last semantics, 116ms benchmark |
+| [JEMP](/specs/jemp/) | Job Event Messaging Protocol — Concurrency model | Heartbeat events, Job Collector |
+| [Validation Stack](/specs/validation-stack/) | Unified Model validation layer | FILO execution, strict/tolerant modes |
+| [Transactional Models](/specs/transactional-models/) | VM deployment transaction process | Prototype → Base → Complete states |
+
+---
+
+## Supported Providers
+
+| Provider | Status |
+|----------|--------|
+| VMware | [✓] Implemented |
+| OpenStack | [✓] Implemented |
+| oVirt | [✓] Implemented |
+| SpaceVM | [✓] Implemented |
+
+---
+
+## Technologies
+
+- **Languages:** Go
+- **Message Queue:** RabbitMQ
+- **Database:** PostgreSQL
+- **APIs:** REST, SOAP
+- **OS:** Linux
+
+---
+
+## See Also
+
+- [Full Specifications](/specs/)
+
+---
+
+[← Back to Deep Dives](/deep-dives/)
+File: `deep-dives/vpn-tunneling-architecture.md`
+---
+layout: page
+title: "VPN Tunneling Architecture"
+permalink: /deep-dives/vpn-tunneling-architecture/
+---
+
+## Overview
+
+A Linux VPN client architecture developed during the VPN Manager tenure (2020-2021). This project established the foundational networking logic later refined in the Go-based ForestVPN CLI. It utilized a split-privilege model with a user-space CLI and a root daemon communicating via IPC.
+
+**Project Metrics**
+
+- **Period:** 2020 — 2021
+- **Role:** Python Developer & Network Engineer
+- **Primary Language:** Python
+- **Key Frameworks:** Click, Anyd, Requests
+
+[vpnm CLI](https://github.com/nikiforidi/vpnm) | [vpnmd Daemon](https://github.com/nikiforidi/vpnmd) | [anyd Framework](https://pypi.org/project/anyd/)
+
+## Architecture Diagram
+
+The system employed a client-daemon model. The `vpnm` CLI ran as a standard user, while `vpnmd` ran as root to handle privileged network operations. Traffic was routed through a TUN device managed by `tun2socks`, encrypted by `v2ray-core`, and resolved via `cloudflared` (DoH).
 
 ```text
-┌───────────────────┐
-│   Input Map       │
-│ {0:1, 2:3, 4:5}   │
-└─────────┬─────────┘
-          │
-          ▼
-┌───────────────────┐
-│  Extract Keys     │
-│   [0, 2, 4]       │
-└─────────┬─────────┘
-          │
-          ▼
-┌───────────────────┐
-│  Sort + Zero      │
-│   Last Logic      │
-└─────────┬─────────┘
-          │
-          ▼
-┌───────────────────┐
-│  Output Slice     │
-│   [2, 4, 0]       │
-└───────────────────┘
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│   vpnm CLI    │────▶│   vpnmd       │────▶│  anyd IPC     │
+│   (User)      │     │   (Root)      │     │  (Sockets)    │
+│   Click       │     │   Anyd        │     │  localhost:   │
+│               │     │               │     │  6554         │
+└───────┬───────┘     └───────┬───────┘     └───────┬───────┘
+        │                     │                     │
+        │                     ▼                     ▼
+        │            ┌─────────────────────────────────────┐
+        │            │        Privileged Operations        │
+        │            │  • iptables (DNS Redirect)          │
+        │            │  • ip tuntap (Interface Mgmt)       │
+        │            │  • ip route (Routing Table)         │
+        │            └─────────────────────────────────────┘
+        │
+        ▼
+┌───────────────────────────────────────────────────────────┐
+│                    Tunneling Stack                        │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
+│  │  cloudflared │  │  tun2socks   │  │  v2ray-core  │     │
+│  │    (DoH)     │  │   (TUN)      │  │   (Proxy)    │     │
+│  └──────────────┘  └──────────────┘  └──────────────┘     │
+└───────────────────────────────────────────────────────────┘
 ```
+
+## Component Details
+
+### CLI Interface (`app.py`)
+
+Built with the `click` framework, the CLI handled user interaction, authentication, and high-level commands. It communicated with the daemon via `vpnmd_api`.
+
+**Available Commands**
+| Command | Description | Key Options |
+| :--- | :--- | :--- |
+| `login` | Authenticate with VPN Manager API | `--email`, `--password` |
+| `status` | Check active connection status | None |
+| `account` | Display account info (balance, traffic) | None |
+| `connect` | Establish VPN tunnel | `--best`, `--random` |
+| `disconnect` | Terminate VPN tunnel | `--force` |
+| `logout` | Clear local authentication secret | None |
+
+**Authentication Flow**
+
+1.  User credentials validated against `VPNM_API_URL`.
+2.  JWT/Token stored in local `SECRET` file (JSON).
+3.  Subsequent commands read token for API authentication.
+
+### Daemon IPC Interface (`appd.py`)
+
+The `vpnmd` daemon exposed privileged network functions via the `anyd` framework over localhost sockets. This prevented the need for `sudo` on every CLI command.
+
+**Exposed IPC Methods**
+
+```python
+┌─────────────────────────────────────────────────────────────────┐
+│                      vpnmd API Methods                          │
+├─────────────────────────────────────────────────────────────────┤
+│  Network Interfaces                                             │
+│  • add_iface(ifindex, ifaddr)   → ip tuntap add / ip addr add   │
+│  • delete_iface(ifindex)        → ip tuntap del                 │
+│  • set_iface_up(ifindex)        → ip link set dev tunX up       │
+├─────────────────────────────────────────────────────────────────┤
+│  Routing                                                        │
+│  • add_default_route(metric, ifindex) → ip route add default    │
+│  • add_node_route(node, gateway, metric) → ip route add         │
+│  • delete_node_route(node, gateway) → ip route delete           │
+├─────────────────────────────────────────────────────────────────┤
+│  Firewall & DNS                                                 │
+│  • add_dns_rule(port)           → iptables -t nat -A REDIRECT   │
+│  • delete_dns_rule(port)        → iptables -t nat -D REDIRECT   │
+│  • iptables_rule_exists(port)   → iptables -t nat -C CHECK      │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Key Implementation Details**
+
+- **DNS Redirection**: Used `iptables` NAT rules to redirect UDP port 53 traffic to a local port handled by `cloudflared`.
+- **Interface Management**: Dynamically created TUN devices (`tun{ifindex}`) based on connection requests.
+- **Safety Checks**: `iptables_rule_exists` prevented duplicate rule insertion during reconnection attempts.
+
+## Tunneling Stack
+
+| Component       | Role               | Configuration                                                             |
+| :-------------- | :----------------- | :------------------------------------------------------------------------ |
+| **v2ray-core**  | Encryption & Proxy | Handles VMess/VLESS protocols, encrypts traffic to remote node.           |
+| **tun2socks**   | Traffic Forwarding | Captures system traffic from TUN device and forwards to v2ray socks port. |
+| **cloudflared** | DNS over HTTPS     | Resolves DNS queries securely, preventing ISP DNS leakage.                |
+
+## Design Decisions & Trade-offs
+
+| Decision            | Alternative          | Rationale                                                                      |
+| :------------------ | :------------------- | :----------------------------------------------------------------------------- |
+| **Split Privilege** | Single Binary (sudo) | Reduced attack surface; CLI runs as user, only daemon needs root.              |
+| **IPC via anyd**    | Direct Syscalls      | Clean API boundary, automatic serialization, easier testing.                   |
+| **TUN/TAP**         | Proxy per-app        | System-wide tunneling ensures all traffic is protected without per-app config. |
+| **Python**          | Go/C++               | Faster development cycle, rich ecosystem for API/CLI tooling.                  |
+
+## Evolution & Legacy
+
+This architecture served as the proof-of-concept for the subsequent **ForestVPN CLI** (Go-based). Key lessons learned influenced the next generation:
+
+1.  **Daemon Complexity**: The IPC overhead and daemon management proved fragile. The Go version moved to a **single binary** model.
+2.  **Protocol Shift**: Moved from `v2ray` + `tun2socks` to native **WireGuard** for better performance and kernel integration.
+3.  **Language Migration**: Transitioned from Python to **Go** for static binary distribution and improved concurrency.
 
 ---
 
-## Implementation
+[vpnm source code](https://github.com/nikiforidi/vpnm)  
+[vpnmd source code](https://github.com/nikiforidi/vpnmd)  
+[anyd PyPI page](https://pypi.org/project/anyd/)  
+[← Back to Deep Dives](/deep-dives/)
 
-```go
-func SequenceSorting(m map[int]int) (order []int) {
-    mlen := len(m)
-    keys := make([]int, mlen)
-    var mismatchCounter int
-    for i := 0; i < mlen*2; i++ {
-        _, ok := m[i]
-        if ok {
-            keys[i-mismatchCounter] = i
-        } else {
-            mismatchCounter++
-        }
-    }
-    sort.Ints(keys)
-    order = make([]int, mlen)
-    for i := 1; i < mlen; i++ {
-        order[i-1] = keys[i]
-    }
-    return
+File: `index.md`
+---
+layout: home
+title: Technical Portfolio
+tagline: Architecture, Algorithms, System Design
+permalink: /
+---
+
+## Welcome, Traveler ☕
+
+<div class="terminal-container" 
+     data-terminal="$ whoami\n> Anatoly Nikiforov\n$ status\n> Ready for remote work\n$ location\n> Moscow, Russia">
+</div>
+
+Pull up a chair. This portfolio is designed for cozy reading about engineering craft—the kind of late-night coding sessions where the only company is your terminal, a warm cup of coffee, and the satisfaction of solving hard problems.
+
+Whether you're here to review architecture, reminisce about the old days, or just enjoy well-documented systems, make yourself at home.
+
+---
+
+## System Modules
+
+| Module                          | Content                                 | Access                                    |
+| ------------------------------- | --------------------------------------- | ----------------------------------------- |
+| [`[specs/]`](/specs/)           | 5 architectural specs (MHA, SSA, JEMP)  | [`[ENTER]`](/specs/){: .theme-enter}      |
+| [`[deep-dives/]`](/deep-dives/) | Technical breakdowns of key projects    | [`[ENTER]`](/deep-dives/){: .theme-enter} |
+| [`[about/]`](/about/)           | Engineering philosophy, career timeline | [`[ENTER]`](/about/){: .theme-enter}      |
+
+---
+
+## Featured Processes
+
+### ▶ Model Hashing Algorithm (MHA)
+
+Bidirectional hashing for cloud infrastructure resource comparison.
+
+- **Problem:** Detect CIR changes across different cloud providers
+- **Solution:** Nested hashing with unified model abstraction
+- **Metrics:** <100ms hash calculation, 100% change detection
+- **Execute:** [`/specs/mha/`](/specs/mha/)
+
+### ▶ Sequence Sorting Algorithm (SSA)
+
+Custom Go algorithm for ordered map iteration with zero-last semantics.
+
+- **Problem:** Go maps are unordered, but we need `[1, 2, 4, 7, 0]`
+- **Solution:** O(n\*2) lookup with mismatch counter
+- **Benchmark:** 1,000,000 keys in 116.9 ms
+- **Execute:** [`/specs/ssa/`](/specs/ssa/)
+
+### ▶ Job Event Messaging Protocol (JEMP)
+
+Event-driven concurrency model for distributed job execution.
+
+- **Problem:** Track concurrent jobs without MQ overhead
+- **Solution:** Heartbeat events + Job Collector + Checkpointer
+- **Execute:** [`/specs/jemp/`](/specs/jemp/)
+
+> "What I cannot create, I do not understand."
+> — Richard Feynman
+
+---
+
+## Featured Deep Dives
+
+### ▶ anyd Daemon Framework
+
+Unix daemon IPC framework published on PyPI.
+
+- **PyPI:** [`anyd 0.4.1`](https://pypi.org/project/anyd/)
+- **GitHub:** [`anatolio-deb/anyd`](https://github.com/anatolio-deb/anyd)
+- **Tech:** POSIX sockets, IPC, authentication, validation
+- **Execute:** [`/deep-dives/anyd-daemon-framework/`](/deep-dives/anyd-daemon-framework/)
+
+### ▶ VPN Tunneling Architecture
+
+Linux VPN client with TUN/TAP, Netfilter, and DNS redirection.
+
+- **Repositories:** [`vpnm`](https://github.com/nikiforidi/vpnm) (154 commits), [`vpnmd`](https://github.com/nikiforidi/vpnmd) (62 commits)
+- **Tech:** TUN/TAP, Netfilter, cloudflared DoH, tun2socks
+- **Execute:** [`/deep-dives/vpn-tunneling-architecture/`](/deep-dives/vpn-tunneling-architecture/)
+
+### ▶ ForestVPN CLI
+
+Cross-platform VPN client (Linux, macOS, Windows, OpenWRT).
+
+- **Repository:** [`forestvpn/cli`](https://github.com/forestvpn/cli)
+- **Stats:** 792 commits, 116 releases, 8 stars
+- **Tech:** Go 82.8%, Shell 17.2%, Homebrew, Chocolatey
+- **Execute:** [`/deep-dives/forestvpn-cli/`](/deep-dives/forestvpn-cli/)
+
+---
+
+## System Status
+
+| Metric          | Value                          |
+| --------------- | ------------------------------ |
+| Uptime          | 5+ years (2019–2026)           |
+| Commits         | 1,756+ contributions           |
+| Packages        | 1 published (anyd 0.4.1)       |
+| Docs            | 5 architectural specifications |
+| Last Build      | February 2026                  |
+| Coffee Consumed | ∞ cups                         |
+
+> **Note:** All links are verified. All claims are backed by public evidence.
+
+The terminal is warm, the coffee is fresh, and the code is documented.
+
+Stay a while. 🖥️
+
+File: `portfolio_assets.md`
+title: Portfolio Assets Export
+generated: 2026-02-21 04:38:54
+format: Markdown
+scope: Config, CSS, Layouts, Scripts
+Portfolio Assets Export
+Complete export of Jekyll configuration and theme assets.
+
+File: `.github/workflows/deploy.yml`
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v4
+      - uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+      - uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/deploy-pages@v4
+
+```
+
+File: `.gitignore`
+```gitignore
+_site/
+.sass-cache/
+.jekyll-cache/
+*~
+.DS_Store
+.idea/
+.vscode/
+.devcontainer/
+```
+
+File: `.jekyll-cache/.gitignore`
+```gitignore
+# ignore everything in this directory
+*
+```
+
+File: `Gemfile`
+```ruby
+source "https://rubygems.org"
+
+gem "jekyll", "~> 4.3"
+gem "jekyll-feed", "~> 0.15"
+gem "webrick", "~> 1.8"
+gem "minima", "~> 2.5"
+
+```
+
+File: `Gemfile.lock`
+```text
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.8.8)
+      public_suffix (>= 2.0.2, < 8.0)
+    base64 (0.2.0)
+    colorator (1.1.0)
+    concurrent-ruby (1.3.6)
+    csv (3.2.8)
+    em-websocket (0.5.3)
+      eventmachine (>= 0.12.9)
+      http_parser.rb (~> 0)
+    eventmachine (1.2.7)
+    ffi (1.17.3-aarch64-linux-gnu)
+    forwardable-extended (2.6.0)
+    google-protobuf (3.25.8-aarch64-linux)
+    http_parser.rb (0.8.1)
+    i18n (1.14.8)
+      concurrent-ruby (~> 1.0)
+    jekyll (4.4.1)
+      addressable (~> 2.4)
+      base64 (~> 0.2)
+      colorator (~> 1.0)
+      csv (~> 3.0)
+      em-websocket (~> 0.5)
+      i18n (~> 1.0)
+      jekyll-sass-converter (>= 2.0, < 4.0)
+      jekyll-watch (~> 2.0)
+      json (~> 2.6)
+      kramdown (~> 2.3, >= 2.3.1)
+      kramdown-parser-gfm (~> 1.0)
+      liquid (~> 4.0)
+      mercenary (~> 0.3, >= 0.3.6)
+      pathutil (~> 0.9)
+      rouge (>= 3.0, < 5.0)
+      safe_yaml (~> 1.0)
+      terminal-table (>= 1.8, < 4.0)
+      webrick (~> 1.7)
+    jekyll-feed (0.17.0)
+      jekyll (>= 3.7, < 5.0)
+    jekyll-sass-converter (3.0.0)
+      sass-embedded (~> 1.54)
+    jekyll-seo-tag (2.8.0)
+      jekyll (>= 3.8, < 5.0)
+    jekyll-watch (2.2.1)
+      listen (~> 3.0)
+    json (2.7.2)
+    kramdown (2.5.2)
+      rexml (>= 3.4.4)
+    kramdown-parser-gfm (1.1.0)
+      kramdown (~> 2.0)
+    liquid (4.0.4)
+    listen (3.10.0)
+      logger
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
+    logger (1.6.0)
+    mercenary (0.4.0)
+    minima (2.5.2)
+      jekyll (>= 3.5, < 5.0)
+      jekyll-feed (~> 0.9)
+      jekyll-seo-tag (~> 2.1)
+    pathutil (0.16.2)
+      forwardable-extended (~> 2.6)
+    public_suffix (7.0.2)
+    rb-fsevent (0.11.2)
+    rb-inotify (0.11.1)
+      ffi (~> 1.0)
+    rexml (3.4.4)
+    rouge (4.7.0)
+    safe_yaml (1.0.5)
+    sass-embedded (1.62.1-aarch64-linux-gnu)
+      google-protobuf (~> 3.21)
+    terminal-table (3.0.2)
+      unicode-display_width (>= 1.1.1, < 3)
+    unicode-display_width (2.6.0)
+    webrick (1.9.2)
+
+PLATFORMS
+  aarch64-linux
+
+DEPENDENCIES
+  jekyll (~> 4.3)
+  jekyll-feed (~> 0.15)
+  minima (~> 2.5)
+  webrick (~> 1.8)
+
+CHECKSUMS
+  addressable (2.8.8) sha256=7c13b8f9536cf6364c03b9d417c19986019e28f7c00ac8132da4eb0fe393b057
+  base64 (0.2.0) sha256=0f25e9b21a02a0cc0cea8ef92b2041035d39350946e8789c562b2d1a3da01507
+  colorator (1.1.0) sha256=e2f85daf57af47d740db2a32191d1bdfb0f6503a0dfbc8327d0c9154d5ddfc38
+  concurrent-ruby (1.3.6) sha256=6b56837e1e7e5292f9864f34b69c5a2cbc75c0cf5338f1ce9903d10fa762d5ab
+  csv (3.2.8) sha256=2f5e11e8897040b97baf2abfe8fa265b314efeb8a9b7f756db9ebcf79e7db9fe
+  em-websocket (0.5.3) sha256=f56a92bde4e6cb879256d58ee31f124181f68f8887bd14d53d5d9a292758c6a8
+  eventmachine (1.2.7) sha256=994016e42aa041477ba9cff45cbe50de2047f25dd418eba003e84f0d16560972
+  ffi (1.17.3-aarch64-linux-gnu) sha256=28ad573df26560f0aedd8a90c3371279a0b2bd0b4e834b16a2baa10bd7a97068
+  forwardable-extended (2.6.0) sha256=1bec948c469bbddfadeb3bd90eb8c85f6e627a412a3e852acfd7eaedbac3ec97
+  google-protobuf (3.25.8-aarch64-linux) sha256=5869d1a31f39ee3361e85f3ef3db0512c19f0e0c75cd69d7303c177e17590044
+  http_parser.rb (0.8.1) sha256=9ae8df145b39aa5398b2f90090d651c67bd8e2ebfe4507c966579f641e11097a
+  i18n (1.14.8) sha256=285778639134865c5e0f6269e0b818256017e8cde89993fdfcbfb64d088824a5
+  jekyll (4.4.1) sha256=4c1144d857a5b2b80d45b8cf5138289579a9f8136aadfa6dd684b31fe2bc18c1
+  jekyll-feed (0.17.0) sha256=689aab16c877949bb9e7a5c436de6278318a51ecb974792232fd94d8b3acfcc3
+  jekyll-sass-converter (3.0.0) sha256=e2e7674f186e906b9d99b8066e13f9b4d5cb9f806d36f7bc8cf2610053d8c902
+  jekyll-seo-tag (2.8.0) sha256=3f2ed1916d56f14ebfa38e24acde9b7c946df70cb183af2cb5f0598f21ae6818
+  jekyll-watch (2.2.1) sha256=bc44ed43f5e0a552836245a54dbff3ea7421ecc2856707e8a1ee203a8387a7e1
+  json (2.7.2) sha256=1898b5cbc81cd36c0fd4d0b7ad2682c39fb07c5ff682fc6265f678f550d4982c
+  kramdown (2.5.2) sha256=1ba542204c66b6f9111ff00dcc26075b95b220b07f2905d8261740c82f7f02fa
+  kramdown-parser-gfm (1.1.0) sha256=fb39745516427d2988543bf01fc4cf0ab1149476382393e0e9c48592f6581729
+  liquid (4.0.4) sha256=4fcfebb1a045e47918388dbb7a0925e7c3893e58d2bd6c3b3c73ec17a2d8fdb3
+  listen (3.10.0) sha256=c6e182db62143aeccc2e1960033bebe7445309c7272061979bb098d03760c9d2
+  logger (1.6.0) sha256=0ab7c120262dd8de2a18cb8d377f1f318cbe98535160a508af9e7710ff43ef3e
+  mercenary (0.4.0) sha256=b25a1e4a59adca88665e08e24acf0af30da5b5d859f7d8f38fba52c28f405138
+  minima (2.5.2) sha256=9c434e3b7bc4a0f0ab488910438ed3757a0502ff1060d172f361907fc38aa45a
+  pathutil (0.16.2) sha256=e43b74365631cab4f6d5e4228f812927efc9cb2c71e62976edcb252ee948d589
+  public_suffix (7.0.2) sha256=9114090c8e4e7135c1fd0e7acfea33afaab38101884320c65aaa0ffb8e26a857
+  rb-fsevent (0.11.2) sha256=43900b972e7301d6570f64b850a5aa67833ee7d87b458ee92805d56b7318aefe
+  rb-inotify (0.11.1) sha256=a0a700441239b0ff18eb65e3866236cd78613d6b9f78fea1f9ac47a85e47be6e
+  rexml (3.4.4) sha256=19e0a2c3425dfbf2d4fc1189747bdb2f849b6c5e74180401b15734bc97b5d142
+  rouge (4.7.0) sha256=dba5896715c0325c362e895460a6d350803dbf6427454f49a47500f3193ea739
+  safe_yaml (1.0.5) sha256=a6ac2d64b7eb027bdeeca1851fe7e7af0d668e133e8a88066a0c6f7087d9f848
+  sass-embedded (1.62.1-aarch64-linux-gnu) sha256=e9c591197aafab1badc6664b73ef05d051319d52e5e326c5b05f8d8bcafefccb
+  terminal-table (3.0.2) sha256=f951b6af5f3e00203fb290a669e0a85c5dd5b051b3b023392ccfd67ba5abae91
+  unicode-display_width (2.6.0) sha256=12279874bba6d5e4d2728cef814b19197dbb10d7a7837a869bab65da943b7f5a
+  webrick (1.9.2) sha256=beb4a15fc474defed24a3bda4ffd88a490d517c9e4e6118c3edce59e45864131
+
+BUNDLED WITH
+  4.0.5
+
+```
+
+File: `_config.yml`
+```yaml
+title: Anatoly Nikiforov
+description: Architecture, Algorithms, System Design
+theme: minima
+plugins:
+  - jekyll-feed
+header_pages:
+  - index.md
+  - about/
+  - specs/
+  - deep-dives/
+highlighter: rouge
+markdown: kramdown
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+    span:
+      line_numbers: false
+```
+
+File: `_layouts/default.html`
+```html
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrapper">
+      <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+      <nav class="site-nav">
+        {% for path in site.header_pages %}
+          {% assign page = site.pages | where: "path", path | first %}
+          {% if page.title %}
+            <a class="nav-link" href="{{ page.url | relative_url }}">{{ page.title }}</a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-content" aria-label="Content">
+    <div class="wrapper">
+      {{ content }}
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper">
+      <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}</p>
+    </div>
+  </footer>
+
+  <!-- CRT Effect JS (deferred, non-blocking) -->
+  <script src="{{ '/assets/js/crt-effect.js' | relative_url }}" defer></script>
+</body>
+</html>
+```
+```
+
+File: `_layouts/home.html`
+```html
+---
+layout: default
+---
+<div class="home">
+  {{ content }}
+</div>
+```
+
+File: `_layouts/page.html`
+```html
+---
+layout: default
+---
+<article class="post">
+  <header class="post-header">
+    <h1 class="post-title">{{ page.title }}</h1>
+  </header>
+  <div class="post-content">
+    {{ content }}
+  </div>
+</article>
+```
+
+File: `_sass/_hacker.scss`
+```scss
+/**
+Warm Nostalgia Theme - For veteran computer scientists
+Inspired by: Vintage terminals, amber monitors, coffee shops, late-night coding
+*/
+@mixin theme() {
+  :root {
+    /* Warm amber/sepia palette (like old monitors + coffee) */
+    --base-color: #ffb000;           /* Amber glow */
+    --base-color-dim: #cc8c00;       /* Dimmed amber */
+    --background-color: #1a1510;     /* Warm dark brown (not pure black) */
+    --background-alt: #251e17;       /* Slightly lighter brown */
+    --text-color: #ffcc80;           /* Warm light orange */
+    --text-muted: #997755;           /* Muted brown-orange */
+    
+    /* Borders & Dividers */
+    --border: solid 1px rgba(255, 176, 0, 0.3);
+    --border-dashed: dashed 1px rgba(255, 176, 0, 0.2);
+    
+    /* Selection */
+    --selection-background: rgba(255, 176, 0, 0.4);
+    --selection-text: #1a1510;
+    
+    /* Links */
+    --link-color: #ffb000;
+    --link-hover: #ffcc80;
+    
+    /* Code Colors (warm palette) */
+    --code-comment: #887766;
+    --code-string: #ffcc80;
+    --code-keyword: #ffb000;
+    --code-function: #ffaa66;
+    --code-number: #ff9966;
+    --code-type: #ffcc99;
+    
+    /* Accents */
+    --accent-warm: #ff9966;          /* Warm orange */
+    --accent-coffee: #8b6f47;        /* Coffee brown */
+    --accent-cream: #fff8e7;         /* Cream (for highlights) */
+  }
 }
 ```
 
----
-
-## Benchmarks
-
-| Metric | Value |
-|--------|-------|
-| **Input Size** | 1,000,000 keys |
-| **Execution Time** | 116.9 ms |
-| **Complexity** | O(n*2) lookup + O(n log n) sort |
-| **Memory** | 2x key slice allocation |
-
-### Benchmark Results
-
-```text
-Keys processed: 1000000
-2023/05/26 15:17:32 Sort took 116.915073ms
-```
-
-### Mutations
-
-```text
-Input:  {0: 1, 2: 3, 4: 5, 6: 7, 8: 9}
-Keys:   [0, 2, 4, 6, 8]
-Output: [2, 4, 6, 8, 0]
-```
-
----
-
-## Proof of Concept
-
-🔗 [Go Playground: SSA PoC →](https://go.dev/play/p/gXdgi47OGDO)
-
----
-
-## Related Specifications
-
-- [MHA](/specs/mha/) — Model hashing
-- [JEMP](/specs/jemp/) — Job messaging
-- [Validation Stack](/specs/validation-stack/) — Model validation
-- [Transactional Models](/specs/transactional-models/) — Deployment states
-
----
-
-[← Back to Specifications](/specs/)
-
-Export Summary
-| Metric | Value |
-|--------|-------|
-| Total Files | 18 |
-| Generated | 2026-02-21 06:30:00 |
-| Format | Markdown (.md) |
-| Scope | .md files only |
-| Total Size | 95KB |
-
-Auto-generated by generate_context.py
-```
-
----
-
-## `portfolio_assets.md` (Updated with CRT Effect + Syntax Highlighting)
-
-```markdown
-title: Portfolio Assets Export
-generated: 2026-02-21 06:30:00
-format: Markdown
-scope: CSS, HTML, JavaScript
-Portfolio Assets Export
-Export of stylesheets, layouts, and scripts with CRT TV effect.
-
 File: `assets/css/style.scss`
+```scss
 ```scss
 ---
 ---
@@ -1386,191 +2182,576 @@ hr {
   50% { opacity: 0; }
 }
 ```
-
-File: `assets/js/crt-effect.js`
-```javascript
-/**
- * CRT TV Effect for Code Blocks & ASCII Art
- * Adds animated noise and scanlines to elements with class "crt-block"
- * Progressive enhancement: degrades gracefully if canvas unsupported
- */
-(function() {
-  'use strict';
-
-  // Skip if canvas not supported or reduced motion preferred
-  if (!document.createElement('canvas').getContext || 
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return;
-  }
-
-  // Initialize CRT effect on matching blocks
-  function initCRTBlocks() {
-    const blocks = document.querySelectorAll('.crt-block');
-    
-    blocks.forEach(block => {
-      // Skip if already initialized
-      if (block.dataset.crtInitialized) return;
-      block.dataset.crtInitialized = 'true';
-
-      // Create canvas for noise
-      const canvas = document.createElement('canvas');
-      canvas.className = 'crt-canvas';
-      block.insertBefore(canvas, block.firstChild);
-
-      const ctx = canvas.getContext('2d');
-      
-      // Low-res canvas for performance
-      const scale = 0.2;
-      let width, height;
-
-      function resize() {
-        width = block.offsetWidth;
-        height = block.offsetHeight;
-        canvas.width = width * scale;
-        canvas.height = height * scale;
-      }
-
-      // Generate noise frame
-      function generateNoise() {
-        const w = canvas.width;
-        const h = canvas.height;
-        const imageData = ctx.createImageData(w, h);
-        const data = imageData.data;
-        
-        // Random grayscale noise
-        for (let i = 0; i < data.length; i += 4) {
-          const val = Math.random() * 255;
-          data[i] = val;     // R
-          data[i+1] = val;   // G
-          data[i+2] = val;   // B
-          data[i+3] = 255;   // A
-        }
-        ctx.putImageData(imageData, 0, 0);
-      }
-
-      // Animation loop (throttled)
-      let animationFrame;
-      const fps = 12;
-      const frameDuration = 1000 / fps;
-      let lastTime = 0;
-
-      function animate(timestamp) {
-        if (timestamp - lastTime >= frameDuration) {
-          generateNoise();
-          lastTime = timestamp;
-        }
-        animationFrame = requestAnimationFrame(animate);
-      }
-
-      // Initialize
-      resize();
-      animationFrame = requestAnimationFrame(animate);
-
-      // Handle resize
-      const resizeObserver = new ResizeObserver(resize);
-      resizeObserver.observe(block);
-
-      // Optional: power-on animation
-      setTimeout(() => block.classList.add('crt-power-on'), 100);
-    });
-  }
-
-  // Auto-wrap code blocks and ASCII art with CRT container
-  function wrapCodeBlocks() {
-    // Wrap pre > code blocks
-    document.querySelectorAll('pre code').forEach(code => {
-      const pre = code.parentElement;
-      if (!pre.closest('.crt-block')) {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'crt-block';
-        pre.parentNode.insertBefore(wrapper, pre);
-        wrapper.appendChild(pre);
-      }
-    });
-
-    // Wrap ASCII art (detect by monospace + box-drawing chars)
-    document.querySelectorAll('pre').forEach(pre => {
-      const text = pre.textContent;
-      // Simple heuristic: contains box-drawing characters
-      if (/[\u2500-\u257F\u2580-\u259F]/.test(text) && !pre.closest('.crt-block')) {
-        pre.classList.add('ascii-art');
-        const wrapper = document.createElement('div');
-        wrapper.className = 'crt-block';
-        pre.parentNode.insertBefore(wrapper, pre);
-        wrapper.appendChild(pre);
-      }
-    });
-  }
-
-  // Initialize on DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      wrapCodeBlocks();
-      initCRTBlocks();
-    });
-  } else {
-    wrapCodeBlocks();
-    initCRTBlocks();
-  }
-
-  // Reinitialize after Jekyll navigation (if using AJAX)
-  document.addEventListener('jekyll:loaded', () => {
-    wrapCodeBlocks();
-    initCRTBlocks();
-  });
-})();
-```
-
-File: `_layouts/default.html`
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
-  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-</head>
-<body>
-  <header class="site-header">
-    <div class="wrapper">
-      <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-      <nav class="site-nav">
-        {% for path in site.header_pages %}
-          {% assign page = site.pages | where: "path", path | first %}
-          {% if page.title %}
-            <a class="nav-link" href="{{ page.url | relative_url }}">{{ page.title }}</a>
-          {% endif %}
-        {% endfor %}
-      </nav>
-    </div>
-  </header>
-
-  <main class="page-content" aria-label="Content">
-    <div class="wrapper">
-      {{ content }}
-    </div>
-  </main>
-
-  <footer class="site-footer">
-    <div class="wrapper">
-      <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}</p>
-    </div>
-  </footer>
-
-  <!-- CRT Effect JS (deferred, non-blocking) -->
-  <script src="{{ '/assets/js/crt-effect.js' | relative_url }}" defer></script>
-</body>
-</html>
 ```
 
 Export Summary
 | Metric | Value |
 |--------|-------|
-| Total Files | 3 |
-| Generated | 2026-02-21 06:30:00 |
+| Total Files | 11 |
+| Generated | 2026-02-21 04:38:54 |
 | Format | Markdown (.md) |
-| Scope | CSS, HTML, JavaScript with CRT effect |
-| Total Size | 18KB |
+| Scope | Config, CSS, Layouts, Scripts |
+| Total Size | 23KB |
 
 Auto-generated by generate_assets.py
+
+File: `specs/index.md`
+---
+layout: page
+title: Specifications
+permalink: /specs/
+---
+
+## MIND Universe Specifications
+
+Technical specifications developed during tenure at MIND Software (2023-2025). Each spec includes architecture sketches, benchmarks, and metrics with links to full Notion documentation.
+
+---
+
+## Available Specifications
+
+| Specification | Purpose | Status |
+|--------------|---------|--------|
+| [MHA](mha/) | Model Hashing Algorithm — CIR change detection | [✓] Documented |
+| [SSA](ssa/) | Sequence Sorting Algorithm — Go map ordering | [✓] Documented |
+| [JEMP](jemp/) | Job Event Messaging Protocol — Concurrency model | [✓] Documented |
+| [Validation Stack](validation-stack/) | Unified Model validation layer | [✓] Documented |
+| [Transactional Models](transactional-models/) | VM deployment transaction process | [✓] Documented |
+
+---
+
+## Related Concepts
+
+- [DRUID API](/deep-dives/mind-universe/) — Deploy, Refresh, Update, Import, Destroy (see MIND Universe)
+
+---
+
+[← Back to Home](/)
+File: `specs/jemp.md`
+---
+layout: page
+title: Job Event Messaging Protocol (JEMP)
+permalink: /specs/jemp/
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Universe-concurrency-model-4ea53fe313bb47eeaf8711db26828c39)
+
+---
+
+## Overview
+
+**Purpose:** Track concurrent job execution state without MQ overhead.
+
+**Context:** MIND Universe Job Pool concurrency model.
+
+**Problem:** Need to track job state (running, lost, finished) without constant MQ polling.
+
+---
+
+## Architecture
+
+### Event-Driven Model
+
+The Job Pool maintains all active jobs and communicates with them through the Event Bus. Three event types flow from jobs back to the pool: Heartbeat indicates the job is alive, Finished signals successful completion, and Internal is reserved for system services like the Job Collector. This event-driven approach eliminates the need for constant polling while maintaining full visibility into job state.
+
+```text
+┌─────────────────┐         ┌─────────────────┐
+│    Job Pool     │◀───────▶│    Event Bus    │
+└────────┬────────┘         └─────────────────┘
+         │
+         ├───────────────────┼───────────────────┐
+         ▼                   ▼                   ▼
+┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+│   Heartbeat     │ │   Finished      │ │   Internal      │
+│   Event         │ │   Event         │ │   Event         │
+└─────────────────┘ └─────────────────┘ └─────────────────┘
+```
+
+### Job Lifecycle
+
+Jobs transition through four states from Queued to Running to Finished. The Lost state is reached when no Heartbeat is received within the configurable timeout threshold. This lifecycle allows the Job Collector to identify and unregister stalled jobs without blocking the execution of healthy ones.
+
+```text
+┌───────────┐     ┌───────────┐     ┌───────────┐     ┌───────────┐
+│  Queued   │────▶│  Running  │────▶│  Finished │     │   Lost    │
+└───────────┘     └─────┬─────┘     └───────────┘     └─────▲─────┘
+                        │                                   │
+                        └───────── Heartbeat ───────────────┘
+                          (Timeout → Lost)
+```
+
+---
+
+## Event Types
+
+| Event Type | Description | Frequency |
+|------------|-------------|-----------|
+| **Heartbeat** | Job alive indicator | Every N seconds |
+| **Finished** | Job completed successfully | Once per job |
+| **Internal** | System events (JC, Checkpointer) | As needed |
+
+---
+
+## Components
+
+### Job Collector (JC)
+
+| Metric | Value |
+|--------|-------|
+| **Timeout Threshold** | Configurable (default: 5 min) |
+| **Check Interval** | Every 30 seconds |
+| **Action** | Unregister lost jobs from pool |
+
+### Checkpointer
+
+| Metric | Value |
+|--------|-------|
+| **Checkpoint Interval** | Configurable (default: 1 min) |
+| **Persistence** | Local disk snapshot |
+| **Recovery** | Restore queued jobs after restart |
+
+---
+
+## Trade-offs
+
+| Trade-off | Impact |
+|-----------|--------|
+| Event bus overhead | Minimal (in-process) |
+| Heartbeat frequency | Network traffic vs. detection speed |
+| Checkpoint frequency | Disk I/O vs. recovery point |
+
+---
+
+## Related Specifications
+
+- [MHA](/specs/mha/) — Model hashing
+- [SSA](/specs/ssa/) — Sequence ordering
+- [Validation Stack](/specs/validation-stack/) — Model validation
+- [Transactional Models](/specs/transactional-models/) — Deployment states
+
+---
+
+[← Back to Specifications](/specs/)
+File: `specs/mha.md`
+---
+layout: page
+title: Model Hashing Algorithm (MHA)
+permalink: /specs/mha/
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Model-Hashing-Algorithm-MHA-e725fd99f9d74481965cb542c1727d0e)
+
+---
+
+## Overview
+
+**Purpose:** Detect changes between cloud infrastructure resource (CIR) database records and actual state on cloud provider sites.
+
+**Context:** MIND Universe DRUID action stack (Refresh, Update actions).
+
+---
+
+## Architecture
+
+### Nested Hashing Model
+
+```text
+┌───────────────────────────────────────────────────────────────┐
+│                      Virtual Machine                          │
+├───────────────┬───────────────┬───────────────┬───────────────┤
+│     CPU       │     RAM       │    Disks      │   OS / ID     │
+│    (hash)     │    (hash)     │    (hash)     │    (hash)     │
+└───────────────┴───────────────┴───────────────┴───────────────┘
+                              │
+                              ▼
+                     ┌───────────────────────┐
+                     │   Combined VM Hash    │
+                     └───────────────────────┘
+```
+
+### Bidirectional Comparison
+
+```text
+┌──────────────────┐              ┌──────────────────┐
+│  Unified Model   │              │      Facts       │
+│   (DB Record)    │              │  (Cloud API)     │
+├──────────────────┤              ├──────────────────┤
+│  MHA Hash Calc   │              │  MHA Hash Calc   │
+└────────┬─────────┘              └────────┬─────────┘
+         │                                 │
+         └───────────────┬─────────────────┘
+                         ▼
+                 ┌─────────────────┐
+                 │   Hash Compare  │
+                 │  (Change Detect)│
+                 └─────────────────┘
+```
+
+---
+
+## Key Design Decisions
+
+| Decision | Alternative | Rationale |
+|----------|-------------|-----------|
+| **Nested Hashing** | Flat hash | Component-level change detection |
+| **Bidirectional** | One-way comparison | Same algorithm for DB + API |
+| **Common Components Only** | All fields | Cross-cloud compatibility |
+
+---
+
+## Metrics
+
+| Metric | Value |
+|--------|-------|
+| **Hash Calculation Time** | <100ms per CIR |
+| **Change Detection Accuracy** | 100% |
+| **Supported CIR Types** | VM, Network, Storage |
+| **Cloud Providers** | VMware, OpenStack, oVirt, SpaceVM |
+
+---
+
+## Related Specifications
+
+- [SSA](/specs/ssa/) — Sequence ordering for model processing
+- [JEMP](/specs/jemp/) — Job concurrency model
+- [Validation Stack](/specs/validation-stack/) — Input validation
+- [Transactional Models](/specs/transactional-models/) — VM deployment states
+
+---
+
+[← Back to Specifications](/specs/)
+File: `specs/ssa.md`
+---
+layout: page
+title: Sequence Sorting Algorithm (SSA)
+permalink: /specs/ssa/
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://www.notion.so/Sequence-Sorting-Algorithm-SSA-44f828765101456d9ed1a3b6898088a1)
+
+---
+
+## Overview
+
+**Purpose:** Sort Go map integer keys in ascending order with zero key last: `[1, 2, 4, 7, 0]`
+
+**Context:** Sequential Model Processing (SMP) in MIND Universe DRUID API.
+
+**Problem:** Go maps are unordered; we need deterministic iteration with zero-last semantics.
+
+---
+
+## Architecture
+
+### Algorithm Flow
+
+```text
+┌───────────────────┐
+│   Input Map       │
+│ {0:1, 2:3, 4:5}   │
+└─────────┬─────────┘
+          │
+          ▼
+┌───────────────────┐
+│  Extract Keys     │
+│   [0, 2, 4]       │
+└─────────┬─────────┘
+          │
+          ▼
+┌───────────────────┐
+│  Sort + Zero      │
+│   Last Logic      │
+└─────────┬─────────┘
+          │
+          ▼
+┌───────────────────┐
+│  Output Slice     │
+│   [2, 4, 0]       │
+└───────────────────┘
+```
+
+---
+
+## Implementation
+
+```go
+func SequenceSorting(m map[int]int) (order []int) {
+    mlen := len(m)
+    keys := make([]int, mlen)
+    var mismatchCounter int
+    for i := 0; i < mlen*2; i++ {
+        _, ok := m[i]
+        if ok {
+            keys[i-mismatchCounter] = i
+        } else {
+            mismatchCounter++
+        }
+    }
+    sort.Ints(keys)
+    order = make([]int, mlen)
+    for i := 1; i < mlen; i++ {
+        order[i-1] = keys[i]
+    }
+    return
+}
+```
+
+---
+
+## Benchmarks
+
+| Metric | Value |
+|--------|-------|
+| **Input Size** | 1,000,000 keys |
+| **Execution Time** | 116.9 ms |
+| **Complexity** | O(n*2) lookup + O(n log n) sort |
+| **Memory** | 2x key slice allocation |
+
+### Benchmark Results
+
+```text
+Keys processed: 1000000
+2023/05/26 15:17:32 Sort took 116.915073ms
+```
+
+### Mutations
+
+```text
+Input:  {0: 1, 2: 3, 4: 5, 6: 7, 8: 9}
+Keys:   [0, 2, 4, 6, 8]
+Output: [2, 4, 6, 8, 0]
+```
+
+---
+
+## Proof of Concept
+
+🔗 [Go Playground: SSA PoC →](https://go.dev/play/p/gXdgi47OGDO)
+
+---
+
+## Related Specifications
+
+- [MHA](/specs/mha/) — Model hashing
+- [JEMP](/specs/jemp/) — Job messaging
+- [Validation Stack](/specs/validation-stack/) — Model validation
+- [Transactional Models](/specs/transactional-models/) — Deployment states
+
+---
+
+[← Back to Specifications](/specs/)
+File: `specs/transactional-models.md`
+---
+layout: page
+title: Transactional Models
+permalink: /specs/transactional-models/
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Unified-model-transactions-in-the-Universe-Deploy-1561ff431c37452bb1e2645b27586b75)
+
+---
+
+## Overview
+
+**Purpose:** Describe the multi-stage process of building Unified Models for VM deployment.
+
+**Context:** MIND Universe VM deployment backend.
+
+**Problem:** VM deployment requires multi-source, multi-stage model construction.
+
+---
+
+## Architecture
+
+### Model States
+
+The Prototype state is built from Source Unit and Placement data sources, tightly coupling the model to infrastructure specifics. User customization transforms the prototype into the Base state, allowing overrides of default values. The Complete state is reached after Universe validation and enrichment with platform-specific default arguments, making the model ready for deployment.
+
+```text
+┌───────────────┐      ┌───────────────┐      ┌───────────────┐
+│   Prototype   │─────▶│     Base      │─────▶│   Complete    │
+│    Model      │      │    Model      │      │    Model      │
+└───────┬───────┘      └───────┬───────┘      └───────┬───────┘
+        │                      │                      │
+        ▼                      ▼                      ▼
+┌───────────────┐      ┌───────────────┐      ┌───────────────┐
+│ Source Unit + │      │  User Input   │      │  Validation + │
+│  Placement    │      │ Customization │      │ Default Values│
+└───────────────┘      └───────────────┘      └───────────────┘
+```
+
+---
+
+## Model States
+
+| State | Source | Purpose |
+|-------|--------|---------|
+| **Prototype** | Source Unit + Placement | Initial model tied to data sources |
+| **Base** | User customization | User overrides prototype values |
+| **Complete** | Universe validation + defaults | Ready for deployment |
+
+---
+
+## Key Design Decisions
+
+| Decision | Alternative | Rationale |
+|----------|-------------|-----------|
+| **Three-state model** | Single-state | Clear separation of concerns |
+| **User customization step** | Direct deploy | User control over final config |
+| **Validation before deploy** | Validate on target | Catch errors early |
+
+---
+
+## Rollback Mechanism ⚠️
+
+> **Note:** A rollback mechanism was implemented through DRUID API calls to remove redundant CIRs during deployment. This feature exists in the codebase but cannot be publicly documented due to NDA restrictions.
+
+---
+
+## Trade-offs
+
+| Trade-off | Impact |
+|-----------|--------|
+| Multi-stage process | Increased complexity |
+| User customization | More flexibility, more validation |
+| Default values | Consistency across platforms |
+
+---
+
+## Related Specifications
+
+- [MHA](/specs/mha/) — Model hashing
+- [SSA](/specs/ssa/) — Sequence ordering
+- [JEMP](/specs/jemp/) — Job messaging
+- [Validation Stack](/specs/validation-stack/) — Model validation
+
+---
+
+[← Back to Specifications](/specs/)
+File: `specs/validation-stack.md`
+---
+layout: page
+title: Universe Validation Stack
+permalink: /specs/validation-stack/
+---
+
+## Full Specification
+
+📎 [**View on Notion →**](https://alert-hardcover-322.notion.site/Universe-Models-Validation-479bb17669ea446d8ea67e74f3be475f)
+
+---
+
+## Overview
+
+**Purpose:** Centralized validation layer for Unified Models before infrastructure interaction.
+
+**Context:** MIND Universe Job execution pipeline.
+
+**Problem:** Handle user input errors locally before sending requests to cloud infrastructure.
+
+---
+
+## Architecture
+
+### Stack Structure
+
+Validators are pushed onto the stack as pluggable entities, each validating a single field or implementing complex logic. The stack executes validators in FILO (First-In-Last-Out) order and collects results for analysis. After execution completes, the stack empties unless validators are marked as reusable for future validation chains.
+
+```text
+┌───────────────────────────────────────────┐
+│           Validation Stack                │
+├───────────────────────────────────────────┤
+│  Validator N (Top)                        │
+│  Validator N-1                            │
+│  ...                                      │
+│  Validator 1 (Bottom)                     │
+└───────────────────────────────────────────┘
+                    │
+                    ▼
+              FILO Execution
+```
+
+### Execution Flow
+
+```
+Push Validators → Run Chain (FILO) → Collect Results → Empty Stack
+```
+
+---
+
+## Scopes of Usage
+
+| Scope | Name | Purpose |
+|-------|------|---------|
+| **Global** | Site Worker | Validate across the Job (e.g., look for duplicates) |
+| **Models** | Site Driver | Check specific fields of Unified Models |
+
+---
+
+## Modes
+
+### Strict Mode
+
+Validation stops immediately after the first negative result, preventing further processing of invalid models. This mode is suitable when any validation failure should block deployment entirely.
+
+```
+Validator 1 [✓] → Validator 2 [✗] → STOP
+```
+
+### Fault-Tolerant Mode
+
+All validators run to completion regardless of intermediate failures, collecting both positive and negative results. This mode enables comprehensive error reporting before blocking deployment.
+
+```
+Validator 1 [✓] → Validator 2 [✗] → Validator 3 [✓] → Collect All
+```
+
+---
+
+## Reusable Validators
+
+| Type | Behavior |
+|------|----------|
+| **Reusable** | Kept after chain execution |
+| **Non-Reusable** | Removed after chain execution |
+
+---
+
+## Trade-offs
+
+| Trade-off | Impact |
+|-----------|--------|
+| Additional validation layer | Slight latency increase |
+| Local error handling | Reduced infrastructure errors |
+| Pluggable validators | Flexible validation logic |
+
+---
+
+## Related Specifications
+
+- [MHA](/specs/mha/) — Model hashing
+- [SSA](/specs/ssa/) — Sequence ordering
+- [JEMP](/specs/jemp/) — Job messaging
+- [Transactional Models](/specs/transactional-models/) — Deployment states
+
+---
+
+[← Back to Specifications](/specs/)
+Export Summary
+| Metric | Value |
+|--------|-------|
+| Total Files | 19 |
+| Generated | 2026-02-22 02:21:23 |
+| Format | Markdown (.md) |
+| Scope | .md files only |
+| Total Size | 90KB |
+
+Auto-generated by generate_context.py
