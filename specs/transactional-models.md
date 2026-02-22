@@ -43,25 +43,25 @@ The Prototype state is built from Source Unit and Placement data sources, tightl
 
 ## Model States
 
-| State | Source | Purpose |
-|-------|--------|---------|
-| **Prototype** | Source Unit + Placement | Initial model tied to data sources |
-| **Base** | User customization | User overrides prototype values |
-| **Complete** | Universe validation + defaults | Ready for deployment |
+| State         | Source                         | Purpose                            |
+| ------------- | ------------------------------ | ---------------------------------- |
+| **Prototype** | Source Unit + Placement        | Initial model tied to data sources |
+| **Base**      | User customization             | User overrides prototype values    |
+| **Complete**  | Universe validation + defaults | Ready for deployment               |
 
 ---
 
 ## Key Design Decisions
 
-| Decision | Alternative | Rationale |
-|----------|-------------|-----------|
-| **Three-state model** | Single-state | Clear separation of concerns |
-| **User customization step** | Direct deploy | User control over final config |
-| **Validation before deploy** | Validate on target | Catch errors early |
+| Decision                     | Alternative        | Rationale                      |
+| ---------------------------- | ------------------ | ------------------------------ |
+| **Three-state model**        | Single-state       | Clear separation of concerns   |
+| **User customization step**  | Direct deploy      | User control over final config |
+| **Validation before deploy** | Validate on target | Catch errors early             |
 
 ---
 
-## Rollback Mechanism ⚠️
+## Rollback Mechanism [!]
 
 > **Note:** A rollback mechanism was implemented through DRUID API calls to remove redundant CIRs during deployment. This feature exists in the codebase but cannot be publicly documented due to NDA restrictions.
 
@@ -69,11 +69,11 @@ The Prototype state is built from Source Unit and Placement data sources, tightl
 
 ## Trade-offs
 
-| Trade-off | Impact |
-|-----------|--------|
-| Multi-stage process | Increased complexity |
-| User customization | More flexibility, more validation |
-| Default values | Consistency across platforms |
+| Trade-off           | Impact                            |
+| ------------------- | --------------------------------- |
+| Multi-stage process | Increased complexity              |
+| User customization  | More flexibility, more validation |
+| Default values      | Consistency across platforms      |
 
 ---
 
