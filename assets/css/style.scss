@@ -1514,8 +1514,8 @@ body.crt-boot-sequence {
   table tr {
     display: block;
     margin-bottom: 1em;
-    border: var(--border);
-    border-radius: 4px;
+    border: var(--border-dashed);
+    border-radius: 1px;
     padding: 0.5em;
   }
 
@@ -1523,7 +1523,7 @@ body.crt-boot-sequence {
     display: block;
     text-align: right;
     padding: 0.5em;
-    border-bottom: var(--border-dashed);
+    // border-bottom: var(--border-dashed);
   }
 
   table td::before {
@@ -1535,6 +1535,6 @@ body.crt-boot-sequence {
   }
 
   table td:last-child {
-    border-bottom: 0;
+    border-bottom: 1;
   }
 }
