@@ -68,5 +68,16 @@
   <script src="{{ '/assets/js/mr-house.js' | relative_url }}"></script>
   <!-- Terminal Typing Animation -->
 <script src="{{ '/assets/js/terminal.js' | relative_url }}"></script>
+<script>
+  // Wrap all tables for responsive scrolling
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('table').forEach(table => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'table-wrapper';
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    });
+  });
+</script>
 </body>
 </html>
