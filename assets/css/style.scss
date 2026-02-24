@@ -1501,19 +1501,40 @@ body.crt-boot-sequence {
   }
 }
 
-/* Add this to style.scss */
-.table-wrapper {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  margin: 2em 0;
-}
-
-table {
-  min-width: 600px; /* Force scroll on mobile */
-}
-
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   table {
-    font-size: 0.85em;
+    border: 0;
+    min-width: auto;
+  }
+
+  table thead {
+    display: none; /* Hide header on mobile */
+  }
+
+  table tr {
+    display: block;
+    margin-bottom: 1em;
+    border: var(--border);
+    border-radius: 4px;
+    padding: 0.5em;
+  }
+
+  table td {
+    display: block;
+    text-align: right;
+    padding: 0.5em;
+    border-bottom: var(--border-dashed);
+  }
+
+  table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--base-color);
+  }
+
+  table td:last-child {
+    border-bottom: 0;
   }
 }
