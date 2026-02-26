@@ -1,5 +1,5 @@
 title: Portfolio Context Export
-generated: 2026-02-22 02:21:23
+generated: 2026-02-26 07:41:07
 format: Markdown
 scope: .md files only
 Portfolio Context Export
@@ -193,6 +193,7 @@ I work comfortably across all layers of the stack:
 ```
 
 **Example:** VPN Manager project required all three layers:
+
 - **Kernel:** TUN/TAP interface, Netfilter hooks
 - **System:** vpnmd daemon (root privileges), systemd service
 - **Application:** vpnm CLI (Python), anyd IPC framework
@@ -203,11 +204,11 @@ I work comfortably across all layers of the stack:
 
 Before writing code, I define:
 
-| Question | Example (MHA) |
-|----------|---------------|
-| **Problem** | Detect CIR changes across cloud providers |
-| **Constraints** | Different APIs, vendor-specific fields |
-| **Trade-offs** | Hash collisions vs. comparison speed |
+| Question            | Example (MHA)                                  |
+| ------------------- | ---------------------------------------------- |
+| **Problem**         | Detect CIR changes across cloud providers      |
+| **Constraints**     | Different APIs, vendor-specific fields         |
+| **Trade-offs**      | Hash collisions vs. comparison speed           |
 | **Success Metrics** | 100% change detection, <100ms hash calculation |
 
 **Result:** 5 documented specifications before implementation.
@@ -216,11 +217,11 @@ Before writing code, I define:
 
 ### 3. Verification Over Assumption
 
-| Layer | Tool | Purpose |
-|-------|------|---------|
-| **Input** | Universe Validation Stack | Validate Unified Models |
-| **Output** | Prometheus, Grafana | Monitor system behavior |
-| **Behavior** | Notion specs, Habr articles | Document decisions |
+| Layer        | Tool                        | Purpose                 |
+| ------------ | --------------------------- | ----------------------- |
+| **Input**    | Universe Validation Stack   | Validate Unified Models |
+| **Output**   | Prometheus, Grafana         | Monitor system behavior |
+| **Behavior** | Notion specs, Habr articles | Document decisions      |
 
 ---
 
@@ -228,12 +229,12 @@ Before writing code, I define:
 
 I solidify understanding by teaching:
 
-| Platform | Output | Impact |
-|----------|--------|--------|
-| **MIPT** | 11 Go lectures | 100+ students |
+| Platform              | Output                                        | Impact                                    |
+| --------------------- | --------------------------------------------- | ----------------------------------------- |
+| **MIPT**              | 11 Go lectures                                | 100+ students                             |
 | **JetBrains Academy** | Python Core project (Multilingual Translator) | Educational resource for Hyperskill track |
-| **Habr** | 9 articles | 237K views, 13K karma |
-| **Open Source** | 6 projects | 1,756 GitHub contributions |
+| **Habr**              | 9 articles                                    | 237K views, 13K karma                     |
+| **Open Source**       | 6 projects                                    | 1,756 GitHub contributions                |
 
 ---
 
@@ -249,26 +250,6 @@ PyPI          Downloads      anyd 0.4.1
 
 ---
 
-## A Letter to Veteran Engineers
-
-If you're reading this and you remember:
-
-- ⌨️ Editing code in `vi` without syntax highlighting
-- 💾 Compiling code overnight and hoping it worked
-- 📠 Debugging via print statements and log files
-- 🌐 Deploying via FTP and holding your breath
-- 📚 Reading physical man pages because Stack Overflow didn't exist
-
-...then you understand why **documentation matters**.
-
-This portfolio is my small contribution to keeping that spirit alive—the belief that **engineering is a craft**, not just a job. That systems should be **understandable**, not just functional. That we should **leave things better than we found them**.
-
-Welcome to my corner of the internet. The terminal is always warm, and there's always coffee. ☕
-
-— Anatoly
-
----
-
 ## Related Pages
 
 - [Career Timeline](timeline.md) — See how these principles evolved
@@ -278,6 +259,7 @@ Welcome to my corner of the internet. The terminal is always warm, and there's a
 ---
 
 [← Back to About](/about/)
+
 File: `about/timeline.md`
 ---
 layout: page
@@ -293,37 +275,37 @@ permalink: /about/timeline/
 ▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼         ▼
 Habr      DNSCrypt  JetBrains  VPN      Carrier   Forest    MIPT      MIND      MIND      1C
 Articles  (58K)     Academy   Manager   proxy     VPN       Course    Software  Software  Cloud
-│         │
-▼         ▼
-Start       MHA, JEMP, SSA
-Course      Validation Stack
+                                                            │         │
+                                                            ▼         ▼
+                                                            Start       MHA, JEMP, SSA
+                                                            Course      Validation Stack
 ```
 
 ---
 
 ## Detailed Chronology
 
-| Period | Company | Role | Key Achievements |
-|--------|---------|------|------------------|
-| 2017-2018 | Habr | Author | 3 articles (121K views) |
-| 2019-2020 | JetBrains | Python Engineer | Python Core course, Multilingual Translator |
-| 2020-2021 | VPN Manager | Python Tech Lead | anyd, vpnm, vpnmd |
-| 2021 | Carrierproxy | Full-Stack | Django + Vue.js |
-| 2022 | ForestVPN | Go Tech Lead | CLI, Homebrew, 116 releases |
-| 2022-2023 | MIPT | Instructor | Go course (11 lectures) |
-| 2023-2025 | MIND Software | Chief Developer | MHA, JEMP, SSA |
-| 2025-2026 | 1C | Service Engineer | Crash dump service |
+| Period    | Company       | Role             | Key Achievements                            |
+| --------- | ------------- | ---------------- | ------------------------------------------- |
+| 2017-2018 | Habr          | Author           | 3 articles (121K views)                     |
+| 2019-2020 | JetBrains     | Python Engineer  | Python Core course, Multilingual Translator |
+| 2020-2021 | VPN Manager   | Python Tech Lead | anyd, vpnm, vpnmd                           |
+| 2021      | Carrierproxy  | Full-Stack       | Django + Vue.js                             |
+| 2022      | ForestVPN     | Go Tech Lead     | CLI, Homebrew, 116 releases                 |
+| 2022-2023 | MIPT          | Instructor       | Go course (11 lectures)                     |
+| 2023-2025 | MIND Software | Chief Developer  | MHA, JEMP, SSA                              |
+| 2025-2026 | 1C            | Service Engineer | Crash dump service                          |
 
 ---
 
 ## Career Progression
 
-| Level | Period | Focus |
-|-------|--------|-------|
-| **Junior** | 2019-2020 | Python development, learning |
-| **Middle** | 2020-2022 | System programming, leadership |
-| **Senior** | 2022-2025 | Architecture, distributed systems |
-| **Staff** | 2025-present | Service reliability, monitoring |
+| Level      | Period       | Focus                             |
+| ---------- | ------------ | --------------------------------- |
+| **Junior** | 2019-2020    | Python development, learning      |
+| **Middle** | 2020-2022    | System programming, leadership    |
+| **Senior** | 2022-2025    | Architecture, distributed systems |
+| **Staff**  | 2025-present | Service reliability, monitoring   |
 
 ---
 
@@ -336,6 +318,7 @@ Course      Validation Stack
 ---
 
 [← Back to About](/about/)
+
 File: `deep-dives/anyd-daemon-framework.md`
 ---
 layout: page
@@ -773,17 +756,19 @@ Detailed architectural breakdowns of key projects with links to source code and 
 
 ## Available Deep Dives
 
-| Project | Description | Links |
-|---------|-------------|-------|
-| [anyd Daemon Framework](anyd-daemon-framework/) | Unix daemon IPC framework | [PyPI](https://pypi.org/project/anyd/), [GitHub](https://github.com/anatolio-deb/anyd) |
-| [VPN Tunneling Architecture](vpn-tunneling-architecture/) | Linux VPN client with TUN/TAP | [vpnm](https://github.com/nikiforidi/vpnm), [vpnmd](https://github.com/nikiforidi/vpnmd) |
-| [ForestVPN CLI](forestvpn-cli/) | Cross-platform VPN client | [GitHub](https://github.com/forestvpn/cli) |
-| [JetBrains Academy](jetbrains-academy/) | Python educational project | [Hyperskill](https://hyperskill.org/projects/99) |
-| [MIND Universe](mind-universe/) | Cloud infrastructure management | [Specs](/specs/) |
+| Project                                                   | Description                               | Links                                                                                    |
+| --------------------------------------------------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------- |
+| [anyd Daemon Framework](anyd-daemon-framework/)           | Unix daemon IPC framework                 | [PyPI](https://pypi.org/project/anyd/), [GitHub](https://github.com/anatolio-deb/anyd)   |
+| [VPN Tunneling Architecture](vpn-tunneling-architecture/) | Linux VPN client with TUN/TAP             | [vpnm](https://github.com/nikiforidi/vpnm), [vpnmd](https://github.com/nikiforidi/vpnmd) |
+| [v2sub systemd Integration](v2sub-systemd-integration/)   | Rootless v2ray manager with systemd & TUI | [GitHub](https://github.com/nikiforidi/v2sub)                                            |
+| [ForestVPN CLI](forestvpn-cli/)                           | Cross-platform VPN client                 | [GitHub](https://github.com/forestvpn/cli)                                               |
+| [JetBrains Academy](jetbrains-academy/)                   | Python educational project                | [Hyperskill](https://hyperskill.org/projects/99)                                         |
+| [MIND Universe](mind-universe/)                           | Cloud infrastructure management           | [Specs](/specs/)                                                                         |
 
 ---
 
 [← Back to Home](/)
+
 File: `deep-dives/jetbrains-academy.md`
 ---
 layout: page
@@ -936,6 +921,486 @@ CRUD-like operations for cloud infrastructure resources (CIR):
 ---
 
 [← Back to Deep Dives](/deep-dives/)
+File: `deep-dives/v2sub-systemd-integration.md`
+---
+layout: page
+title: "v2sub: systemd-run Integration & Interactive Menu"
+permalink: /deep-dives/v2sub-systemd-integration/
+---
+
+## Overview
+
+**Project:** [v2sub](https://github.com/nikiforidi/v2sub) — A v2ray subscription manager written in Python
+
+**Commit:** `feat: systemd-run and interactive menu` · [0899bf5](https://github.com/nikiforidi/v2sub/commit/0899bf5)
+
+**Period:** 2020-2021
+
+**Role:** Python Developer & System Engineer
+
+---
+
+## Problem Statement
+
+### Original Architecture Issues
+
+The v2sub project had several critical limitations that prevented widespread adoption:
+
+| Problem                       | Impact                                                    | Root Cause                                      |
+| ----------------------------- | --------------------------------------------------------- | ----------------------------------------------- |
+| **Root privileges required**  | Users hesitant to run unknown scripts as root             | `systemctl restart v2ray.service` requires sudo |
+| **Config in `/etc/v2ray/`**   | File operations need elevated permissions                 | Traditional system-wide config location         |
+| **No node selection UI**      | Users must manually edit config or remember index numbers | CLI-only with `--index` argument                |
+| **No clean shutdown**         | Orphaned v2ray processes after script exit                | No process tracking or lifecycle management     |
+| **Unreliable user detection** | `SUDO_USER` fallback breaks in some environments          | Inconsistent environment variable availability  |
+
+### User Experience Pain Points
+
+```bash
+# Before: Clunky workflow requiring root
+$ sudo python3 v2sub.py run --index 5
+Password: [sudo password required]
+[!] Security concern: Why does a VPN client need root?
+
+# Before: No way to see available nodes
+$ python3 v2sub.py list
+# Raw JSON output, no formatting
+
+# Before: No clean shutdown
+$ Ctrl+C
+# v2ray process keeps running in background
+```
+
+---
+
+## Motivation
+
+### Why This Refactor Was Necessary
+
+1. **Security First** — Running third-party scripts as root is a security anti-pattern. Users should never need to trust a script with full system access for VPN functionality.
+
+2. **User Experience** — Interactive selection is more intuitive than remembering index numbers. Think `htop` vs `ps aux | grep`.
+
+3. **Proper Lifecycle Management** — Services should start cleanly and stop cleanly. No orphaned processes.
+
+4. **Portability** — User-level systemd units work across different Linux distributions without requiring system-wide configuration.
+
+5. **Maintainability** — Separating systemd logic into its own module makes the codebase easier to test and extend.
+
+---
+
+## Technical Solutions
+
+### 1. User-Level systemd Units (No Root Required)
+
+**Before:**
+
+```python
+# utils.py - Required root
+def restart_server():
+    click.echo("Going to restart v2ray service...")
+    result = call("systemctl restart v2ray.service", shell=True)
+    # [-] Requires: sudo python3 v2sub.py
+```
+
+**After:**
+
+```python
+# systemd.py - User-level service management
+SYSTEMD_RUN_CMD = [
+    "systemd-run",
+    "--user",           # [+] No root needed
+    "--collect",        # [+] Auto-cleanup when done
+    "-p", "Restart=on-failure",
+]
+
+def start(cmd: Iterable) -> dict:
+    SYSTEMD_RUN_CMD.extend(cmd)
+    proc = run(SYSTEMD_RUN_CMD, check=True, capture_output=True)
+    # Extract unit name from stderr: "Running as unit: user@12345.service"
+    return {"unit": proc.stderr.decode().split(":")[1].strip()}
+```
+
+**Why `systemd-run --user`?**
+
+- Creates transient service units (no permanent config files)
+- Runs in user session (no root required)
+- `--collect` flag ensures automatic cleanup after service stops
+- Output includes unit name for later management (stop/restart)
+
+### 2. Interactive Terminal Menu
+
+**Before:**
+
+```bash
+$ python3 v2sub.py run --index 5
+# User must remember: "Which index was the US server?"
+```
+
+**After:**
+
+```python
+# command.py - Interactive node selection
+from simple_term_menu import TerminalMenu
+
+def run(name, port):
+    servers = subscribe.get_servers(name)
+    menu = TerminalMenu(servers, title=name)
+    index = menu.show()  # [+] Interactive selection
+    node = subscribe.get_node(index, name)
+    # ... start connection
+```
+
+**Why `simple_term_menu`?**
+
+- Pure Python (no external dependencies beyond pip)
+- Keyboard navigation (arrow keys, Enter)
+- Works in any terminal (no GUI required)
+- Minimal code footprint (~20 lines)
+
+### 3. State Tracking for Clean Shutdown
+
+**Problem:** How do we stop a v2ray instance we started earlier?
+
+**Solution:** Persist the systemd unit name to JSON state file.
+
+```python
+# subscribe.py - Initialize state file
+def init():
+    # ... existing init code ...
+    if not os.path.exists(SYSTEMD_UNIT):
+        os.mknod(SYSTEMD_UNIT)  # Create state file
+
+# command.py - Track unit name
+def run(name, port):
+    existing_unit = utils.read_from_json(systemd.SYSTEMD_UNIT).get("unit", "")
+    existing_config = utils.read_from_json(config.V2RAY_CONFIG_FILE)
+
+    if existing_config != node:
+        systemd.stop(existing_unit)  # [+] Stop old instance first
+        config.update_config(node, port)
+
+    if not systemd.is_active(existing_unit):
+        unit = systemd.start(["v2ray", "-config", config.V2RAY_CONFIG_FILE])
+        utils.write_to_json(unit, systemd.SYSTEMD_UNIT)  # [+] Save for later
+
+# command.py - Clean shutdown
+def stop():
+    unit = utils.read_from_json(systemd.SYSTEMD_UNIT).get("unit", "")
+    if systemd.is_active(unit):
+        systemd.stop(unit)
+        click.echo("Stopped")
+```
+
+**State File Structure:**
+
+```json
+// ~/.v2sub/unit.json
+{
+  "unit": "user@12345.service"
+}
+```
+
+### 4. Simplified User Detection
+
+**Before:**
+
+```python
+# Unreliable in some environments
+user = os.getenv("SUDO_USER") or os.getenv("USER")
+```
+
+**After:**
+
+```python
+# Reliable: USER is always set in login shells
+user = os.getenv("USER")
+```
+
+**Why the change?**
+
+- `SUDO_USER` only set when script is run with `sudo`
+- Since we no longer require sudo, `USER` is sufficient
+- Simpler code = fewer edge cases
+
+### 5. Config File Location Change
+
+**Before:**
+
+```python
+V2RAY_CONFIG_FILE = "/etc/v2ray/config.json"  # [-] Requires root
+```
+
+**After:**
+
+```python
+V2RAY_CONFIG_FILE = "/tmp/config.json"  # [+] User-writable
+```
+
+**Trade-offs:**
+
+| Aspect          | `/etc/v2ray/`     | `/tmp/`                                    |
+| --------------- | ----------------- | ------------------------------------------ |
+| **Permissions** | Root required     | User-writable                              |
+| **Persistence** | Survives reboot   | Cleared on reboot                          |
+| **Security**    | Protected by root | World-readable (but config has no secrets) |
+| **Use Case**    | System service    | User session                               |
+
+**Decision:** For user-level VPN client, `/tmp/` is acceptable because:
+
+- Config is regenerated on each connection
+- No sensitive data in config (auth is in subscription URL)
+- Reboot clears stale configs (actually a feature)
+
+---
+
+## Architecture Changes
+
+### Module Structure
+
+```
+v2sub/
+├── __init__.py          # Version, global variables
+├── command.py           # CLI commands (run, stop, ping)
+├── config.py            # V2Ray config generation
+├── subscribe.py         # Subscription management
+├── systemd.py           # [+] NEW: systemd-run integration
+└── utils.py             # Helper functions (ping, JSON I/O)
+```
+
+### Service Lifecycle Flow
+
+```
+┌──────────────┐
+│  User Input  │ (Select node from menu)
+└──────┬───────┘
+       ▼
+┌──────────────┐
+│ Check State  │ (Read unit.json)
+└──────┬───────┘
+       ▼
+┌──────────────┐
+│ Config Diff? │ (Compare with existing)
+└──────┬───────┘
+       │
+       ├── Yes ──▶ systemd.stop(existing_unit)
+       │           config.update_config(node)
+       │           systemd.start(new_unit)
+       │           utils.write_to_json(unit)
+       │
+       └── No ───▶ systemd.is_active(unit)?
+                   ├── Yes ──▶ Already running
+                   └── No ───▶ systemd.start(unit)
+```
+
+### Command Comparison
+
+| Command  | Before                                | After                                 |
+| -------- | ------------------------------------- | ------------------------------------- |
+| **Run**  | `sudo python3 v2sub.py run --index 5` | `python3 v2sub.py run` (interactive)  |
+| **Stop** | [-] Not available                     | `python3 v2sub.py stop`               |
+| **Ping** | `python3 v2sub.py ping --index 5`     | `python3 v2sub.py ping` (interactive) |
+| **Root** | [+] Required                          | [-] Not required                      |
+
+---
+
+## Key Design Decisions
+
+### 1. Why `systemd-run` Instead of `systemctl`?
+
+| Aspect           | `systemctl`                           | `systemd-run`           |
+| ---------------- | ------------------------------------- | ----------------------- |
+| **Unit Type**    | Permanent (`.service` file)           | Transient (in-memory)   |
+| **Config Files** | Creates files in `/etc/systemd/user/` | No files created        |
+| **Cleanup**      | Manual (`systemctl disable`)          | Automatic (`--collect`) |
+| **Use Case**     | Long-running services                 | One-off sessions        |
+
+**Decision:** `systemd-run --user --collect` is perfect for VPN sessions because:
+
+- No permanent configuration clutter
+- Automatic cleanup when session ends
+- User-level (no root)
+- Unit name returned for management
+
+### 2. Why JSON for State Tracking?
+
+**Alternatives Considered:**
+
+- **PID file** — Only tracks process ID, not systemd unit
+- **Environment variable** — Lost when shell closes
+- **Database** — Overkill for single value
+- **JSON file** — [+] Simple, human-readable, easy to parse
+
+**Decision:** JSON strikes the right balance between simplicity and functionality.
+
+### 3. Why Interactive Menu Instead of Fuzzy Search?
+
+**Alternatives Considered:**
+
+- **Fuzzy search** (like `fzf`) — Requires external dependency
+- **Numbered list** — What we had before (poor UX)
+- **Interactive menu** — [+] Built-in to `simple_term_menu`
+
+**Decision:** Interactive menu provides:
+
+- Visual feedback (highlighted selection)
+- Keyboard navigation
+- No external dependencies beyond pip
+- Works in any terminal
+
+---
+
+## Metrics & Impact
+
+### Code Changes
+
+| Metric            | Value            |
+| ----------------- | ---------------- |
+| **Files Changed** | 7                |
+| **Lines Added**   | +96              |
+| **Lines Removed** | -37              |
+| **Net Change**    | +59 lines        |
+| **New Modules**   | 1 (`systemd.py`) |
+| **New Commands**  | 1 (`stop`)       |
+
+### User Experience Improvements
+
+| Metric              | Before                | After            |
+| ------------------- | --------------------- | ---------------- |
+| **Root Required**   | [+] Yes               | [-] No           |
+| **Node Selection**  | Manual index          | Interactive menu |
+| **Clean Shutdown**  | [-] No                | [+] Yes          |
+| **Config Location** | `/etc/v2ray/`         | `/tmp/`          |
+| **User Detection**  | `SUDO_USER` or `USER` | `USER` only      |
+
+### Security Improvements
+
+| Risk                        | Before                      | After             |
+| --------------------------- | --------------------------- | ----------------- |
+| **Root Privileges**         | Required for all operations | Not required      |
+| **Config File Permissions** | 644 (root-owned)            | 644 (user-owned)  |
+| **Process Isolation**       | System-wide service         | User session      |
+| **Attack Surface**          | Full system access          | User session only |
+
+---
+
+## Trade-offs
+
+### 1. `/tmp/` vs `/etc/v2ray/`
+
+| Trade-off                 | Impact                                  |
+| ------------------------- | --------------------------------------- |
+| **Config lost on reboot** | [+] Acceptable (regenerated on connect) |
+| **World-readable config** | [+] Acceptable (no secrets in config)   |
+| **No system-wide config** | [+] Intentional (user-level tool)       |
+
+### 2. `systemd-run` vs Direct Process
+
+| Trade-off                 | Impact                                           |
+| ------------------------- | ------------------------------------------------ |
+| **Systemd dependency**    | [+] Acceptable (most Linux distros have systemd) |
+| **Slightly more complex** | [+] Worth it for lifecycle management            |
+| **User session required** | [+] Intentional (no root)                        |
+
+### 3. Interactive Menu vs CLI Arguments
+
+| Trade-off            | Impact                                          |
+| -------------------- | ----------------------------------------------- |
+| **Not scriptable**   | [!] Minor (can add `--index` flag if needed)    |
+| **Extra dependency** | [+] Minimal (`simple_term_menu` is pure Python) |
+| **Better UX**        | [+] Significant improvement                     |
+
+---
+
+## Lessons Learned
+
+### 1. Don't Require Root Unless Absolutely Necessary
+
+**Lesson:** Users are (rightfully) suspicious of scripts that require root. Always ask: "Can this work without elevated privileges?"
+
+**Application:** Use `systemd-run --user` instead of `systemctl` for user sessions.
+
+### 2. State Management is Critical for Service Lifecycle
+
+**Lesson:** If you start a service, you need a way to stop it later. Persist state somewhere durable.
+
+**Application:** JSON state file for tracking systemd unit names.
+
+### 3. Interactive UX > CLI Arguments for Human Users
+
+**Lesson:** Remembering index numbers is cognitively demanding. Visual selection is intuitive.
+
+**Application:** `simple_term_menu` for node selection.
+
+### 4. Separate Concerns into Modules
+
+**Lesson:** systemd logic doesn't belong in `utils.py`. Give it its own module.
+
+**Application:** New `systemd.py` module with clear responsibilities.
+
+---
+
+## Future Improvements
+
+### 1. Add `--index` Flag for Scripting
+
+```python
+@cli.command()
+@click.option("--index", type=click.INT, default=None)
+def run(name, port, index):
+    if index is not None:
+        # Scripting mode
+        node = subscribe.get_node(index, name)
+    else:
+        # Interactive mode
+        servers = subscribe.get_servers(name)
+        menu = TerminalMenu(servers, title=name)
+        index = menu.show()
+        node = subscribe.get_node(index, name)
+```
+
+### 2. Add `status` Command
+
+```python
+@cli.command()
+def status():
+    unit = utils.read_from_json(systemd.SYSTEMD_UNIT).get("unit", "")
+    if systemd.is_active(unit):
+        click.echo(f"[+] Active: {unit}")
+    else:
+        click.echo("[-] Inactive")
+```
+
+### 3. Add Connection History
+
+```python
+# Track last 10 connections
+history = utils.read_from_json(HISTORY_FILE)
+history.append({"node": node, "timestamp": datetime.now()})
+history = history[-10:]  # Keep last 10
+utils.write_to_json(history, HISTORY_FILE)
+```
+
+### 4. Add Auto-Reconnect on Network Change
+
+```python
+# Watch for NetworkManager events
+# Reconnect if connection drops
+```
+
+---
+
+## See Also
+
+- [v2sub Repository](https://github.com/nikiforidi/v2sub)
+- [Commit 0899bf5](https://github.com/nikiforidi/v2sub/commit/0899bf5)
+- [systemd-run Documentation](https://www.freedesktop.org/software/systemd/man/systemd-run.html)
+- [simple_term_menu](https://pypi.org/project/simple-term-menu/)
+
+---
+
+[← Back to Deep Dives](/deep-dives/)
+
 File: `deep-dives/vpn-tunneling-architecture.md`
 ---
 layout: page
@@ -993,14 +1458,15 @@ The system employed a client-daemon model. The `vpnm` CLI ran as a standard user
 Built with the `click` framework, the CLI handled user interaction, authentication, and high-level commands. It communicated with the daemon via `vpnmd_api`.
 
 **Available Commands**
-| Command | Description | Key Options |
-| :--- | :--- | :--- |
-| `login` | Authenticate with VPN Manager API | `--email`, `--password` |
-| `status` | Check active connection status | None |
-| `account` | Display account info (balance, traffic) | None |
-| `connect` | Establish VPN tunnel | `--best`, `--random` |
-| `disconnect` | Terminate VPN tunnel | `--force` |
-| `logout` | Clear local authentication secret | None |
+
+| Command      | Description                             | Key Options             |
+| :----------- | :-------------------------------------- | :---------------------- |
+| `login`      | Authenticate with VPN Manager API       | `--email`, `--password` |
+| `status`     | Check active connection status          | None                    |
+| `account`    | Display account info (balance, traffic) | None                    |
+| `connect`    | Establish VPN tunnel                    | `--best`, `--random`    |
+| `disconnect` | Terminate VPN tunnel                    | `--force`               |
+| `logout`     | Clear local authentication secret       | None                    |
 
 **Authentication Flow**
 
@@ -1058,19 +1524,16 @@ The `vpnmd` daemon exposed privileged network functions via the `anyd` framework
 | **TUN/TAP**         | Proxy per-app        | System-wide tunneling ensures all traffic is protected without per-app config. |
 | **Python**          | Go/C++               | Faster development cycle, rich ecosystem for API/CLI tooling.                  |
 
-## Evolution & Legacy
-
-This architecture served as the proof-of-concept for the subsequent **ForestVPN CLI** (Go-based). Key lessons learned influenced the next generation:
-
-1.  **Daemon Complexity**: The IPC overhead and daemon management proved fragile. The Go version moved to a **single binary** model.
-2.  **Protocol Shift**: Moved from `v2ray` + `tun2socks` to native **WireGuard** for better performance and kernel integration.
-3.  **Language Migration**: Transitioned from Python to **Go** for static binary distribution and improved concurrency.
-
 ---
 
-[vpnm source code](https://github.com/nikiforidi/vpnm)  
-[vpnmd source code](https://github.com/nikiforidi/vpnmd)  
-[anyd PyPI page](https://pypi.org/project/anyd/)  
+## Key Technical Solutions
+
+- **Split-Privilege Architecture:** Isolated privileged network operations (root) from user interaction (user-space) via `anyd` IPC sockets, minimizing the attack surface.
+- **Enforced DNS Encryption:** Redirected all UDP port 53 traffic via `iptables` NAT rules to a local `cloudflared` instance, preventing ISP DNS leakage.
+- **TUN-Based Forwarding:** Captured system-wide traffic using a virtual TUN interface and `tun2socks`, routing it through `v2ray-core` for encryption without per-app configuration.
+- **Idempotent Network Rules:** Implemented safety checks (e.g., `iptables_rule_exists`) to prevent duplicate rule insertion during reconnection attempts.
+
+[vpnm source code](https://github.com/nikiforidi/vpnm) | [vpnmd source code](https://github.com/nikiforidi/vpnmd) | [anyd PyPI page](https://pypi.org/project/anyd/)  
 [← Back to Deep Dives](/deep-dives/)
 
 File: `index.md`
@@ -1181,7 +1644,7 @@ Cross-platform VPN client (Linux, macOS, Windows, OpenWRT).
 
 The terminal is warm, the coffee is fresh, and the code is documented.
 
-Stay a while. 🖥️
+Stay a while.
 
 File: `portfolio_assets.md`
 title: Portfolio Assets Export
@@ -2359,6 +2822,8 @@ permalink: /specs/mha/
 
 ### Nested Hashing Model
 
+Each VM component (CPU, RAM, Disks, OS/ID) is hashed independently using only vendor-agnostic fields. Component hashes are then combined into a single VM hash for efficient comparison. This nested approach enables granular change detection at the component level rather than treating the VM as a monolithic blob.
+
 ```text
 ┌───────────────────────────────────────────────────────────────┐
 │                      Virtual Machine                          │
@@ -2366,14 +2831,16 @@ permalink: /specs/mha/
 │     CPU       │     RAM       │    Disks      │   OS / ID     │
 │    (hash)     │    (hash)     │    (hash)     │    (hash)     │
 └───────────────┴───────────────┴───────────────┴───────────────┘
-                              │
-                              ▼
+                                │
+                                ▼
                      ┌───────────────────────┐
                      │   Combined VM Hash    │
                      └───────────────────────┘
 ```
 
 ### Bidirectional Comparison
+
+The Unified Model (database record) and Facts (cloud API response) are processed through identical MHA Hash Calc pipelines. Both directions produce comparable hashes because only common components are used. The Hash Compare step detects any divergence between stored state and actual infrastructure state.
 
 ```text
 ┌──────────────────┐              ┌──────────────────┐
@@ -2395,22 +2862,32 @@ permalink: /specs/mha/
 
 ## Key Design Decisions
 
-| Decision | Alternative | Rationale |
-|----------|-------------|-----------|
-| **Nested Hashing** | Flat hash | Component-level change detection |
-| **Bidirectional** | One-way comparison | Same algorithm for DB + API |
-| **Common Components Only** | All fields | Cross-cloud compatibility |
+| Decision                   | Alternative        | Rationale                        |
+| -------------------------- | ------------------ | -------------------------------- |
+| **Nested Hashing**         | Flat hash          | Component-level change detection |
+| **Bidirectional**          | One-way comparison | Same algorithm for DB + API      |
+| **Common Components Only** | All fields         | Cross-cloud compatibility        |
 
 ---
 
 ## Metrics
 
-| Metric | Value |
-|--------|-------|
-| **Hash Calculation Time** | <100ms per CIR |
-| **Change Detection Accuracy** | 100% |
-| **Supported CIR Types** | VM, Network, Storage |
-| **Cloud Providers** | VMware, OpenStack, oVirt, SpaceVM |
+| Metric                        | Value                             |
+| ----------------------------- | --------------------------------- |
+| **Hash Calculation Time**     | <100ms per CIR                    |
+| **Change Detection Accuracy** | 100%                              |
+| **Supported CIR Types**       | VM, Network, Storage              |
+| **Cloud Providers**           | VMware, OpenStack, oVirt, SpaceVM |
+
+---
+
+## Trade-offs
+
+| Trade-off                       | Impact                        |
+| ------------------------------- | ----------------------------- |
+| Vendor-specific fields excluded | Some details not tracked      |
+| Hash collisions possible        | Mitigated by nested structure |
+| Additional computation overhead | Acceptable for accuracy gain  |
 
 ---
 
@@ -2424,6 +2901,7 @@ permalink: /specs/mha/
 ---
 
 [← Back to Specifications](/specs/)
+
 File: `specs/ssa.md`
 ---
 layout: page
@@ -2450,6 +2928,8 @@ permalink: /specs/ssa/
 ## Architecture
 
 ### Algorithm Flow
+
+The Input Map contains integer keys that need sorting with zero positioned last. The Extract Keys step pulls all keys into a slice for processing. The Sort + Zero Logic sorts keys in ascending order then moves zero to the end. The Output Slice contains the final ordered sequence ready for model iteration.
 
 ```text
 ┌───────────────────┐
@@ -2506,27 +2986,37 @@ func SequenceSorting(m map[int]int) (order []int) {
 
 ## Benchmarks
 
-| Metric | Value |
-|--------|-------|
-| **Input Size** | 1,000,000 keys |
-| **Execution Time** | 116.9 ms |
-| **Complexity** | O(n*2) lookup + O(n log n) sort |
-| **Memory** | 2x key slice allocation |
+| Metric             | Value                            |
+| ------------------ | -------------------------------- |
+| **Input Size**     | 1,000,000 keys                   |
+| **Execution Time** | 116.9 ms                         |
+| **Complexity**     | O(n\*2) lookup + O(n log n) sort |
+| **Memory**         | 2x key slice allocation          |
 
 ### Benchmark Results
 
-```text
+```
 Keys processed: 1000000
 2023/05/26 15:17:32 Sort took 116.915073ms
 ```
 
 ### Mutations
 
-```text
+```
 Input:  {0: 1, 2: 3, 4: 5, 6: 7, 8: 9}
 Keys:   [0, 2, 4, 6, 8]
 Output: [2, 4, 6, 8, 0]
 ```
+
+---
+
+## Trade-offs
+
+| Trade-off              | Impact                    |
+| ---------------------- | ------------------------- |
+| O(n\*2) iterations     | Acceptable for n <1M      |
+| Extra slice allocation | Memory overhead ~2x       |
+| Zero-last semantics    | Required for SMP ordering |
 
 ---
 
@@ -2546,6 +3036,7 @@ Output: [2, 4, 6, 8, 0]
 ---
 
 [← Back to Specifications](/specs/)
+
 File: `specs/transactional-models.md`
 ---
 layout: page
@@ -2592,25 +3083,25 @@ The Prototype state is built from Source Unit and Placement data sources, tightl
 
 ## Model States
 
-| State | Source | Purpose |
-|-------|--------|---------|
-| **Prototype** | Source Unit + Placement | Initial model tied to data sources |
-| **Base** | User customization | User overrides prototype values |
-| **Complete** | Universe validation + defaults | Ready for deployment |
+| State         | Source                         | Purpose                            |
+| ------------- | ------------------------------ | ---------------------------------- |
+| **Prototype** | Source Unit + Placement        | Initial model tied to data sources |
+| **Base**      | User customization             | User overrides prototype values    |
+| **Complete**  | Universe validation + defaults | Ready for deployment               |
 
 ---
 
 ## Key Design Decisions
 
-| Decision | Alternative | Rationale |
-|----------|-------------|-----------|
-| **Three-state model** | Single-state | Clear separation of concerns |
-| **User customization step** | Direct deploy | User control over final config |
-| **Validation before deploy** | Validate on target | Catch errors early |
+| Decision                     | Alternative        | Rationale                      |
+| ---------------------------- | ------------------ | ------------------------------ |
+| **Three-state model**        | Single-state       | Clear separation of concerns   |
+| **User customization step**  | Direct deploy      | User control over final config |
+| **Validation before deploy** | Validate on target | Catch errors early             |
 
 ---
 
-## Rollback Mechanism ⚠️
+## Rollback Mechanism [!]
 
 > **Note:** A rollback mechanism was implemented through DRUID API calls to remove redundant CIRs during deployment. This feature exists in the codebase but cannot be publicly documented due to NDA restrictions.
 
@@ -2618,11 +3109,11 @@ The Prototype state is built from Source Unit and Placement data sources, tightl
 
 ## Trade-offs
 
-| Trade-off | Impact |
-|-----------|--------|
-| Multi-stage process | Increased complexity |
-| User customization | More flexibility, more validation |
-| Default values | Consistency across platforms |
+| Trade-off           | Impact                            |
+| ------------------- | --------------------------------- |
+| Multi-stage process | Increased complexity              |
+| User customization  | More flexibility, more validation |
+| Default values      | Consistency across platforms      |
 
 ---
 
@@ -2636,6 +3127,7 @@ The Prototype state is built from Source Unit and Placement data sources, tightl
 ---
 
 [← Back to Specifications](/specs/)
+
 File: `specs/validation-stack.md`
 ---
 layout: page
@@ -2748,10 +3240,10 @@ Validator 1 [✓] → Validator 2 [✗] → Validator 3 [✓] → Collect All
 Export Summary
 | Metric | Value |
 |--------|-------|
-| Total Files | 19 |
-| Generated | 2026-02-22 02:21:23 |
+| Total Files | 20 |
+| Generated | 2026-02-26 07:41:07 |
 | Format | Markdown (.md) |
 | Scope | .md files only |
-| Total Size | 90KB |
+| Total Size | 110KB |
 
 Auto-generated by generate_context.py
