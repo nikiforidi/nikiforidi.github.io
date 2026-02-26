@@ -6,7 +6,7 @@ permalink: /deep-dives/secure-secret-storage/
 
 ## Overview
 
-JSON Web Tokens (JWTs) are stateless, but **storage is stateful**. When building CLI tools like `vpnm` (VPN Manager), the security chain is only as strong as the weakest link: **where you store the token**.
+JSON Web Tokens (JWTs) are stateless, but storage is stateful. When building CLI tools like `vpnm` (VPN Manager), the security chain is only as strong as the weakest link: **where you store the token**.
 
 During the VPN Manager tenure (2020-2021), we initially stored JWTs in plain JSON files. This deep dive analyzes why **unencrypted JSON is an anti-pattern** on Linux desktops and outlines the **right way to store secrets** using system keyrings, encryption at rest, and strict permission models.
 
@@ -20,7 +20,7 @@ During the VPN Manager tenure (2020-2021), we initially stored JWTs in plain JSO
 CLI tools need persistent authentication. The naive approach is writing the JWT to a file:
 
 ```python
-# ❌ Anti-Pattern: Plain JSON Storage
+# [-] Anti-Pattern: Plain JSON Storage
 import json
 
 def save_token(token):
@@ -73,7 +73,7 @@ Use the OS-native secret storage. On Linux, this interfaces with `libsecret` (GN
 **Library:** [`keyring`](https://pypi.org/project/keyring/) (Python)
 
 ```python
-# ✅ Best Practice: System Keyring
+# [+] Best Practice: System Keyring
 import keyring
 
 SERVICE_NAME = "vpn_manager"
@@ -103,7 +103,7 @@ For headless servers or environments without a keyring, encrypt the file locally
 **Library:** [`cryptography`](https://pypi.org/project/cryptography/)
 
 ```python
-# ✅ Fallback: Encrypted JSON
+# [+] Fallback: Encrypted JSON
 from cryptography.fernet import Fernet
 import os
 
@@ -124,7 +124,7 @@ def save_token(token):
 Used in early `vpnm` versions. Mitigated strictly with file permissions.
 
 ```python
-# ⚠️ Legacy: Plain JSON with Permissions
+# [!] Legacy: Plain JSON with Permissions
 import os
 import json
 
@@ -140,10 +140,10 @@ def save_token(token):
 
 | Feature                 | System Keyring       | Encrypted File        | Plain JSON (`600`)     |
 | :---------------------- | :------------------- | :-------------------- | :--------------------- |
-| **Encryption at Rest**  | [✓] Yes (OS Managed) | [✓] Yes (App Managed) | [✗] No                 |
-| **Backup Safety**       | [✓] Excluded         | [⚠] Encrypted blob    | [✗] Leaked             |
-| **Multi-User Safety**   | [✓] Yes              | [✓] Yes               | [✓] Yes (if perms set) |
-| **Headless Support**    | [✗] Limited          | [✓] Yes               | [✓] Yes                |
+| **Encryption at Rest**  | [+] Yes (OS Managed) | [+] Yes (App Managed) | [-] No                 |
+| **Backup Safety**       | [+] Excluded         | [!] Encrypted blob    | [-] Leaked             |
+| **Multi-User Safety**   | [+] Yes              | [+] Yes               | [+] Yes (if perms set) |
+| **Headless Support**    | [-] Limited          | [+] Yes               | [+] Yes                |
 | **Implementation Cost** | Low                  | Medium                | Low                    |
 | **Security Score**      | **10/10**            | **8/10**              | **4/10**               |
 
@@ -186,4 +186,4 @@ If you are building a CLI tool today:
 - [anyd Daemon Framework](/deep-dives/anyd-daemon-framework/) — IPC authentication using similar principles
 - [Engineering Philosophy](/about/philosophy/) — Verification Over Assumption
 
-[← Back to Deep Dives](/deep-dives/)
+[<- Back to Deep Dives](/deep-dives/)
