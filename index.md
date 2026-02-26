@@ -105,4 +105,4 @@ Cross-platform VPN client (Linux, macOS, Windows, OpenWRT).
 
 The terminal is warm, the coffee is fresh, and the code is documented.
 
-Stay a while. 🖥️
+Stay a while.
