@@ -10,7 +10,7 @@ JSON Web Tokens (JWTs) are stateless, but storage is stateful. When building CLI
 
 During the VPN Manager tenure (2020-2021), we initially stored JWTs in plain JSON files. This deep dive analyzes why **unencrypted JSON is an anti-pattern** on Linux desktops and outlines the **right way to store secrets** using system keyrings, encryption at rest, and strict permission models.
 
-**Period:** 2020 — 2021 (Refactored 2026)  
+**Period:** 2020 — 2021
 **Role:** Python Tech Lead / Security Architect  
 **Primary Language:** Python  
 **Related Projects:** [VPN Tunneling Architecture](/deep-dives/vpn-tunneling-architecture/), [anyd Daemon Framework](/deep-dives/anyd-daemon-framework/)
