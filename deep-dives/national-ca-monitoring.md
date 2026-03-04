@@ -29,31 +29,31 @@ As cloud infrastructure relies on trusted PKI chains, missing or compromised roo
 
 ## Architecture
 
-The system runs as a Docker container scheduled via `cron`. It polls the E-Trust portal, verifies the XML-DSig signature using GOST algorithms, converts certificates to PEM, and pushes changes to GitLab.
+The system runs as a Docker container scheduled via `cron`. It polls the official Trust Portal, verifies the XML-DSig signature using GOST algorithms, converts certificates to PEM, and pushes changes to a private Git repository.
 
 ```text
-┌─────────────────────────────────────────────────────────────────┐
-│                     Docker Container (cron)                     │
-├─────────────────────────────────────────────────────────────────┤
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
-│  │   Poller     │  │   Verifier   │  │   Converter  │          │
-│  │ (E-Trust API)│  │ (GOST Crypto)│  │ (XML → PEM)  │          │
-│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘          │
-│         │                 │                 │                   │
-│         └─────────────────┴─────────────────┘                   │
-│                           │                                     │
-│                           ▼                                     │
-│                  ┌─────────────────┐                            │
-│                  │   Git Client    │                            │
-│                  │ (Commit + MR)   │                            │
-│                  └────────┬────────┘                            │
-└───────────────────────────┼─────────────────────────────────────┘
-                            │
-                            ▼
-                  ┌─────────────────┐
-                  │   GitLab Repo   │
-                  │  (gostca PEMs)  │
-                  └─────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                     Docker Container (cron)                      │
+├──────────────────────────────────────────────────────────────────┤
+│  ┌───────────────┐  ┌──────────────┐  ┌──────────────┐           │
+│  │   Poller      │  │   Verifier   │  │   Converter  │           │
+│  │ (Trust Portal)│  │ (GOST Crypto)│  │ (XML → PEM)  │           │
+│  └──────┬────────┘  └──────┬───────┘  └──────┬───────┘           │
+│         │                  │                 │                   │
+│         └──────────────────┴─────────────────┘                   │
+│                            │                                     │
+│                            ▼                                     │
+│                   ┌─────────────────┐                            │
+│                   │   Git Client    │                            │
+│                   │ (Commit + MR)   │                            │
+│                   └────────┬────────┘                            │
+└────────────────────────────┼─────────────────────────────────────┘
+                             │
+                             ▼
+                   ┌─────────────────┐
+                   │   GitLab Repo   │
+                   │  (gostca PEMs)  │
+                   └─────────────────┘
 ```
 
 ## Cryptographic Verification (GOST Standards)
@@ -74,7 +74,7 @@ The core security requirement is verifying the **National CA Electronic Signatur
 ```text
 ┌──────────────────┐              ┌──────────────────┐
 │  TSL XML Source  │              │  National CA Pub │
-│  (E-Trust)       │              │  Key (X509)      │
+│  (Trust Portal)  │              │  Key (X509)      │
 └────────┬─────────┘              └────────┬─────────┘
          │                                 │
          ▼                                 │
@@ -97,11 +97,11 @@ The core security requirement is verifying the **National CA Electronic Signatur
 └────────┬──────────┘                      │
          │                                 │
          ▼                                 │
-┌───────────────────┐      ┌───────────────▼─────────┐
+┌────────────────────┐     ┌───────────────▼─────────┐
 │ 4. Verify Signature│◀────│ 5. Decrypt Signature    │
-│    ГОСТ 34.10-2012│      │    Value (Base64)       │
-│    (ECDSA GOST)   │      │    OpenSSL Engine       │
-└───────────────────┘      └─────────────────────────┘
+│    ГОСТ 34.10-2012 │     │    Value (Base64)       │
+│    (ECDSA GOST)    │     │    OpenSSL Engine       │
+└────────────────────┘     └─────────────────────────┘
 ```
 
 ### Implementation Details (Alt Linux & OpenSSL)
@@ -110,39 +110,18 @@ To perform GOST operations reliably, the service relies on the `openssl-gost-eng
 
 #### Engine Configuration
 
-The OpenSSL engine must be explicitly enabled in the container environment.
+The OpenSSL engine must be explicitly enabled in the container environment using the distribution's control scripts rather than manual configuration file editing.
 
-```bash
-# Install GOST engine package (OpenSSL 1.1+)
-apt-get install openssl-gost-engine
+#### Verification Process
 
-# Enable the engine via control script
-control openssl-gost enabled
-
-# Verify availability
-openssl ciphers | grep GOST
-# Output: GOST2001-GOST89-GOST89 ...
-```
-
-#### Verification Command
-
-The core verification logic wraps the OpenSSL CLI to ensure standard compliance:
-
-```bash
-openssl pkeyutl -verify \
-  -pubin -inkey <public_key_file> \
-  -in <digest_file> \
-  -sigfile <signature_value_file>
-```
-
-_Note: All XML values (`DigestValue`, `SignatureValue`, `X509Certificate`) must be Base64 decoded before passing to OpenSSL._
+The core verification logic wraps the OpenSSL CLI to ensure standard compliance. All XML values (`DigestValue`, `SignatureValue`, `X509Certificate`) are Base64 decoded before passing to the cryptographic engine.
 
 ### Implementation Challenges
 
 | Challenge                 | Solution                                                                                    | Standard Reference        |
 | ------------------------- | ------------------------------------------------------------------------------------------- | ------------------------- |
 | `gostribog` Hash Mismatch | Wrapped `openssl-gost-engine` (AltLinux) to handle "long addition" carry bugs fixed in 2018 | Bugzilla #37922 (p1-alt2) |
-| Engine Activation         | Used `control openssl-gost enabled` script instead of manual `openssl.cnf` editing          | Alt Linux Wiki            |
+| Engine Activation         | Used distribution control script instead of manual `openssl.cnf` editing                    | Alt Linux Wiki            |
 | Base64 Encoding           | XML values decoded before passing to OpenSSL CLI                                            | XML-DSig Spec             |
 | Key Extraction            | Public key extracted from `<X509Certificate>` within `<KeyInfo>`                            | GOST R 34.10-2012         |
 
@@ -153,15 +132,10 @@ _Note: All XML values (`DigestValue`, `SignatureValue`, `X509Certificate`) must 
 Running cron inside Docker typically hides job output from `docker logs` because cron captures stdout/stderr separately from the container's PID 1.
 
 **Problem:**
-
-```bash
-# Default cron behavior
-crond ...
-# Job output goes to /var/log/cron.log or mail, not docker logs
-```
+Default cron behavior redirects job output to internal log files or mail, making them inaccessible via standard container orchestration tools.
 
 **Solution:**
-Redirect cron job output directly to the container's main file descriptor (`/proc/1/fd/1`).
+Redirect cron job output directly to the container's main file descriptor (`/proc/1/fd/1`). This ensures all service logs appear in the standard Docker log stream without requiring volume mounts or sidecar log collectors.
 
 ```bash
 # Dockerfile CMD
@@ -171,79 +145,86 @@ CMD ["crond", "-l", "0", "-f"]
 */30 * * * * /usr/local/bin/certbot >> /proc/1/fd/1 2>&1
 ```
 
-**Result:** Full visibility into `docker logs` without volume mounts or log aggregation services.
+**Result:** Full visibility into container logs without volume mounts or log aggregation services.
 
 ### GitLab Integration
 
-The service acts as a bot user (`certbot`):
+The service acts as a bot user:
 
-1.  **Clone:** Fetches `gostca` repository (PEM storage).
-2.  **Diff:** Checks `git status` for new/changed PEM files.
-3.  **Commit:** Authors changes as `certbot <bot@1c.ru>`.
-4.  **Merge Request:** Creates MR from `dev` → `main` for human review.
+1.  **Clone:** Fetches certificate repository (PEM storage).
+2.  **Diff:** Checks git status for new/changed PEM files.
+3.  **Commit:** Authors changes as a dedicated service account.
+4.  **Merge Request:** Creates MR from development branch to main branch for human review.
 
-#### Orchestration Logic (Go)
+#### Orchestration Logic (Generalized)
 
-The entry point handles the lifecycle of the job, ensuring the working directory is correct and the git state is managed before attempting updates.
+The entry point handles the lifecycle of the job, ensuring the working directory is correct and the git state is managed before attempting updates. It performs safety checks to ensure git identity is configured before committing.
 
 ```go
-// main.go (Entry Point)
+// Pseudo-code representation of orchestration logic
 func main() {
-    // ... git initialization ...
+    // 1. Initialize Git Client with secure credentials
+    git := NewGitClient(env.Host, env.Token)
 
-    // Ensure we are in the home directory for cloning
-    homeDir, _ := os.UserHomeDir()
-    os.Chdir(homeDir)
+    // 2. Ensure clean working directory
+    os.Chdir(os.UserHomeDir())
 
-    // Clone or skip
-    if !exists { git.Clone() }
+    // 3. Clone or Pull Repository
+    if !RepoExists() {
+        git.Clone()
+    } else {
+        git.Pull()
+    }
 
-    // Enter repo directory
-    os.Chdir(repoDir)
+    // 4. Branch Management
+    if !BranchExists() {
+        git.CreateBranch()
+    }
+    git.Checkout()
 
-    // Branch management
-    if !git.RemoteBranchExist() { git.BranchCreate() }
-    if !inBranch { git.Checkout() }
+    // 5. Fetch and Process CA Data
+    resp := FetchCAData(env.SourceURL)
+    resp.DumpToPEM()
 
-    // Fetch and Process CA
-    resp, _ := ca.Get(os.Getenv("CA_SOURCE_URL"))
-    resp.DumpToPEM(repoDir)
-
-    // Commit and MR if changes exist
-    out, _ := git.Status()
-    if !strings.Contains(out, "nothing to commit") {
+    // 6. Commit and Merge Request if changes detected
+    if git.HasChanges() {
+        git.ConfigureIdentity()
         git.Add()
-        git.Commit("update")
-        git.Push(!exists)
-        git.CreateMergeRequest("update")
+        git.Commit("update certificates")
+        git.Push()
+        git.CreateMergeRequest()
     }
 }
 ```
 
 #### XML Parsing & PEM Conversion
 
-The CA parser handles the specific XML structure of the E-Trust portal, extracting certificate data and formatting them into standard PEM blocks with 76-character line wrapping.
+The CA parser handles the specific XML structure of the Trust Portal, extracting certificate data and formatting them into standard PEM blocks with proper line wrapping. It sanitizes filenames to ensure compatibility across filesystems.
 
 ```go
-// ca/main.go (Parser)
-func (x xmlCAResponse) DumpToPEM(outDir string) error {
-    decoder := xml.NewDecoder(x.Body)
+// Pseudo-code representation of XML parsing
+func (response XMLResponse) DumpToPEM(outputDir string) error {
+    decoder := xml.NewDecoder(response.Body)
+
     for {
-        t, _ := decoder.Token()
-        switch _e := t.(type) {
-        case xml.StartElement:
-            if _e.Name.Local == "УдостоверяющийЦентр" {
-                var ca tCertificateAuthority
-                decoder.DecodeElement(&ca, &_e)
-                // Iterate SWHW, Keys, Certs...
-                for _, crt := range key.Certs {
-                    // Format PEM with 76 char wrap
-                    _cert := "-----BEGIN CERTIFICATE-----\n"
-                    for i := 76; i-76 < len(crt.Data); i += 76 {
-                        _cert += crt.Data[i-76:i] + "\n"
+        token := decoder.Token()
+        if token == nil { break }
+
+        if token.IsStartElement("CertificateAuthority") {
+            ca := DecodeCA(token)
+
+            for _, system := range ca.Systems {
+                for _, key := range system.Keys {
+                    for _, cert := range key.Certificates {
+                        // Sanitize filename
+                        name := Sanitize(system.Alias, cert.ValidFrom, cert.ValidTo)
+
+                        // Format PEM with 76-char line wrapping
+                        pem := FormatPEM(cert.Data)
+
+                        // Write to file
+                        WriteFile(outputDir + "/" + name, pem)
                     }
-                    _cert += "-----END CERTIFICATE-----\n"
-                    // Write to file...
                 }
             }
         }
@@ -284,13 +265,13 @@ func (x xmlCAResponse) DumpToPEM(outDir string) error {
 
 ### 1. Standards Compliance Requires Mature Libraries
 
-Pure Go implementations of GOST algorithms (`gostribog`) may have edge-case bugs compared to mature OpenSSL engines.
-**Lesson:** When dealing with national standards (GOST R 34.11-2012), wrap established C libraries (`openssl-gost-engine`) rather than relying on newer pure-Go ports for critical verification. Specifically, the Alt Linux engine fixed a "long addition" carry bug (Bugzilla #37922) that caused hash mismatches in earlier versions.
+Pure Go implementations of GOST algorithms may have edge-case bugs compared to mature OpenSSL engines.
+**Lesson:** When dealing with national standards (GOST R 34.11-2012), wrap established C libraries rather than relying on newer pure-Go ports for critical verification. Specifically, the Alt Linux engine fixed a "long addition" carry bug that caused hash mismatches in earlier versions.
 
 ### 2. Logging Visibility is Critical
 
 A silent cron job is a broken cron job.
-**Lesson:** In containerized schedulers, always redirect job output to `/proc/1/fd/1` to maintain observability via standard Docker tooling.
+**Lesson:** In containerized schedulers, always redirect job output to the container's main file descriptor to maintain observability via standard Docker tooling.
 
 ### 3. Trust But Verify (Literally)
 
@@ -300,7 +281,7 @@ Downloading certificates from a trusted URL is not enough.
 ### 4. Human-in-the-Loop for PKI
 
 Automating certificate updates is risky.
-**Lesson:** Use Merge Requests instead of direct pushes to `main`. This allows security teams to audit new root CAs before they are distributed to production infrastructure.
+**Lesson:** Use Merge Requests instead of direct pushes to the main branch. This allows security teams to audit new root CAs before they are distributed to production infrastructure.
 
 ## Related Specifications
 
