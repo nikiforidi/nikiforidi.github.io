@@ -50,10 +50,10 @@ The system runs as a Docker container scheduled via `cron`. It polls the officia
 └────────────────────────────┼─────────────────────────────────────┘
                              │
                              ▼
-                   ┌─────────────────┐
-                   │   GitLab Repo   │
-                   │  (gostca PEMs)  │
-                   └─────────────────┘
+                    ┌─────────────────┐
+                    │   GitLab Repo   │
+                    │  (gostca PEMs)  │
+                    └─────────────────┘
 ```
 
 ## Cryptographic Verification (GOST Standards)
