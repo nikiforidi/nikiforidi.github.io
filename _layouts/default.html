@@ -59,10 +59,15 @@
   </main>
 
   <footer class="site-footer">
-    <div class="wrapper">
-      <p>© {{ site.time | date: '%Y' }} {{ site.title }}</p>
-    </div>
-  </footer>
+  <div class="wrapper">
+    <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}</p>
+    <p style="font-size: 0.8em; opacity: 0.7; margin-top: 0.5em;">
+      <!-- Random Status Generator -->
+      <span id="footer-status">System Online</span> | 
+      Built with ☕ and <span id="vim-emacs">vim</span>
+    </p>
+  </div>
+</footer>
 
   <!-- Mr. House TV Script -->
   <script src="{{ '/assets/js/mr-house.js' | relative_url }}"></script>
@@ -78,6 +83,17 @@
       wrapper.appendChild(table);
     });
   });
+  const statuses = ["System Online", "Caffeinating...", "Compiling...", "Holding Space", "Avoiding Meetings"];
+  document.getElementById('footer-status').innerText = statuses[Math.floor(Math.random() * statuses.length)];
+  
+  const editors = ["vim", "emacs", "VS Code", "nano", "notepad.exe"];
+  document.getElementById('vim-emacs').innerText = editors[Math.floor(Math.random() * editors.length)];
+  console.log("%c Welcome to the Mainframe ", "background: #ffb000; color: #1a1510; font-size: 20px; font-weight: bold; padding: 10px;");
+  console.log("%c If you're looking for the source, it's all public on GitHub. ", "color: #ffcc80; font-size: 14px;");
+  console.log("%c ☕ Coffee status: Critical ", "color: #ff9966; font-size: 14px;");
+  console.log("%c 🛠️  Built with Jekyll, Go, and slight anxiety. ", "color: #997755; font-size: 14px;");
+
+
 </script>
 </body>
 </html>

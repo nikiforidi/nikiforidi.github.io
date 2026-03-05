@@ -76,6 +76,30 @@ a:hover {
   color: var(--link-hover);
   text-shadow: 0 0 8px rgba(255, 176, 0, 0.5);
   border-bottom-color: var(--link-hover);
+
+  /* Add subtle glitch */
+  animation: text-glitch 0.3s infinite;
+}
+
+@keyframes text-glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-1px, 1px);
+  }
+  40% {
+    transform: translate(-1px, -1px);
+  }
+  60% {
+    transform: translate(1px, 1px);
+  }
+  80% {
+    transform: translate(1px, -1px);
+  }
+  100% {
+    transform: translate(0);
+  }
 }
 
 /* --- Headers --- */
