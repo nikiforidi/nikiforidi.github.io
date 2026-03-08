@@ -1,7 +1,5 @@
 ---
 layout: home
-title: Technical Portfolio
-tagline: Architecture, Algorithms, System Design
 permalink: /
 ---
 
