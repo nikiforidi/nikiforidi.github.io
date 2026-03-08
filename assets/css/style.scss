@@ -143,30 +143,6 @@ a:hover {
   gap: 0.5em;
 }
 
-// .site-nav {
-//   margin-top: 0.5em;
-//   padding-top: 1em;
-//   border-top: var(--border);
-//   display: flex;
-//   flex-wrap: wrap;
-//   gap: 0.5em;
-// }
-
-// .site-nav .nav-link {
-//   color: var(--text-color);
-//   text-decoration: none;
-//   border: var(--border);
-//   padding: 0.4em 1em;
-//   border-radius: 3px;
-//   transition: all 0.3s ease;
-// }
-
-// .site-nav .nav-link:hover {
-//   background: var(--base-color);
-//   color: var(--background-color);
-//   box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
-// }
-
 /* =============================================================================
    MR. HOUSE TV DISPLAY (Эталон CRT)
    ============================================================================= */
@@ -965,9 +941,6 @@ body.crt-boot-sequence .site-footer {
   .mr-house-quote p {
     font-size: 0.6em;
   }
-  .site-nav {
-    justify-content: center;
-  }
 }
 
 @media (max-width: 600px) {
@@ -981,7 +954,7 @@ body.crt-boot-sequence .site-footer {
   .site-header .wrapper {
     padding: 0 1em;
   }
-  .site-header .site-nav .nav-link {
+  .site-header {
     display: block;
     margin: 0.5em 0;
   }
@@ -1132,14 +1105,6 @@ body.crt-boot-sequence .site-footer {
 
 .mr-house-btn:hover {
   background: var(--text-color);
-  box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
-  animation: button-shake 0.3s infinite;
-}
-
-/* Navigation Links */
-.site-nav .nav-link:hover {
-  background: var(--base-color);
-  color: var(--background-color);
   box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
   animation: button-shake 0.3s infinite;
 }
