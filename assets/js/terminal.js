@@ -1,6 +1,5 @@
 /**
  * Terminal Typing Animation
- * Fallout: New Vegas Inspired
  */
 (function () {
   "use strict";
@@ -9,12 +8,11 @@
     constructor(element, options = {}) {
       this.element =
         typeof element === "string" ? document.querySelector(element) : element;
-
       if (!this.element) return;
 
       this.options = {
-        typeSpeed: 50, // ms per character
-        lineDelay: 300, // ms between lines
+        typeSpeed: 50,
+        lineDelay: 300,
         cursorBlink: true,
         startOnLoad: true,
         loop: false,
@@ -31,13 +29,11 @@
     }
 
     init() {
-      // Parse content from data attribute or innerHTML
       const content = this.element.getAttribute("data-terminal");
       if (content) {
         this.lines = content.split("\\n").map((line) => line.trim());
         this.element.innerHTML = "";
       } else {
-        // Parse existing content
         this.lines = Array.from(this.element.children).map((el) => ({
           type: el.classList.contains("terminal-prompt") ? "prompt" : "output",
           text: el.textContent,
@@ -45,7 +41,6 @@
         this.element.innerHTML = "";
       }
 
-      // Create cursor
       if (this.options.cursorBlink) {
         this.cursor = document.createElement("span");
         this.cursor.className = "terminal-cursor";
@@ -87,7 +82,6 @@
       const lineElement = document.createElement("div");
       lineElement.className = "terminal-line";
 
-      // Check if it's a prompt line
       const isPrompt = typeof line === "object" && line.type === "prompt";
       const text = typeof line === "object" ? line.text : line;
 
@@ -108,12 +102,9 @@
 
       this.element.appendChild(lineElement);
 
-      // Type character by character
       for (let i = 0; i < text.length; i++) {
         textSpan.textContent += text[i];
         await this.delay(this.options.typeSpeed);
-
-        // Scroll to bottom
         this.element.scrollTop = this.element.scrollHeight;
       }
 
@@ -124,23 +115,17 @@
       return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-    // Manual control methods
     pause() {
       this.isTyping = false;
     }
-
     resume() {
-      if (!this.isTyping) {
-        this.start();
-      }
+      if (!this.isTyping) this.start();
     }
-
     clear() {
       this.element.innerHTML = "";
       this.currentLine = 0;
       this.currentChar = 0;
     }
-
     setText(newLines) {
       this.lines = newLines;
       this.clear();
@@ -148,7 +133,6 @@
     }
   }
 
-  // Auto-initialize on DOM load
   function initTerminals() {
     const terminals = document.querySelectorAll("[data-terminal]");
     terminals.forEach((el) => {
@@ -160,7 +144,6 @@
       });
     });
 
-    // Also initialize elements with .terminal-typing class
     const typingTerminals = document.querySelectorAll(".terminal-typing");
     typingTerminals.forEach((el) => {
       new TerminalTypewriter(el, {
@@ -172,13 +155,11 @@
     });
   }
 
-  // Initialize when DOM is ready
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initTerminals);
   } else {
     initTerminals();
   }
 
-  // Export for manual use
   window.TerminalTypewriter = TerminalTypewriter;
 })();

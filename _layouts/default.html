@@ -9,6 +9,7 @@
 <body class="crt-boot-sequence">
   <header class="site-header">
     <div class="wrapper">
+
       <!-- Row 1: Title + TV -->
       <div class="header-row header-row-1">
         <div class="header-left">
@@ -32,13 +33,23 @@
           </div>
         </div>
       </div>
-      
-      <!-- Row 2: Tagline + Quote -->
+
+      <!-- Row 2: Tagline -->
       <div class="header-row header-row-2">
         <div class="header-left">
           <span class="site-tagline">{{ site.description }}</span>
         </div>
       </div>
+
+      <!-- Navigation -->
+      <nav class="site-nav">
+        {% for path in site.header_pages %}
+          {% assign page = site.pages | where: "path", path | first %}
+          {% if page.title %}
+             <a class="nav-link" href="{{ page.url | relative_url }}">{{ page.title }}</a>
+          {% endif %}
+        {% endfor %}
+      </nav>
     </div>
   </header>
 
@@ -49,41 +60,26 @@
   </main>
 
   <footer class="site-footer">
-  <div class="wrapper">
-    <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}</p>
-    <p style="font-size: 0.8em; opacity: 0.7; margin-top: 0.5em;">
-      <!-- Random Status Generator -->
-      <span id="footer-status">System Online</span> | 
-      Built with ☕ and <span id="vim-emacs">vim</span>
-    </p>
-  </div>
-</footer>
+    <div class="wrapper">
+      <!-- Manifesto Quotes Section -->
+      <div class="manifesto-quotes">
+        <p class="quote-text" id="manifesto-quote-text">"Хакнуть реальность — значит увидеть, что у неё есть исходник."</p>
+        <p class="quote-source">
+          <a href="/about/manifesto/">[Читать манифест]</a>
+        </p>
+      </div>
+
+      <p class="copyright">&copy; {{ site.time | date: '%Y' }} {{ site.title }}</p>
+    </div>
+  </footer>
 
   <!-- Mr. House TV Script -->
   <script src="{{ '/assets/js/mr-house.js' | relative_url }}"></script>
+
+  <!-- Footer Manifesto Quotes -->
+  <script src="{{ '/assets/js/footer-quotes.js' | relative_url }}"></script>
+
   <!-- Terminal Typing Animation -->
-<script src="{{ '/assets/js/terminal.js' | relative_url }}"></script>
-<script>
-  // Wrap all tables for responsive scrolling
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('table').forEach(table => {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'table-wrapper';
-      table.parentNode.insertBefore(wrapper, table);
-      wrapper.appendChild(table);
-    });
-  });
-  const statuses = ["System Online", "Caffeinating...", "Compiling...", "Holding Space", "Avoiding Meetings"];
-  document.getElementById('footer-status').innerText = statuses[Math.floor(Math.random() * statuses.length)];
-  
-  const editors = ["vim", "emacs", "VS Code", "nano", "notepad.exe"];
-  document.getElementById('vim-emacs').innerText = editors[Math.floor(Math.random() * editors.length)];
-  console.log("%c Welcome to the Mainframe ", "background: #ffb000; color: #1a1510; font-size: 20px; font-weight: bold; padding: 10px;");
-  console.log("%c If you're looking for the source, it's all public on GitHub. ", "color: #ffcc80; font-size: 14px;");
-  console.log("%c ☕ Coffee status: Critical ", "color: #ff9966; font-size: 14px;");
-  console.log("%c 🛠️  Built with Jekyll, Go, and slight anxiety. ", "color: #997755; font-size: 14px;");
-
-
-</script>
+  <script src="{{ '/assets/js/terminal.js' | relative_url }}"></script>
 </body>
 </html>
