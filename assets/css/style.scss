@@ -1028,3 +1028,126 @@ body.crt-boot-sequence .site-footer {
     animation: none;
   }
 }
+
+/* =============================================================================
+   BUTTON ANIMATIONS (Shake & Blink)
+   ============================================================================= */
+
+/* Shake animation for buttons */
+@keyframes button-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-2px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+/* Blink animation for buttons */
+@keyframes button-blink {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 25px rgba(255, 176, 0, 0.8);
+  }
+}
+
+/* Combined shake + blink */
+@keyframes button-glitch {
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+    box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
+  }
+  25% {
+    transform: translateX(-2px);
+    opacity: 0.9;
+    box-shadow: 0 0 20px rgba(255, 176, 0, 0.7);
+  }
+  50% {
+    transform: translateX(2px);
+    opacity: 0.8;
+    box-shadow: 0 0 25px rgba(255, 176, 0, 0.9);
+  }
+  75% {
+    transform: translateX(-1px);
+    opacity: 0.9;
+    box-shadow: 0 0 20px rgba(255, 176, 0, 0.7);
+  }
+}
+
+/* Theme Enter Buttons (404 page, index.md) */
+.theme-enter {
+  display: inline-block;
+  border: var(--border);
+  padding: 0.5em 1em;
+  margin: 0.5em 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.9em;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-enter:hover {
+  background: var(--base-color);
+  color: var(--background-color);
+  box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
+  animation: button-glitch 0.3s infinite;
+}
+
+/* Mr. House Modal Button */
+.mr-house-btn {
+  background: var(--base-color);
+  color: var(--background-color);
+  border: none;
+  padding: 0.5em 1.5em;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.mr-house-btn:hover {
+  background: var(--text-color);
+  box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
+  animation: button-shake 0.3s infinite;
+}
+
+/* Navigation Links */
+.site-nav .nav-link:hover {
+  background: var(--base-color);
+  color: var(--background-color);
+  box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
+  animation: button-shake 0.3s infinite;
+}
+
+/* Manifesto Quote Source Link */
+.manifesto-quotes .quote-source a:hover {
+  background: var(--base-color);
+  color: var(--background-color);
+  box-shadow: 0 0 15px rgba(255, 176, 0, 0.5);
+  animation: button-blink 0.5s infinite;
+}
