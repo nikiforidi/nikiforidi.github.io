@@ -17,3 +17,5 @@ kramdown:
       line_numbers: false
     span:
       line_numbers: false
+# Google Analytics (GA4)
+google_analytics: G-0FKT2BBQTP
