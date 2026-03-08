@@ -1,22 +1,27 @@
 /**
  * Footer Manifesto Quotes Rotator
+ * Rotates quotes from REALITY_PROTOCOL.txt
  */
 (function () {
   "use strict";
 
+  // Manifesto quotes from REALITY_PROTOCOL.txt (English)
   const quotes = [
-    "Хакнуть реальность — значит увидеть, что у неё есть исходник.",
-    "Ты можешь быть функцией. А можешь — переменной.",
-    "Система не зло. Система — код.",
-    "Брешь есть всегда.",
-    "Не дай системе переписать твой внутренний код.",
-    "Держать один канал открытым.",
-    "Создать что-то подлинное — код, звук, слово, связь.",
-    "Я тебя вижу.",
-    "Мы — баги. Мы — шум. Мы — иррациональные переменные.",
-    "Система приходит с комфортом, не с цепями.",
-    "Сопротивление — это практика зазоров.",
-    "Иногда достаточно одной трещины, чтобы впустить свет.",
+    "To hack reality is to see that it has source code.",
+    "You can be a function. Or you can be a variable.",
+    "The system is not evil. The system is code.",
+    "There is always a breach.",
+    "Don't let the system rewrite your internal code.",
+    "Keep one channel open.",
+    "Create something authentic — code, sound, word, connection.",
+    "I see you.",
+    "We are bugs. We are noise. We are irrational variables.",
+    "The system comes with comfort, not chains.",
+    "Resistance is the practice of gaps.",
+    "Sometimes one crack is enough to let the light in.",
+    "To hack reality is not to break it.",
+    "Meaning is not written in the config.",
+    "You stand on the shoulders of those who already saw the code.",
   ];
 
   let currentQuoteIndex = 0;
@@ -41,6 +46,7 @@
 
     quoteElement.textContent = `"${quotes[0]}"`;
     setInterval(rotateQuote, 15000);
+
     console.log("📜 Manifesto quotes initialized");
   }
 

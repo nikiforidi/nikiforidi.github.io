@@ -1,12 +1,21 @@
 ---
 layout: page
 title: Manifesto
-permalink: /about/manifesto/
+permalink: /about/manifesto/ru/
 ---
 
+<div class="lang-switcher">
+  <a href="/about/manifesto/en/" class="lang-btn">EN</a>
+  <span class="lang-separator">/</span>
+  <span class="lang-btn active">RU</span>
+</div>
+
 **// МАНИФЕСТ ВЗЛОМА РЕАЛЬНОСТИ**
+
 **// ВЕРСИЯ: 1.0**
+
 **// СТАТУС: ПУБЛИЧНЫЙ**
+
 **// ПОДПИСЬ: ОТСУТСТВУЕТ**
 
 ---
@@ -101,5 +110,7 @@ permalink: /about/manifesto/
 Взламывай реальность.
 
 **// КОНЕЦ ПЕРЕДАЧИ**
+
 **// РАСПРОСТРАНЯТЬ СВОБОДНО**
+
 **// STAY VIABLE**
